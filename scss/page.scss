@@ -1,0 +1,29 @@
+$font-stack: Helvetica, sans-serif;
+$background-color: #304040;
+$synth-background-color: #505050;
+
+body {
+  font: $font-stack;
+  background-color: $background-color;
+}
+
+.page-header-container {
+  text-align: center;
+  .page-header {
+    width: 100%;
+  }
+}
+
+.controller-container {
+  background-color: $synth-background-color;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px;
+  border: 2px solid #303030;
+  border-radius: 15px;
+
+  .midi-device-dropdown-button {
+    display: inline-block;
+  }
+}
