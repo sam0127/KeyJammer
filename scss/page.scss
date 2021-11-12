@@ -16,14 +16,83 @@ body {
 
 .controller-container {
   background-color: $synth-background-color;
-  width: 600px;
+  width: 800px;
+  height: 500px;
   margin-left: auto;
   margin-right: auto;
-  padding: 40px;
+  padding: 10px;
   border: 2px solid #303030;
   border-radius: 15px;
 
-  .midi-device-dropdown-button {
+  .midi-device-dropdown {
+    width: 160px;
+  }
+  .dropdown-icon {
+    transform: rotate(45deg);
     display: inline-block;
+    padding: 3px;
+    border: solid black;
+    border-width: 0px 3px 3px 0px;
+    //border-right: 2px solid black;
+    //border-bottom: 2px solid black;
+  }
+  .midi-device-dropdown-button {
+    width: 100%;
+    display: inline-block;
+    padding: 10px;
+    font-weight: 600;
+    background-color: #006060;
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+
+    &:hover {
+      background-color: #005050;
+    }
+  }
+
+  .button-open {
+    border-radius: 5px 5px 0px 0px;
+  }
+
+  .midi-device-dropdown-content {
+    display: none;
+    //transition: opacity 0.5s ease-in-out;
+    width: auto;
+    height: auto;
+    background-color: #B0B0B0;
+    padding-bottom: 5px;
+    border-radius: 0px 0px 5px 5px;
+    .midi-device-selector {
+      width: 100%;
+      display: block;
+      background-color: #B0B0B0;
+      border: none;
+      border-bottom: 1px solid #204040;
+
+      &.selected,
+      &:hover {
+        background-color: #909090;
+      }
+    }
+  }
+
+  .dropdown-open {
+    display: block;
+  }
+
+  .volume-slider-container {
+    position: relative;
+    top: 430px;
+
+    .volume-text {
+      display:block;
+      margin: 0;
+    }
+    #volume-slider {
+      display: inline;
+    }
+    #volume-value {
+      display: inline;
+    }
   }
 }
