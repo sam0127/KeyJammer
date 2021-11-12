@@ -54,6 +54,69 @@ function changeVolume(event) {
   volValue.innerHTML = Math.round(volSlider.value * 100) + "%"
 }
 
+function AudioSetup() {
+  volSlider.addEventListener("change", changeVolume, false)
+  mainGainNode = audioContext.createGain()
+  mainGainNode.connect(audioContext.destination)
+  mainGainNode.gain.value = volSlider.value
+  volValue.innerHTML = Math.round(volSlider.value * 100) + "%"
+}
+
+function MIDISetup() {
+  WebMidi.enable(function (err) {
+
+    if (err) {
+      console.log("WebMidi could not be enabled.", err);
+    } else {
+      console.log("WebMidi enabled!");
+    }
+
+    MIDIInputs = WebMidi.inputs
+    for(var i = 0; i < MIDIInputs.length; i++) {
+      console.log("Adding input button: " +MIDIInputs[i].name)
+      addInputButton(MIDIInputs[i].name, i)
+    }
+  });
+}
+
+
+//MIDI Functions
+
+function playWave(frequency) {
+  let osc = audioContext.createOscillator()
+  osc.connect(mainGainNode)
+  osc.type = "sine"
+  osc.frequency.value = frequency
+  osc.start()
+  return osc
+}
+
+function noteOn(e) {
+  console.log("Received 'noteon' message (" + e.note.name + e.note.octave + ").");
+  let frequency = frequencyTable[e.note.octave][e.note.name]
+  console.log(frequency)
+  oscMap.set(e.note.name + e.note.octave, playWave(frequency))
+  console.log(oscMap)
+}
+
+function noteOff(e) {
+  console.log("Received 'noteoff' message (" + e.note.name + e.note.octave + ").");
+  oscMap.get(e.note.name + e.note.octave).stop()
+  oscMap.delete(e.note.name + e.note.octave)
+}
+
+
+
+let audioContext = new (window.AudioContext || window.webkitAudioContext)()
+let oscMap = new Map()
+let mainGainNode = null
+let volSlider = document.getElementById("volume-slider")
+let volValue = document.getElementById("volume-value")
+let frequencyTable = getNoteFreqTable()
+AudioSetup()
+MIDISetup()
+
+
 function getNoteFreqTable() {
   let table = [];
   for(var i=0; i < 10; i++){
@@ -170,52 +233,3 @@ function getNoteFreqTable() {
   table[9]["C"] = 8372.02
   return table
 }
-
-function AudioSetup() {
-  volSlider.addEventListener("change", changeVolume, false)
-  mainGainNode = audioContext.createGain()
-  mainGainNode.connect(audioContext.destination)
-  mainGainNode.gain.value = volSlider.value
-  volValue.innerHTML = Math.round(volSlider.value * 100) + "%"
-}
-
-function MIDISetup() {
-  WebMidi.enable(function (err) {
-
-    if (err) {
-      console.log("WebMidi could not be enabled.", err);
-    } else {
-      console.log("WebMidi enabled!");
-    }
-
-    MIDIInputs = WebMidi.inputs
-    for(var i = 0; i < MIDIInputs.length; i++) {
-      console.log("Adding input button: " +MIDIInputs[i].name)
-      addInputButton(MIDIInputs[i].name, i)
-    }
-  });
-}
-
-
-//MIDI Functions
-
-function noteOn(e) {
-  console.log("Received 'noteon' message (" + e.note.name + e.note.octave + ").");
-  let frequency = frequencyTable[e.note.octave][e.note.name]
-  console.log(frequency)
-}
-
-function noteOff(e) {
-  console.log("Received 'noteoff' message (" + e.note.name + e.note.octave + ").");
-}
-
-
-
-let audioContext = new (window.AudioContext || window.webkitAudioContext)()
-let oscList = []
-let mainGainNode = null
-let volSlider = document.getElementById("volume-slider")
-let volValue = document.getElementById("volume-value")
-let frequencyTable = getNoteFreqTable()
-AudioSetup()
-MIDISetup()
