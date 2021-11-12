@@ -34,11 +34,13 @@ function addInputButton(name, index){
 function addListeners(input) {
   input.addListener('noteon', "all", noteOn)
   input.addListener('noteoff', "all", noteOff)
+  input.addListener('pitchbend', "all", pitchBend)
 }
 
 function removeListeners(input) {
-  input.removeListener('noteon');
-  input.removeListener('noteoff');
+  input.removeListener('noteon')
+  input.removeListener('noteoff')
+  input.removeListener('pitchbend')
 }
 
 function chooseInput(name) {
@@ -82,9 +84,12 @@ function MIDISetup() {
 
 //MIDI Functions
 
-function playWave(frequency) {
+function playWave(frequency, velocity) {
   let osc = audioContext.createOscillator()
-  osc.connect(mainGainNode)
+  let velocityGainNode =audioContext.createGain()
+  velocityGainNode.connect(mainGainNode)
+  velocityGainNode.gain.value = velocity
+  osc.connect(velocityGainNode)
   osc.type = "sine"
   osc.frequency.value = frequency
   osc.start()
@@ -92,20 +97,31 @@ function playWave(frequency) {
 }
 
 function noteOn(e) {
-  console.log("Received 'noteon' message (" + e.note.name + e.note.octave + ").");
+  console.log(e);
+  console.log(e.velocity)
   let frequency = frequencyTable[e.note.octave][e.note.name]
   console.log(frequency)
-  oscMap.set(e.note.name + e.note.octave, playWave(frequency))
+  oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity))
   console.log(oscMap)
 }
 
 function noteOff(e) {
-  console.log("Received 'noteoff' message (" + e.note.name + e.note.octave + ").");
-  oscMap.get(e.note.name + e.note.octave).stop()
+  console.log(e);
+  var osc = oscMap.get(e.note.name + e.note.octave)
+  osc.stop();
   oscMap.delete(e.note.name + e.note.octave)
 }
 
+function pitchBend(e) {
+  console.log(e)
+  //bend range in cents
+  let bendRange = 200
+  let bendValue = e.value
 
+  for(let [key, value] of oscMap) {
+    value.detune.setValueAtTime(bendRange*bendValue, audioContext.currentTime)
+  }
+}
 
 let audioContext = new (window.AudioContext || window.webkitAudioContext)()
 let oscMap = new Map()
