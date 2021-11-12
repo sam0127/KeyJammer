@@ -32,9 +32,14 @@ function addInputButton(name, index){
 }
 
 function addListeners(input) {
-  input.addListener('noteon', "all", noteOn)
-  input.addListener('noteoff', "all", noteOff)
-  input.addListener('pitchbend', "all", pitchBend)
+  input.addListener('noteon', "all", onNoteOn)
+  input.addListener('noteoff', "all", onNoteOff)
+  input.addListener('pitchbend', "all", onPitchBend)
+  input.addListener('controlchange', "all", onControlChange)
+  input.addListener('programchange', "all", function (e) {console.log(e)})
+  input.addListener('channelaftertouch', "all", function (e) {console.log(e)})
+  input.addListener('keyaftertouch', "all", function (e) {console.log(e)})
+  //input.addListener('midimessage', "all", onMidiMessage)
 }
 
 function removeListeners(input) {
@@ -96,26 +101,43 @@ function playWave(frequency, velocity) {
   return osc
 }
 
-function noteOn(e) {
-  console.log(e);
-  console.log(e.velocity)
+function onNoteOn(e) {
   let frequency = frequencyTable[e.note.octave][e.note.name]
-  console.log(frequency)
-  oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity))
-  console.log(oscMap)
+  if(susMap.get(e.note.name + e.note.octave) === undefined) {
+    oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity))
+  } else {
+    //susMap.get(e.note.name + e.note.octave).stop()
+    //susMap.delete(e.note.name + e.note.octave)
+    oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity))
+  }
+
+  console.log("oscMap: " + oscMap.size)
+
 }
 
-function noteOff(e) {
+function onNoteOff(e) {
   console.log(e);
   var osc = oscMap.get(e.note.name + e.note.octave)
-  osc.stop();
+  if(sustain) {
+    if(susMap.get(e.note.name + e.note.octave) === undefined) {
+      susMap.set(e.note.name + e.note.octave, osc)
+    }
+  } else {
+    console.log("stopping "+ e.note.name + e.note.octave)
+    console.log(osc)
+    osc.stop();
+  }
   oscMap.delete(e.note.name + e.note.octave)
+
+  console.log("oscMap: "+ oscMap.size);
+
+  console.log("susMap: "+susMap.size);
 }
 
-function pitchBend(e) {
+function onPitchBend(e) {
   console.log(e)
-  //bend range in cents
-  let bendRange = 200
+  //bend range in cents (1/100*half-step)
+  let bendRange = 200 //TODO: add pitchbend range customizability
   let bendValue = e.value
 
   for(let [key, value] of oscMap) {
@@ -123,12 +145,38 @@ function pitchBend(e) {
   }
 }
 
+function onControlChange(e) {
+  console.log(e)
+  if(e.controller.name == 'holdpedal') {
+    //sustain on
+    if(e.value == 127) {
+      sustain = true
+
+    } else { //sustain off
+      sustain = false
+      for(let [key, value] of susMap) {
+        console.log("stopping " + key)
+        console.log(value)
+        value.stop()
+      }
+      susMap.clear()
+      console.log("susMap: " + susMap.size)
+    }
+  }
+}
+
+function onMidiMessage(e) {
+  console.log(e)
+}
+
 let audioContext = new (window.AudioContext || window.webkitAudioContext)()
 let oscMap = new Map()
+let susMap = new Map()
 let mainGainNode = null
 let volSlider = document.getElementById("volume-slider")
 let volValue = document.getElementById("volume-value")
 let frequencyTable = getNoteFreqTable()
+let sustain = false
 AudioSetup()
 MIDISetup()
 
