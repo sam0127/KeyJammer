@@ -17,13 +17,20 @@
       </button>
       <div id="device-list" class="midi-device-dropdown-content">
       </div>
-
     </div>
-    <div class="volume-slider-container">
-      <p class="volume-text">Volume</p>
-      <input id="volume-slider" type="range" min="0.0" max="1.0" step="0.01" value="0.5">
-      <p id="volume-value"></p>
-    </div>
+    <table class="synth-settings-table">
+      <tr>
+        <td>
+          <p class="volume-text">Volume: </p>
+        </td>
+        <td class="controller-inputs">
+          <p id="volume-value"></p>
+          <input id="volume-slider" type="range" min="0.0" max="1.0" step="0.01" value="0.5">
+        </td>
+      </tr>
+      <tr>
+      </tr>
+    </table>
   </div>
 
   <script src="js/audioMIDI.js" charset="UTF-8"></script>

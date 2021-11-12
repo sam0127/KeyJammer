@@ -80,19 +80,26 @@ body {
     display: block;
   }
 
-  .volume-slider-container {
-    position: relative;
-    top: 430px;
+  .synth-settings-table {
+    margin: auto;
+    margin-top: 40px;
+    width: auto;
+  }
 
-    .volume-text {
-      display:block;
-      margin: 0;
-    }
-    #volume-slider {
-      display: inline;
-    }
-    #volume-value {
-      display: inline;
-    }
+  .volume-text {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .controller-inputs {
+    padding: 20px;
+  }
+  #volume-slider {
+    display: inline;
+    position: relative;
+    top: 2px;
+  }
+  #volume-value {
+    display: inline;
   }
 }
