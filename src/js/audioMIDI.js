@@ -1,3 +1,4 @@
+/*
 function midiDeviceDropdown() {
   var dropbtn = document.getElementById("dropdown-button-id")
   var dropContent = document.getElementById("device-list")
@@ -10,7 +11,7 @@ function midiDeviceDropdown() {
     dropbtn.classList.add("button-open")
     dropContent.classList.add("dropdown-open")
   }
-}
+}*/
 
 function addInputButton(name, index){
   var buttonID = "input-device-"+index
