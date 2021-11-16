@@ -114,7 +114,7 @@ function onNoteOn(e) {
   console.log("oscMap: " + oscMap.size)
 
 }
-
+//TODO: Fix sustain issue
 function onNoteOff(e) {
   console.log(e);
   var osc = oscMap.get(e.note.name + e.note.octave)
