@@ -24,7 +24,9 @@ function playWave(frequency, velocity) {
 }
 
 function onNoteOn(e) { //TODO: some notes aren't created
+  console.log(e)
   let frequency = frequencyTable[e.note.octave][e.note.name];
+  /*
   if(susMap.get(e.note.name + e.note.octave) === undefined) {
     oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity));
   } else {
@@ -32,6 +34,13 @@ function onNoteOn(e) { //TODO: some notes aren't created
     //susMap.delete(e.note.name + e.note.octave)
     oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity));
   }
+  */
+  var newOsc = playWave(frequency, e.velocity);
+  newOsc.onended = function() {
+    oscMap.delete(e.note.name + e.note.octave);
+    console.log(e.note.name + e.note.octave + " Deleted");
+  };
+  oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity));
 
   console.log("oscMap: " + oscMap.size);
 
@@ -41,6 +50,8 @@ function onNoteOn(e) { //TODO: some notes aren't created
 function onNoteOff(e) {
   console.log(e);
   var osc = oscMap.get(e.note.name + e.note.octave);
+  console.log(osc);
+  /*
   if(sustain) {
     if(susMap.get(e.note.name + e.note.octave) === undefined) {
       susMap.set(e.note.name + e.note.octave, osc);
@@ -51,6 +62,12 @@ function onNoteOff(e) {
     osc.stop();
   }
   oscMap.delete(e.note.name + e.note.octave);
+  */
+  osc.stop();
+  console.log("osc stopped");
+
+  console.log(osc);
+
 
   console.log("oscMap: "+ oscMap.size);
 
