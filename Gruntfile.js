@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         separator: '\n/*next file*/\n\n'
       },
       dist: {
-        src: ['src/js/page.js','src/js/midi.js','src/js/audio.js'],
+        src: ['src/js/_*.js'],
         dest: 'src/js/main.js'
       }
     },
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
         tasks: ['sass']
       },
       js: {
-        files: ['src/js/page.js','src/js/midi.js','src/js/audio.js'],
+        files: ['src/js/_*.js'],
         tasks: ['concat','uglify:dev']
       }
     },
