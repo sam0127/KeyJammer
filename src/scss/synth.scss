@@ -7,7 +7,16 @@
   height: 500px;
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
+  padding:0;
   border: 2px solid #303030;
   border-radius: 15px;
+
+  .controller-header {
+    height: auto;
+    width: auto;
+    background: #605050;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    border-bottom: 2px solid #303030;
+  }
 }

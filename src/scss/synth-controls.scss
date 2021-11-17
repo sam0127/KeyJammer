@@ -11,13 +11,14 @@
   //border-bottom: 2px solid black;
 }
 .midi-device-dropdown-button {
-  width: 100%;
+  width: 200px;
   display: inline-block;
   padding: 10px;
   font-weight: 600;
   background-color: #006060;
   border: none;
   border-radius: 5px 5px 5px 5px;
+  height: 50px;
 
   &:hover {
     background-color: #005050;
@@ -31,11 +32,12 @@
 .midi-device-dropdown-content {
   display: none;
   //transition: opacity 0.5s ease-in-out;
-  width: auto;
+  width: 200px;
   height: auto;
   background-color: #B0B0B0;
   padding-bottom: 5px;
   border-radius: 0px 0px 5px 5px;
+  position: absolute;
   .midi-device-selector {
     width: 100%;
     display: block;
@@ -54,25 +56,23 @@
   display: block;
 }
 
-.synth-settings-table {
-  margin: auto;
-  margin-top: 40px;
-  width: auto;
-}
-
-.volume-text {
+.volume-slider-container {
   display: inline-block;
-  margin: 0;
+  margin: auto;
+  width:auto;
+ .volume-text {
+    display: inline;
+    margin: 0;
+  }
+
+  #volume-slider {
+    display: block;
+    position: relative;
+    top: 2px;
+    width: 200px;
+  }
+  #volume-value {
+    display: inline;
+  }
 }
 
-.controller-inputs {
-  padding: 20px;
-}
-#volume-slider {
-  display: inline;
-  position: relative;
-  top: 2px;
-}
-#volume-value {
-  display: inline;
-}
