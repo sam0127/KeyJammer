@@ -2,12 +2,14 @@ function addListeners(input) {
   input.addListener('noteon', "all", onNoteOn);
   input.addListener('noteoff', "all", onNoteOff);
   input.addListener('pitchbend', "all", onPitchBend);
+  input.addListener('controlchange', "all", onControlChange);
 }
 
 function removeListeners(input) {
   input.removeListener('noteon');
   input.removeListener('noteoff');
   input.removeListener('pitchbend');
+  input.removeListener('controlchange');
 }
 
 function chooseInput(name) {

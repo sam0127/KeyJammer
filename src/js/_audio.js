@@ -31,7 +31,11 @@ function onNoteOn(e) {
 function onNoteOff(e) {
   console.log(e);
   var osc = oscMap.get(e.note.name + e.note.octave);
-  osc.stop();
+  if(sustain) {
+    susSet.add(osc);
+  } else {
+    osc.stop();
+  }
   oscMap.delete(e.note.name + e.note.octave);
 }
 
@@ -43,5 +47,22 @@ function onPitchBend(e) {
 
   for(var [key, value] of oscMap) {
     value.detune.setValueAtTime(bendRange*bendValue, audioContext.currentTime);
+  }
+}
+
+function onControlChange(e) {
+  if(e.controller.name == 'holdpedal') {
+    if(sustain) {
+      sustain = false;
+      for(var value of susSet) {
+        console.log("stopping: " + value);
+        value.stop();
+      }
+      susSet.clear();
+    } else {
+      sustain = true;
+    }
+  } else {
+
   }
 }

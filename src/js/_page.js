@@ -1,10 +1,12 @@
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let oscMap = new Map();
+let susSet = new Set();
 let mainGainNode = null;
 let volSlider = document.getElementById("volume-slider");
 let volValue = document.getElementById("volume-value");
 let waveSlider = document.getElementById("wave-slider");
 let frequencyTable = getNoteFreqTable();
+var sustain = false;
 var waveformType = "sine";
 AudioSetup();
 MIDISetup();
