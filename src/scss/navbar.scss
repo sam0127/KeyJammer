@@ -12,6 +12,8 @@
 .navbar {
   background: variables.$header-background-color;
   margin-bottom: 40px;
+  display: block;
+  padding: 0;
   .navbar-separator {
     margin: 0;
     padding: 0;

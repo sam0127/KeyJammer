@@ -2,3 +2,9 @@ $font-stack: Helvetica, sans-serif;
 $background-color: #FAFAFA;
 $synth-background-color: #505050;
 $header-background-color: #505050;
+$border-color: #303030;
+
+@mixin border($radius: 15px) {
+  border-radius: $radius;
+  border: 2px solid $border-color;
+}

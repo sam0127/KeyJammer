@@ -1,3 +1,5 @@
+@use '_variables.scss';
+
 .midi-device-dropdown {
   width: 160px;
 }
@@ -15,13 +17,13 @@
   display: inline-block;
   padding: 10px;
   font-weight: 600;
-  background-color: #006060;
+  background-color: #107070;
   border: none;
   border-radius: 5px 5px 5px 5px;
   height: 50px;
 
   &:hover {
-    background-color: #005050;
+    background-color: #0a6a6a;
   }
 }
 
@@ -47,7 +49,7 @@
 
     &.selected,
     &:hover {
-      background-color: #909090;
+      background-color: #a0a0a0;
     }
   }
 }
@@ -55,6 +57,32 @@
 .dropdown-open {
   display: block;
 }
+
+.control-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  height: 10px;
+  background: #202020;
+  @include variables.border($radius: 0);
+
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px;
+    width: 30px;
+    background: #107070;
+
+    &:hover {
+      background: #0a6a6a;
+    }
+  }
+}
+.vertical {
+  -webkit-transform: rotate(-90deg) translate(-70px, -30px);
+}
+
 
 .volume-slider-container {
   display: inline-block;
@@ -70,9 +98,34 @@
     position: relative;
     top: 2px;
     width: 200px;
+    margin-top: 15px;
+
   }
+  #volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
   #volume-value {
     display: inline;
   }
 }
 
+.control-box {
+  padding: 10px;
+  height: 200px;
+  margin: 1px;
+  @include variables.border($radius: 10px);
+
+  .env-slider-container {
+    width: 40px;
+    .env-slider-text {
+      margin:0;
+      text-align: center;
+    }
+  }
+}
+
+#envelope-generator {
+  width: 300px;
+}
