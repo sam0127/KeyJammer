@@ -3,11 +3,27 @@
 
 .controller-container {
   background-color: variables.$synth-background-color;
-  width: 800px;
-  height: 500px;
+  width: 90%;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
-  border: 2px solid #303030;
-  border-radius: 15px;
+  padding:0;
+  > * {
+    color: #E0FFFF;
+  }
+  @include variables.border;
+
+  .controller-header {
+    height: auto;
+    width: auto;
+    background: #605050;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    border-bottom: 2px solid variables.$border-color;
+  }
+
+  .controller-body {
+    height: auto;
+    width: auto;
+  }
 }

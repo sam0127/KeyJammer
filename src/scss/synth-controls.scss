@@ -1,3 +1,5 @@
+@use '_variables.scss';
+
 .midi-device-dropdown {
   width: 160px;
 }
@@ -11,16 +13,17 @@
   //border-bottom: 2px solid black;
 }
 .midi-device-dropdown-button {
-  width: 100%;
+  width: 200px;
   display: inline-block;
   padding: 10px;
   font-weight: 600;
-  background-color: #006060;
+  background-color: #107070;
   border: none;
   border-radius: 5px 5px 5px 5px;
+  height: 50px;
 
   &:hover {
-    background-color: #005050;
+    background-color: #0a6a6a;
   }
 }
 
@@ -31,11 +34,12 @@
 .midi-device-dropdown-content {
   display: none;
   //transition: opacity 0.5s ease-in-out;
-  width: auto;
+  width: 200px;
   height: auto;
   background-color: #B0B0B0;
   padding-bottom: 5px;
   border-radius: 0px 0px 5px 5px;
+  position: absolute;
   .midi-device-selector {
     width: 100%;
     display: block;
@@ -45,7 +49,7 @@
 
     &.selected,
     &:hover {
-      background-color: #909090;
+      background-color: #a0a0a0;
     }
   }
 }
@@ -54,25 +58,111 @@
   display: block;
 }
 
-.synth-settings-table {
-  margin: auto;
-  margin-top: 40px;
-  width: auto;
+.control-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  height: 10px;
+  background: #202020;
+  @include variables.border($radius: 0);
+
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px;
+    width: 30px;
+    background: #107070;
+    border: 1px solid #034040;
+    &:hover {
+      background: #0a6a6a;
+    }
+  }
+}
+.vertical {
+  -webkit-transform: rotate(-90deg) translate(-70px, -30px);
 }
 
-.volume-text {
+
+.volume-slider-container {
   display: inline-block;
-  margin: 0;
+  margin: auto;
+  width:auto;
+ .volume-text {
+    display: inline;
+    margin: 0;
+  }
+
+  #volume-slider {
+    display: block;
+    position: relative;
+    top: 2px;
+    width: 200px;
+    margin-top: 15px;
+
+  }
+  #volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  #volume-value {
+    display: inline;
+  }
 }
 
-.controller-inputs {
-  padding: 20px;
+.control-box {
+  padding: 10px;
+  height: 250px;
+  margin: 1px;
+  @include variables.border($radius: 10px);
+
+  .slider-container {
+    width: 40px;
+    .slider-text {
+      margin:0;
+      text-align: center;
+    }
+
+    .slider-ticks {
+      display: inline-block;
+      height: 130px;
+      width: 30px;
+      position: relative;
+    }
+
+    .wave-icon {
+      margin: 1px;
+    }
+  }
+
+  .control-box-maintext {
+    display: block;
+    text-align: center;
+    position: relative;
+    top: 150px;
+    font-weight: 600;
+  }
+
+
 }
-#volume-slider {
-  display: inline;
+
+#amp-envelope-generator {
+  width: 300px;
+}
+#filter-envelope-generator {
+  width: 300px;
+}
+
+#wave-generator {
+  width: 100px;
+}
+
+#wave-slider {
   position: relative;
-  top: 2px;
+  right: 10px;
 }
-#volume-value {
-  display: inline;
+
+#wave-ticks {
+  left: 45px;
 }

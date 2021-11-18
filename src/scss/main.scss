@@ -1,16 +1,14 @@
 @use '_variables.scss';
+@use 'navbar.scss';
 @use 'synth.scss';
 
 body {
+  margin: 0;
   font: variables.$font-stack;
+  font-size: 14px;
   background-color: variables.$background-color;
 }
 
-.page-header-container {
-  text-align: center;
-  .page-header {
-    width: 100%;
-  }
-}
+
 
 

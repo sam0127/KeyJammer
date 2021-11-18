@@ -1,0 +1,40 @@
+@use '_variables.scss';
+
+.page-header-container {
+  background: variables.$header-background-color;
+  padding: 10px 0 10px 0;
+  text-align: center;
+  .page-header {
+    width: 100%;
+  }
+}
+
+.navbar {
+  background: variables.$header-background-color;
+  margin-bottom: 50px;
+  display: block;
+  padding: 0;
+  .navbar-separator {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid #707070;
+  }
+  .navbar-link {
+    text-decoration: none;
+    &:link {
+      color: #000000;
+    }
+    &:visited {
+      color: #000000;
+    }
+  }
+  .navbar-item {
+    display: inline-block;
+    padding: 10px 20px 10px 20px;
+
+    &:hover {
+      background: #606060;
+    }
+  }
+}

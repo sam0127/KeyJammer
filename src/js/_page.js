@@ -39,3 +39,8 @@ function addInputButton(name, index){
   newButton.appendChild(document.createTextNode(name))
   document.getElementById("device-list").appendChild(newButton)
 }
+
+function changeVolume() {
+  mainGainNode.gain.value = volSlider.value;
+  volValue.innerHTML = Math.round(this.value*100);
+}

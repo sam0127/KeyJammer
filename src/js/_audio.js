@@ -1,14 +1,9 @@
-function changeVolume(event) {
-  mainGainNode.gain.value = volSlider.value;
-  volValue.innerHTML = Math.round(volSlider.value * 100) + "%"
-}
-
 function AudioSetup() {
-  volSlider.addEventListener("change", changeVolume, false)
+  volSlider.addEventListener("input", changeVolume, false)
   mainGainNode = audioContext.createGain()
   mainGainNode.connect(audioContext.destination)
   mainGainNode.gain.value = volSlider.value
-  volValue.innerHTML = Math.round(volSlider.value * 100) + "%"
+  volValue.innerHTML = Math.round(volSlider.value * 100);
 }
 
 function playWave(frequency, velocity) {
