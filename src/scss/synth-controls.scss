@@ -113,7 +113,7 @@
 
 .control-box {
   padding: 10px;
-  height: 200px;
+  height: 250px;
   margin: 1px;
   @include variables.border($radius: 10px);
 
@@ -136,10 +136,21 @@
     }
   }
 
+  .control-box-maintext {
+    display: block;
+    text-align: center;
+    position: relative;
+    top: 150px;
+    font-weight: 600;
+  }
+
 
 }
 
-#envelope-generator {
+#amp-envelope-generator {
+  width: 300px;
+}
+#filter-envelope-generator {
   width: 300px;
 }
 

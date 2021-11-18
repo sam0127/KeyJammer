@@ -3,11 +3,14 @@
 
 .controller-container {
   background-color: variables.$synth-background-color;
-  width: 1000px;
-  height: 700px;
+  width: 90%;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
   padding:0;
+  > * {
+    color: #E0FFFF;
+  }
   @include variables.border;
 
   .controller-header {
