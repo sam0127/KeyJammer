@@ -49,26 +49,40 @@
     </div>
     <div class="controller-body">
       <div class="d-flex flex-wrap">
+        <div class="control-box d-flex" id="wave-generator">
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Waveform</p>
+            <input id="wave-slider" class="control-slider vertical" type="range" min="0" max="4"
+            step="1" value="0">
+            <div class="slider-ticks" id="wave-ticks">
+              <img class="wave-icon" src="assets/img/custom-osc.png"></img>
+              <img class="wave-icon" src="assets/img/tri-osc.png"></img>
+              <img class="wave-icon" src="assets/img/saw-osc.png"></img>
+              <img class="wave-icon" src="assets/img/square-osc.png"></img>
+              <img class="wave-icon" src="assets/img/sine-osc.png"></img>
+            </div>
+          </div>
+        </div>
         <div class="control-box d-flex" id="envelope-generator">
-          <div class="env-slider-container flex-fill">
-            <p class="env-slider-text">Attack</p>
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Attack</p>
             <input class="control-slider vertical" type="range" min="0.0"
             max="1.0" step="0.01" value="0.0">
           </div>
-          <div class="env-slider-container flex-fill">
-            <p class="env-slider-text">Decay</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
-
-          </div>
-          <div class="env-slider-container flex-fill">
-            <p class="env-slider-text">Sustain</p>
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Decay</p>
             <input class="control-slider vertical" type="range" min="0.0"
             max="1.0" step="0.01" value="0.0">
 
           </div>
-          <div class="env-slider-container flex-fill">
-            <p class="env-slider-text">Release</p>
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Sustain</p>
+            <input class="control-slider vertical" type="range" min="0.0"
+            max="1.0" step="0.01" value="0.0">
+
+          </div>
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Release</p>
             <input class="control-slider vertical" type="range" min="0.0"
             max="1.0" step="0.01" value="0.0">
 

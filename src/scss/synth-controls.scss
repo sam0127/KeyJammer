@@ -117,15 +117,41 @@
   margin: 1px;
   @include variables.border($radius: 10px);
 
-  .env-slider-container {
+  .slider-container {
     width: 40px;
-    .env-slider-text {
+    .slider-text {
       margin:0;
       text-align: center;
     }
+
+    .slider-ticks {
+      display: inline-block;
+      height: 130px;
+      width: 30px;
+      position: relative;
+    }
+
+    .wave-icon {
+      margin: 1px;
+    }
   }
+
+
 }
 
 #envelope-generator {
   width: 300px;
+}
+
+#wave-generator {
+  width: 100px;
+}
+
+#wave-slider {
+  position: relative;
+  right: 10px;
+}
+
+#wave-ticks {
+  left: 45px;
 }
