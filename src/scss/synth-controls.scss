@@ -132,7 +132,7 @@
     }
 
     .wave-icon {
-      margin: 1px;
+      margin: 7px;
     }
   }
 
@@ -160,9 +160,12 @@
 
 #wave-slider {
   position: relative;
-  right: 10px;
+  width: 180px;
+  right: 40px;
+  top: 20px;
 }
 
 #wave-ticks {
-  left: 45px;
+  left: 35px;
+  bottom: 12px;
 }
