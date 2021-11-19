@@ -1,10 +1,18 @@
+//initialize global variables
+//WebAudio API
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let mainGainNode = null;
+
+//structures containing currently playing oscillators
 let oscMap = new Map();
 let susSet = new Set();
-let mainGainNode = null;
+
+//pull page elements
 let volSlider = document.getElementById("volume-slider");
-let volValue = document.getElementById("volume-value");
+var volValue = document.getElementById("volume-value");
 let waveSlider = document.getElementById("wave-slider");
+let pitchbendSlider = document.getElementById("pitchbend-slider");
+var pitchbendValue = document.getElementById("pitchbend-value-text");
 
 let ampEnvAttackSlider = document.getElementById("amp-env-slider-A");
 let ampEnvDecaySlider = document.getElementById("amp-env-slider-D");
@@ -16,30 +24,57 @@ let filterEnvDecaySlider = document.getElementById("filter-env-slider-D");
 let filterEnvSustainSlider = document.getElementById("filter-env-slider-S");
 let filterEnvReleaseSlider = document.getElementById("filter-env-slider-R");
 
+//initialize frequency table
 let frequencyTable = getNoteFreqTable();
+
+//synth state values
 var sustain = false;
 var detuneValue = 0;
 var detuneRange = 200;
 var waveformType = "sine";
 
+//envelope objects
 var ampEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
-var ampAttack = 0;
-var ampDecay = 0;
-var ampSustain = 0;
-var ampRelease = 0;
-
 var filterEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
-var filterAttack = 0;
-var filterDecay = 0;
-var filterSustain = 0;
-var filterRelease = 0;
 
+//setup audio and MIDI
 AudioSetup();
 MIDISetup();
 
+//Populate dropdown with connected MIDI input devices
+function addInputButton(name, index){
+  var buttonID = "input-device-"+index;
+  var newButton = document.createElement("button");
+
+  newButton.id = buttonID;
+  newButton.classList.add("midi-device-selector");
+
+  //device selection event handler
+  newButton.addEventListener("click", function() {
+    var button = document.getElementById(buttonID);
+    for(var el of document.getElementsByClassName("selected"))
+    {
+      el.classList.remove("selected");
+    }
+    button.classList.add("selected");
+
+    //choose this device as the input device
+    chooseInput(name);
+    document.getElementById("dropdown-button-id").innerHTML =
+      name + ' <i class="dropdown-icon"></i>';
+  });
+  newButton.appendChild(document.createTextNode(name));
+  document.getElementById("device-list").appendChild(newButton);
+}
+
+
+////////UI event handlers
+//
+//when midi device dropdown button is selected
 function midiDeviceDropdown() {
   var dropbtn = document.getElementById("dropdown-button-id");
   var dropContent = document.getElementById("device-list");
+
   if(dropbtn.classList.contains("button-open")) {
     dropbtn.classList.remove("button-open");
     dropContent.classList.remove("dropdown-open");
@@ -50,30 +85,13 @@ function midiDeviceDropdown() {
   }
 }
 
-function addInputButton(name, index){
-  var buttonID = "input-device-"+index;
-  var newButton = document.createElement("button");
-  newButton.id = buttonID;
-  newButton.classList.add("midi-device-selector");
-  newButton.addEventListener("click", function() {
-    var button = document.getElementById(buttonID);
-    for(var el of document.getElementsByClassName("selected"))
-    {
-      el.classList.remove("selected");
-    }
-    button.classList.add("selected");
-    chooseInput(name);
-    document.getElementById("dropdown-button-id").innerHTML = name + ' <i class="dropdown-icon"></i>';
-  });
-  newButton.appendChild(document.createTextNode(name));
-  document.getElementById("device-list").appendChild(newButton);
-}
-
+//Volume slider event handler
 function changeVolume() {
   mainGainNode.gain.value = volSlider.value;
   volValue.innerHTML = Math.round(this.value*100);
 }
 
+//Waveform slider event handler
 function changeWaveform() {
   var waveformNumber = waveSlider.value;
   switch(waveformNumber) {
@@ -96,10 +114,13 @@ function changeWaveform() {
   }
 }
 
-function sliderInputMap(x) {
-  return (0.01 * x ** 3);
+//pitchbend range slider event handler
+function changePitchbend() {
+  detuneRange = pitchbendSlider.value;
+  pitchbendValue.innerHTML = Math.round(this.value/100.0);
 }
 
+//etc
 function changeAmpAttack() {
   ampEnvelope.attack = sliderInputMap(ampEnvAttackSlider.value);
 }
@@ -131,3 +152,10 @@ function changeFilterSustain() {
 function changeFilterRelease() {
 
 }
+
+//Applies cubic curve to envelope input values,
+//to increase control in lower ranges
+function sliderInputMap(x) {
+  return (0.01 * x ** 3);
+}
+

@@ -169,3 +169,18 @@
   left: 35px;
   bottom: 12px;
 }
+
+#pitchbend-box {
+  width: 90px;
+  .slider-ticks {
+    left: 40px;
+    bottom: 12px;
+  }
+}
+
+#pitchbend-slider {
+  position: relative;
+  width: 180px;
+  right: 40px;
+  top: 20px;
+}

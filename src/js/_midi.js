@@ -1,25 +1,4 @@
-function addListeners(input) {
-  input.addListener('noteon', "all", onNoteOn);
-  input.addListener('noteoff', "all", onNoteOff);
-  input.addListener('pitchbend', "all", onPitchBend);
-  input.addListener('controlchange', "all", onControlChange);
-}
-
-function removeListeners(input) {
-  input.removeListener('noteon');
-  input.removeListener('noteoff');
-  input.removeListener('pitchbend');
-  input.removeListener('controlchange');
-}
-
-function chooseInput(name) {
-  for(var i of WebMidi.inputs) {
-    removeListeners(i);
-  }
-  var input = WebMidi.getInputByName(name)
-  addListeners(input);
-}
-
+//Initializes WebMidi.js
 function MIDISetup() {
   WebMidi.enable(function (err) {
 
@@ -29,6 +8,7 @@ function MIDISetup() {
       console.log("WebMidi enabled!");
     }
 
+    //For each detected MIDI input, add a corresponding button to the dropdown
     MIDIInputs = WebMidi.inputs;
     for(var i = 0; i < MIDIInputs.length; i++) {
       console.log("Adding input button: " +MIDIInputs[i].name);
@@ -37,6 +17,32 @@ function MIDISetup() {
   });
 }
 
+//Attaches MIDI message handlers to selected input
+function addListeners(input) {
+  input.addListener('noteon', "all", onNoteOn);
+  input.addListener('noteoff', "all", onNoteOff);
+  input.addListener('pitchbend', "all", onPitchBend);
+  input.addListener('controlchange', "all", onControlChange);
+}
+
+//Removes MIDI message handlers from input
+function removeListeners(input) {
+  input.removeListener('noteon');
+  input.removeListener('noteoff');
+  input.removeListener('pitchbend');
+  input.removeListener('controlchange');
+}
+
+//if input is chosen, add MIDI message handlers
+function chooseInput(name) {
+  for(var i of WebMidi.inputs) {
+    removeListeners(i);
+  }
+  var input = WebMidi.getInputByName(name)
+  addListeners(input);
+}
+
+//assigns equal tempered frequencies to MIDI notes C0-C9
 function getNoteFreqTable() {
   let table = [];
   for(var i=0; i < 10; i++){
