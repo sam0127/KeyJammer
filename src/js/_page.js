@@ -5,11 +5,35 @@ let mainGainNode = null;
 let volSlider = document.getElementById("volume-slider");
 let volValue = document.getElementById("volume-value");
 let waveSlider = document.getElementById("wave-slider");
+
+let ampEnvAttackSlider = document.getElementById("amp-env-slider-A");
+let ampEnvDecaySlider = document.getElementById("amp-env-slider-D");
+let ampEnvSustainSlider = document.getElementById("amp-env-slider-S");
+let ampEnvReleaseSlider = document.getElementById("amp-env-slider-R");
+
+let filterEnvAttackSlider = document.getElementById("filter-env-slider-A");
+let filterEnvDecaySlider = document.getElementById("filter-env-slider-D");
+let filterEnvSustainSlider = document.getElementById("filter-env-slider-S");
+let filterEnvReleaseSlider = document.getElementById("filter-env-slider-R");
+
 let frequencyTable = getNoteFreqTable();
 var sustain = false;
 var detuneValue = 0;
 var detuneRange = 200;
 var waveformType = "sine";
+
+var ampEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
+var ampAttack = 0;
+var ampDecay = 0;
+var ampSustain = 0;
+var ampRelease = 0;
+
+var filterEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
+var filterAttack = 0;
+var filterDecay = 0;
+var filterSustain = 0;
+var filterRelease = 0;
+
 AudioSetup();
 MIDISetup();
 
@@ -70,4 +94,40 @@ function changeWaveform() {
       waveformType = "custom";
       break;
   }
+}
+
+function sliderInputMap(x) {
+  return (0.01 * x ** 3);
+}
+
+function changeAmpAttack() {
+  ampEnvelope.attack = sliderInputMap(ampEnvAttackSlider.value);
+}
+
+function changeAmpDecay() {
+  ampEnvelope.decay = sliderInputMap(ampEnvDecaySlider.value);
+}
+
+function changeAmpSustain() {
+  ampEnvelope.sustain = ampEnvSustainSlider.value;
+}
+
+function changeAmpRelease() {
+  ampEnvelope.release = sliderInputMap(ampEnvReleaseSlider.value);
+}
+
+function changeFilterAttack() {
+
+}
+
+function changeFilterDecay() {
+
+}
+
+function changeFilterSustain() {
+
+}
+
+function changeFilterRelease() {
+
 }
