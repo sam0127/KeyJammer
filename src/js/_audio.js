@@ -16,6 +16,9 @@ function playWave(frequency, velocity) {
   osc.connect(velocityGainNode);
   osc.type = waveformType;
   osc.frequency.value = frequency;
+  if(detuneValue !== 0){
+    osc.detune.setValueAtTime(detuneRange*detuneValue, audioContext.currentTime);
+  }
   osc.start();
   console.log(osc);
   return osc;
@@ -42,11 +45,13 @@ function onNoteOff(e) {
 function onPitchBend(e) {
   console.log(e);
   //bend range in cents
-  var bendRange = 200;
-  var bendValue = e.value;
+  detuneValue = e.value;
 
   for(var [key, value] of oscMap) {
-    value.detune.setValueAtTime(bendRange*bendValue, audioContext.currentTime);
+    value.detune.setValueAtTime(detuneRange*detuneValue, audioContext.currentTime);
+  }
+  for(var value of susSet) {
+    value.detune.setValueAtTime(detuneRange*detuneValue, audioContext.currentTime);
   }
 }
 

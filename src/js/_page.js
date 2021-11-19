@@ -7,6 +7,8 @@ let volValue = document.getElementById("volume-value");
 let waveSlider = document.getElementById("wave-slider");
 let frequencyTable = getNoteFreqTable();
 var sustain = false;
+var detuneValue = 0;
+var detuneRange = 200;
 var waveformType = "sine";
 AudioSetup();
 MIDISetup();
