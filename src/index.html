@@ -65,62 +65,72 @@
         </div>
         <div class="control-box" id="amp-envelope-generator">
           <div class="d-flex">
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Attack</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Decay</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Attack</p>
+              <input id="amp-env-slider-A" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Decay</p>
+              <input id="amp-env-slider-D" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
 
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Sustain</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Sustain</p>
+              <input id="amp-env-slider-S" class="control-slider vertical" type="range" min="0.0"
+              max="1.0" step="0.01" value="0.0">
 
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Release</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Release</p>
+              <input id="amp-env-slider-R" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
 
+            </div>
+            </div>
+            <div class="control-box-maintext">
+              <p>AMP Envelope</p>
+            </div>
           </div>
-          </div>
-          <div class="control-box-maintext">
-            <p>AMP Envelope</p>
-          </div>
-        </div>
-        <div class="control-box" id="filter-envelope-generator">
-          <div class="d-flex">
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Attack</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Decay</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+          <div class="control-box" id="filter-envelope-generator">
+            <div class="d-flex">
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Attack</p>
+              <input id="filter-env-slider-A" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Decay</p>
+              <input id="filter-env-slider-D" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
 
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Sustain</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Sustain</p>
+              <input id="filter-env-slider-S" class="control-slider vertical" type="range" min="0.0"
+              max="1.0" step="0.01" value="0.0">
 
-          </div>
-          <div class="slider-container flex-fill">
-            <p class="slider-text">Release</p>
-            <input class="control-slider vertical" type="range" min="0.0"
-            max="1.0" step="0.01" value="0.0">
+            </div>
+            <div class="slider-container flex-fill">
+              <p class="slider-text">Release</p>
+              <input id="filter-env-slider-R" class="control-slider vertical" type="range" min="0.0"
+              max="10.0" step="0.1" value="0.0">
 
-          </div>
+            </div>
           </div>
           <div class="control-box-maintext">
             <p>Filter Envelope</p>
+          </div>
+        </div>
+        <div class="control-box" id="pitchbend-box">
+          <div class="slider-container flex-fill">
+            <p class="slider-text">Pitchbend</p>
+            <input id="pitchbend-slider" class="control-slider vertical"
+            type="range" min="100" max="1200" step="100" value="200">
+            <div class="slider-ticks">
+              <p id="pitchbend-value-text">2</p>
+            </div>
           </div>
         </div>
       </div>
