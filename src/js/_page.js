@@ -2,6 +2,7 @@
 //WebAudio API
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let mainGainNode = null;
+let ampEnvelopeNode = null;
 
 //structures containing currently playing oscillators
 let oscMap = new Map();

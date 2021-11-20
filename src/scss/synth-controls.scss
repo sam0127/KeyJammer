@@ -83,6 +83,13 @@
   -webkit-transform: rotate(-90deg) translate(-70px, -30px);
 }
 
+.radio-selector {
+  width: 80px;
+
+  input {
+    margin-top: 20px;
+  }
+}
 
 .volume-slider-container {
   display: inline-block;
@@ -120,7 +127,7 @@
   .slider-container {
     width: 40px;
     .slider-text {
-      margin:0;
+      margin:0 auto 0 auto;
       text-align: center;
     }
 
@@ -154,6 +161,13 @@
   width: 300px;
 }
 
+#filter-box {
+  width: 200px;
+  p {
+    margin-left: 20px;
+  }
+}
+
 #wave-generator {
   width: 100px;
 }
@@ -168,6 +182,23 @@
 #wave-ticks {
   left: 35px;
   bottom: 12px;
+}
+
+#cutoff-slider-container {
+  position: relative;
+  left: 100px;
+  bottom: 120px;
+
+  p {
+    margin-top: 20px;
+    font-weight: 600;
+  }
+  input {
+    position: relative;
+    top: 25px;
+    right: 15px;
+    width: 180px;
+  }
 }
 
 #pitchbend-box {

@@ -93,6 +93,26 @@
               <p>AMP Envelope</p>
             </div>
           </div>
+          <div class="control-box" id="filter-box">
+            <div class="slider-container">
+              <p class="slider-text">Filter</p>
+              <form class="radio-selector">
+                <input type="radio" id="low-pass-selector" name="filter" value="lowpass">
+                <span class="radio-button"></span>
+                <label for="low-pass-selector">Low Pass</label><br>
+                <input type="radio" id="high-pass-selector" name="filter" value="highpass">
+                <span class="radio-button"></span>
+                <label for="high-pass-selector">High Pass</label>
+              </form>
+            </div>
+            <div id="cutoff-slider-container" class="slider-container">
+              <p class="slider-text">Cutoff</p>
+              <input id="filter-cutoff-slider" class="control-slider vertical"
+                                               type="range" min="0.0" max="1.0"
+              step="0.01" value="0.0">
+            </div>
+
+          </div>
           <div class="control-box" id="filter-envelope-generator">
             <div class="d-flex">
             <div class="slider-container flex-fill">
