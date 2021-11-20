@@ -15,6 +15,9 @@ function AudioSetup() {
   waveSlider.addEventListener("input", changeWaveform, false);
   pitchbendSlider.addEventListener("input", changePitchbend, false);
 
+  filterModeRadios.forEach(radio => radio.addEventListener("change", changeFilterMode, false));
+  filterCutoffSlider.addEventListener("input", changeFilterCutoff, false);
+
   ampEnvAttackSlider.addEventListener("input", changeAmpAttack, false);
   ampEnvDecaySlider.addEventListener("input", changeAmpDecay, false);
   ampEnvSustainSlider.addEventListener("input", changeAmpSustain, false);

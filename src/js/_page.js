@@ -14,6 +14,8 @@ var volValue = document.getElementById("volume-value");
 let waveSlider = document.getElementById("wave-slider");
 let pitchbendSlider = document.getElementById("pitchbend-slider");
 var pitchbendValue = document.getElementById("pitchbend-value-text");
+var filterModeRadios = document.querySelectorAll("input[type=radio][name='filter']");
+var filterCutoffSlider = document.getElementById("filter-cutoff-slider");
 
 let ampEnvAttackSlider = document.getElementById("amp-env-slider-A");
 let ampEnvDecaySlider = document.getElementById("amp-env-slider-D");
@@ -33,6 +35,7 @@ var sustain = false;
 var detuneValue = 0;
 var detuneRange = 200;
 var waveformType = "sine";
+var filterMode = 'lowpass';
 
 //envelope objects
 var ampEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
@@ -119,6 +122,20 @@ function changeWaveform() {
 function changePitchbend() {
   detuneRange = pitchbendSlider.value;
   pitchbendValue.innerHTML = Math.round(this.value/100.0);
+}
+
+//Filter mode (lowpass / highpass) radio button event handler
+function changeFilterMode() {
+  if(filterMode === 'lowpass') {
+    filterMode = 'highpass';
+  } else {
+    filterMode = 'lowpass';
+  }
+}
+
+//Filter cutoff slider event handler
+function changeFilterCutoff() {
+
 }
 
 //etc
