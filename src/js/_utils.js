@@ -5,6 +5,6 @@ function sliderInputMap(x) {
 }
 
 
-function mapMidiToRange(value, min = 0, max = 1) {
-  return (value / 127.0) * (max - min);
+function mapMidiToRange(value, base = 127.0, min = 0, max = 1) {
+  return (value / base) * (max - min);
 }

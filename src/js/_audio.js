@@ -179,7 +179,7 @@ function onPitchBend(e) {
 //MIDI controlchange event handler
 function onControlChange(e) {
   //sustain pedal
-  console.log(e);
+  console.log(e.controller.name);
   switch(e.controller.name) {
     case 'holdpedal':
       //switch sustain states, sustained notes are released
@@ -198,6 +198,60 @@ function onControlChange(e) {
       mainGainNode.gain.value = val;
       volSlider.value = val;
       volValue.innerHTML = Math.round(volSlider.value*100);
+      break;
+    case 'brightness':
+      var val = mapMidiToRange(e.value, 127.0, 20, 20000);
+      filterCutoff = val;
+      filterCutoffSlider.value = val;
+      break;
+    case 'generalpurposeslider1': //AMP attack
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      ampEnvelope.attack = val;
+      console.log(ampEnvelope.attack);
+      ampEnvAttackSlider.value = val;
+      break;
+    case 'generalpurposeslider2': //AMP decay
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      ampEnvelope.decay = val;
+      ampEnvDecaySlider.value = val;
+      break;
+    case 'generalpurposeslider3': //AMP sustain
+      var val = mapMidiToRange(e.value, 127.0, 0, 1);
+      ampEnvelope.sustain = val;
+      ampEnvSustainSlider.value = val;
+      break;
+    case 'generalpurposeslider4': //AMP release
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      ampEnvelope.release = val;
+      ampEnvReleaseSlider.value = val;
+      break;
+    case 'soundcontrol6': //filter attack
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      filterEnvelope.attack = val;
+      filterEnvAttackSlider.value = val;
+      break;
+    case 'soundcontrol7': //filter decay
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      filterEnvelope.decay = val;
+      filterEnvDecaySlider.value = val;
+      break;
+    case 'soundcontrol8': //filter sustain
+      var val = mapMidiToRange(e.value, 127.0, 0, 1);
+      filterEnvelope.sustain = val;
+      filterEnvSustainSlider.value = val;
+      break;
+    case 'soundcontrol9': //filter release
+      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      filterEnvelope.release = val;
+      filterEnvReleaseSlider.value = val;
+      break;
+    case 'generalpurposebutton3':
+      filterMode = 'lowpass';
+      document.getElementById("low-pass-selector").checked = true;
+      break;
+    case 'generalpurposebutton4':
+      filterMode = 'highpass';
+      document.getElementById("high-pass-selector").checked = true;
       break;
   }
 }
