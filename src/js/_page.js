@@ -2,7 +2,6 @@
 //WebAudio API
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let mainGainNode = null;
-let ampEnvelopeNode = null;
 
 //structures containing currently playing oscillators
 let oscMap = new Map();
@@ -32,10 +31,11 @@ let frequencyTable = getNoteFreqTable();
 
 //synth state values
 var sustain = false;
-var detuneValue = 0;
-var detuneRange = 200;
+var detuneValue = 0; //cents
+var detuneRange = 200; //semitones
 var waveformType = "sine";
 var filterMode = 'highpass';
+var filterCutoff = 0; //Hz
 
 //envelope objects
 var ampEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
@@ -135,7 +135,7 @@ function changeFilterMode() {
 
 //Filter cutoff slider event handler
 function changeFilterCutoff() {
-
+  filterCutoff = filterCutoffSlider.value;
 }
 
 //etc
@@ -156,19 +156,19 @@ function changeAmpRelease() {
 }
 
 function changeFilterAttack() {
-
+  filterEnvelope.attack = sliderInputMap(filterEnvAttackSlider.value);
 }
 
 function changeFilterDecay() {
-
+  filterEnvelope.decay = sliderInputMap(filterEnvDecaySlider.value);
 }
 
 function changeFilterSustain() {
-
+  filterEnvelope.sustain = filterEnvSustainSlider.value;
 }
 
 function changeFilterRelease() {
-
+  filterEnvelope.release = sliderInputMap(filterEnvReleaseSlider.value);
 }
 
 //Applies cubic curve to envelope input values,

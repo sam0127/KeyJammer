@@ -15,7 +15,9 @@ function AudioSetup() {
   waveSlider.addEventListener("input", changeWaveform, false);
   pitchbendSlider.addEventListener("input", changePitchbend, false);
 
-  filterModeRadios.forEach(radio => radio.addEventListener("change", changeFilterMode, false));
+  filterModeRadios.forEach(
+    radio => radio.addEventListener("change", changeFilterMode, false)
+  );
   filterCutoffSlider.addEventListener("input", changeFilterCutoff, false);
 
   ampEnvAttackSlider.addEventListener("input", changeAmpAttack, false);
@@ -36,17 +38,28 @@ function playWave(frequency, velocity) {
   //note object containing oscillator and its gain node
   var note = {
     oscNode: audioContext.createOscillator(),
-    gainNode: audioContext.createGain()
+    gainNode: audioContext.createGain(),
+    filterNode: audioContext.createBiquadFilter()
   };
 
   //connect nodes
-  note.gainNode.connect(mainGainNode);
-  note.gainNode.gain.value = 0;
+  //An individual note has the following structure:
+  // _______   ________   __________
+  // | OSC |-->| GAIN |-->| FILTER |
+  // -------   --------   ----------
+  // Each notes final FILTER node connects to the mainGainNode
+  note.filterNode.connect(mainGainNode);
+  note.gainNode.connect(note.filterNode);
   note.oscNode.connect(note.gainNode);
 
-  //set waveform, frequency, and detuning if applicable
+  //set node attributes
   note.oscNode.type = waveformType;
   note.oscNode.frequency.value = frequency;
+
+  note.gainNode.gain.value = 0;
+  note.filterNode.frequency.value = 0;
+  note.filterNode.type = filterMode;
+
 
   if(detuneValue !== 0){
     note.oscNode.detune.setValueAtTime(
@@ -57,32 +70,48 @@ function playWave(frequency, velocity) {
 
   //start oscillator and envelope
   note.oscNode.start();
-  ampEnvelopeOn(note.gainNode, velocity);
+  envelopeOn(note, velocity);
   return note;
 }
 
-//Generates amplitude envelope for open gate
-function ampEnvelopeOn(gainNode, velocity) {
+//Generates amplitude and filter envelope
+function envelopeOn(note, velocity) {
   var now = audioContext.currentTime;
 
   //ramp up amplitude to velocity for attack duration,
   //ramp down amplitude to sustain value for decay duration
-  gainNode.gain.cancelScheduledValues(0);
-  gainNode.gain.setValueAtTime(0,now);
+  console.log(note.gainNode);
+  note.gainNode.gain.cancelScheduledValues(0);
+  note.gainNode.gain.setValueAtTime(0,now);
 
-  gainNode.gain.linearRampToValueAtTime(
+  note.gainNode.gain.linearRampToValueAtTime(
     velocity,
-    now+parseFloat(ampEnvelope.attack)
+    now + parseFloat(ampEnvelope.attack)
   );
 
-  gainNode.gain.linearRampToValueAtTime(
-    velocity*ampEnvelope.sustain,
-    now + parseFloat(ampEnvelope.attack)+parseFloat(ampEnvelope.decay)
+  note.gainNode.gain.linearRampToValueAtTime(
+    velocity * ampEnvelope.sustain,
+    now + parseFloat(ampEnvelope.attack) + parseFloat(ampEnvelope.decay)
+  );
+
+  //ramp up frequency to cutoff for attack duration,
+  //ramp down frequency to sustain value for decay duration
+  note.filterNode.frequency.cancelScheduledValues(0);
+  note.filterNode.frequency.setValueAtTime(0,now);
+
+  note.filterNode.frequency.linearRampToValueAtTime(
+    filterCutoff,
+    now + parseFloat(filterEnvelope.attack)
+  );
+
+  note.filterNode.frequency.linearRampToValueAtTime(
+    filterCutoff * filterEnvelope.sustain,
+    now + parseFloat(filterEnvelope.attack) + parseFloat(filterEnvelope.decay)
   );
 }
 
 //Generates amplitude envelope for closed gate
-function ampEnvelopeOff(note) {
+function envelopeOff(note) {
   var now = audioContext.currentTime;
 
   //ramp sutain amplitude down to 0, then stop
@@ -90,8 +119,20 @@ function ampEnvelopeOff(note) {
   note.gainNode.gain.setValueAtTime(note.gainNode.gain.value, now);
   note.gainNode.gain.linearRampToValueAtTime(
     0,
-    now+parseFloat(ampEnvelope.release)
+    now + parseFloat(ampEnvelope.release)
   );
+
+  //ramp sutain frequency down to 0, then stop
+  note.filterNode.frequency.cancelScheduledValues(0);
+  note.filterNode.frequency.setValueAtTime(
+    note.filterNode.frequency.value,
+    now
+  );
+  note.filterNode.frequency.linearRampToValueAtTime(
+    0,
+    now + parseFloat(filterEnvelope.release)
+  );
+
   note.oscNode.stop(now+parseFloat(ampEnvelope.release));
 }
 
@@ -111,7 +152,7 @@ function onNoteOff(e) {
   if(sustain) {
     susSet.add(note);
   } else {
-    ampEnvelopeOff(note);
+    envelopeOff(note);
   }
   oscMap.delete(e.note.name + e.note.octave);
 }
@@ -143,7 +184,7 @@ function onControlChange(e) {
     if(sustain) {
       sustain = false;
       for(var value of susSet) {
-        ampEnvelopeOff(value);
+        envelopeOff(value);
       }
       susSet.clear();
     } else {
