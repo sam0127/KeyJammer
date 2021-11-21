@@ -35,7 +35,7 @@ var sustain = false;
 var detuneValue = 0;
 var detuneRange = 200;
 var waveformType = "sine";
-var filterMode = 'lowpass';
+var filterMode = 'highpass';
 
 //envelope objects
 var ampEnvelope = {attack: 0, decay: 0, sustain: 0, release: 0};
