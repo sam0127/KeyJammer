@@ -171,9 +171,5 @@ function changeFilterRelease() {
   filterEnvelope.release = sliderInputMap(filterEnvReleaseSlider.value);
 }
 
-//Applies cubic curve to envelope input values,
-//to increase control in lower ranges
-function sliderInputMap(x) {
-  return (0.01 * x ** 3);
-}
+
 

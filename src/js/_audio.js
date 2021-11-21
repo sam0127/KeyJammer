@@ -179,18 +179,25 @@ function onPitchBend(e) {
 //MIDI controlchange event handler
 function onControlChange(e) {
   //sustain pedal
-  if(e.controller.name == 'holdpedal') {
-    //switch sustain states, sustained notes are released
-    if(sustain) {
-      sustain = false;
-      for(var value of susSet) {
-        envelopeOff(value);
+  console.log(e);
+  switch(e.controller.name) {
+    case 'holdpedal':
+      //switch sustain states, sustained notes are released
+      if(sustain) {
+        sustain = false;
+        for(var value of susSet) {
+          envelopeOff(value);
+        }
+        susSet.clear();
+      } else {
+        sustain = true;
       }
-      susSet.clear();
-    } else {
-      sustain = true;
-    }
-  } else {
-
+      break;
+    case 'volumecoarse':
+      var val = mapMidiToRange(e.value);
+      mainGainNode.gain.value = val;
+      volSlider.value = val;
+      volValue.innerHTML = Math.round(volSlider.value*100);
+      break;
   }
 }
