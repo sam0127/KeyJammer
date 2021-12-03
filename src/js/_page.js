@@ -27,7 +27,7 @@ let filterEnvSustainSlider = document.getElementById("filter-env-slider-S");
 let filterEnvReleaseSlider = document.getElementById("filter-env-slider-R");
 
 //initialize frequency table
-let frequencyTable = getNoteFreqTable();
+let frequencyMap = populateFreqMap();
 
 //synth state values
 var sustain = false;

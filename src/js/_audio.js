@@ -71,6 +71,8 @@ function playWave(frequency, velocity) {
   //start oscillator and envelope
   note.oscNode.start();
   envelopeOn(note, velocity);
+  console.log("Base Latency: " + audioContext.baseLatency);
+  console.log("Output Latency: " + audioContext.outputLatency);
   return note;
 }
 
@@ -139,13 +141,15 @@ function envelopeOff(note) {
 //MIDI noteon event handler
 function onNoteOn(e) {
   //get note's corresponding frequency, start oscillator and add to map
-  var frequency = frequencyTable[e.note.octave][e.note.name];
-  oscMap.set(e.note.name + e.note.octave, playWave(frequency, e.velocity));
+  console.log(e);
+  var name = e.data[1];
+  var frequency = frequencyMap.get(name);
+  oscMap.set(name, playWave(frequency, e.velocity));
 }
 
 //MIDI noteoff event handler
 function onNoteOff(e) {
-  var note = oscMap.get(e.note.name + e.note.octave);
+  var note = oscMap.get(e.data[1]);
 
   //if sustain pedal is held, add to susSet (sustained notes set)
   //else, begin envelope release
@@ -159,6 +163,7 @@ function onNoteOff(e) {
 
 //MIDI pitchbend event handler
 function onPitchBend(e) {
+  console.log(e);
   detuneValue = e.value;
 
   //for each oscillator currently playing, detune appropriately
@@ -178,6 +183,7 @@ function onPitchBend(e) {
 
 //MIDI controlchange event handler
 function onControlChange(e) {
+  console.log(e);
   //sustain pedal
   console.log(e.controller.name);
   switch(e.controller.name) {
@@ -194,54 +200,54 @@ function onControlChange(e) {
       }
       break;
     case 'volumecoarse':
-      var val = mapMidiToRange(e.value);
+      var val = mapMidiToRange(e.rawValue);
       mainGainNode.gain.value = val;
       volSlider.value = val;
       volValue.innerHTML = Math.round(volSlider.value*100);
       break;
     case 'brightness':
-      var val = mapMidiToRange(e.value, 127.0, 20, 20000);
+      var val = mapMidiToRange(e.rawValue, 127.0, 20, 20000);
       filterCutoff = val;
       filterCutoffSlider.value = val;
       break;
     case 'generalpurposeslider1': //AMP attack
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       ampEnvelope.attack = val;
       console.log(ampEnvelope.attack);
       ampEnvAttackSlider.value = val;
       break;
     case 'generalpurposeslider2': //AMP decay
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       ampEnvelope.decay = val;
       ampEnvDecaySlider.value = val;
       break;
     case 'generalpurposeslider3': //AMP sustain
-      var val = mapMidiToRange(e.value, 127.0, 0, 1);
+      var val = mapMidiToRange(e.rawValue, 127.0, 0, 1);
       ampEnvelope.sustain = val;
       ampEnvSustainSlider.value = val;
       break;
     case 'generalpurposeslider4': //AMP release
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       ampEnvelope.release = val;
       ampEnvReleaseSlider.value = val;
       break;
     case 'soundcontrol6': //filter attack
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       filterEnvelope.attack = val;
       filterEnvAttackSlider.value = val;
       break;
     case 'soundcontrol7': //filter decay
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       filterEnvelope.decay = val;
       filterEnvDecaySlider.value = val;
       break;
     case 'soundcontrol8': //filter sustain
-      var val = mapMidiToRange(e.value, 127.0, 0, 1);
+      var val = mapMidiToRange(e.rawValue, 127.0, 0, 1);
       filterEnvelope.sustain = val;
       filterEnvSustainSlider.value = val;
       break;
     case 'soundcontrol9': //filter release
-      var val = sliderInputMap(mapMidiToRange(e.value, 127.0, 0, 10));
+      var val = sliderInputMap(mapMidiToRange(e.rawValue, 127.0, 0, 10));
       filterEnvelope.release = val;
       filterEnvReleaseSlider.value = val;
       break;
