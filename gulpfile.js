@@ -15,28 +15,32 @@ const config = {
         sass: './src/scss/**/*.scss',
         ts: 'src/ts/**/*.ts'
     },
-    dist: './dist'
+    dist: {
+        html: './dist',
+        css: './dist',
+        js: './dist/js'
+    }
 };
 
 gulp.task('html', () => {
     return gulp.src(config.src.html)
-        .pipe(gulp.dest(config.dist));
+        .pipe(gulp.dest(config.dist.html));
 });
 
 gulp.task('clean', () => {
     return del([
-        config.dist + '/*.css',
+        config.dist.css + '/*.css',
     ]);
 });
 
 gulp.task('sass', gulp.series(['clean', () => {
     return gulp.src(config.src.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest(config.dist));
+    .pipe(gulp.dest(config.dist.css));
 }]));
 
 gulp.task('ts', () => {
-    return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(config.dist));
+    return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(config.dist.js));
 });
 
 gulp.task('watch', () => {
