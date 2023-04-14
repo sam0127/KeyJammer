@@ -1,13 +1,19 @@
+/*
 var gulp = require("gulp");
 var watch = require('gulp-watch');
 var sass = require('gulp-sass')(require('node-sass'));
 var del = require('del');
 var ts = require("gulp-typescript");
-var tsProject = ts.createProject("tsconfig.json");
 
-//const sassDir = 'src/scss/**/*.scss';
-//const tsDir = 'src/ts/**/*.ts';
-//const  = 'dist/';
+*/
+import gulp from "gulp";
+import watch from "gulp-watch";
+import gulpSass from "gulp-sass";
+import nodeSass from "node-sass";
+import { deleteSync } from "del";
+import ts from "gulp-typescript";
+var tsProject = ts.createProject("tsconfig.json");
+const sass = gulpSass(nodeSass);
 
 const config = {
     src: {
@@ -28,16 +34,16 @@ gulp.task('html', () => {
 });
 
 gulp.task('clean', () => {
-    return del([
+    return deleteSync([
         config.dist.css + '/*.css',
     ]);
 });
 
-gulp.task('sass', gulp.series(['clean', () => {
+gulp.task('sass', () => {
     return gulp.src(config.src.sass)
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(config.dist.css));
-}]));
+});
 
 gulp.task('ts', () => {
     return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(config.dist.js));

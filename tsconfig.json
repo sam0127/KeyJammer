@@ -1,7 +1,8 @@
 {
-    "files": ["src/ts/index.ts"],
+    "files": ["src/ts/index.ts", "src/ts/Midi.ts"],
     "compilerOptions": {
         "noImplicitAny": true,
-        "target": "es5"
-    }
+        "lib": ["es6", "dom", "es5"],
+        "target": "es6",
+    },
 }
