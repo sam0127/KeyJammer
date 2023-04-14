@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Plug in your favorite MIDI controller and play away.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "deploy": "scripts/deploy.sh"
   },
@@ -23,7 +24,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "del": "^6.1.1",
+    "@types/webmidi": "^2.0.7",
+    "del": "^7.0.0",
     "gulp-watch": "^5.0.1",
     "node-sass": "^8.0.0"
   }
