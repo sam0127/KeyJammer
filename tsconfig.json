@@ -1,8 +1,9 @@
 {
-    "files": ["src/ts/index.ts", "src/ts/Midi.ts"],
+    "files": ["src/ts/index.ts", "src/ts/Midi.ts", "src/ts/interface.ts"],
     "compilerOptions": {
+        "module": "esnext",
         "noImplicitAny": true,
         "lib": ["es6", "dom", "es5"],
-        "target": "es6",
+        "target": "es2017",
     },
 }
