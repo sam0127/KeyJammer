@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
   <title>MIDIthizer</title>
 </head>
 <body>
-  <div class="test-class">
-    <p>Midithizer</p>
-  </div>
-  <script src="./js/index.js" type="module" crossorigin="anonymous" charset="UTF-8"></script>
+  <header>
+    <h1>MIDIthizer</h1>
+  </header>
+  <main>
+    <section class="control-panel select">
+      <label for="midi-inputs">Select MIDI Input:</label>
+      <select name="midi-inputs" id="midi-inputs">
+        <option value="0">MIDI Devices</option>
+      </select>
+    </section>
+  </main>
+  <script src="./js/index.js" type="module" charset="UTF-8"></script>
 </body>
 </html>

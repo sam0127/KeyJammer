@@ -1,0 +1,22 @@
+//Color
+$border-gray: #414141;
+//Font
+$main-font: 'Courier New', Courier, monospace;
+$font-xs: 12px;
+$font-s: 16px;
+$font-m: 20px;
+$font-l: 32px;
+$font-xl: 48px;
+
+//Margin and Padding
+@mixin amargin($mtb: 0) {
+    margin: $mtb auto;
+}
+//Dimensions
+$content-width: 800px;
+
+//Misc
+@mixin border($r: 10px) {
+    border: 1px solid $border-gray;
+    border-radius: $r;
+}

@@ -1,12 +1,18 @@
 export class Midi {
-    midiAccess: MIDIAccess;
+    public midiAccess: MIDIAccess;
+    input: MIDIInput;
 
-    constructor() {
-        navigator.requestMIDIAccess()
+    public async init() {
+        await navigator.requestMIDIAccess()
             .then((midiAccess: any) => {
                 this.midiAccess = midiAccess;
+                console.log("WebMidi Initialized");
             }, () => {
                 console.log("error");
             });
+    }
+
+    public getAvailableInputs() {
+        return this.midiAccess.inputs;
     }
 }
