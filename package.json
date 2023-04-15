@@ -1,7 +1,7 @@
 {
-  "name": "midithizer",
+  "name": "keyjammer",
   "version": "1.0.0",
-  "description": "Plug in your favorite MIDI controller and play away.",
+  "description": "Play some synth with your keyboard.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sam0127/MIDIthizer.git"
+    "url": "git+https://github.com/sam0127/KeyJammer.git"
   },
   "author": "Sam Smith",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sam0127/MIDIthizer/issues"
+    "url": "https://github.com/sam0127/KeyJammer/issues"
   },
-  "homepage": "https://github.com/sam0127/MIDIthizer#readme",
+  "homepage": "https://github.com/sam0127/KeyJammer#readme",
   "devDependencies": {
     "gulp": "^4.0.0",
     "gulp-sass": "^5.1.0",
