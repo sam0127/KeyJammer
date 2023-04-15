@@ -4,19 +4,4 @@
 .control-panel {
     @include border();
     padding: 30px;
-
-    &.select {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-
-        select {
-            margin-top: 20px;
-            padding: 10px 0;
-        }
-
-        option {
-            font-size: $font-s;
-        }
-    }
 }
