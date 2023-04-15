@@ -1,4 +1,8 @@
-import { Midi } from "./Midi";
+import { Midi } from "./Midi.js";
+import { interfaceInit } from "./interface.js";
 
 const midi = new Midi();
-console.log(midi.midiAccess);
+await midi.init();
+
+interfaceInit(midi);
+

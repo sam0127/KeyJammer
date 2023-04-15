@@ -1,0 +1,25 @@
+@use 'utility' as *;
+
+body {
+    margin: 0;
+    font-family: $main-font;
+}
+
+header {
+    text-align: center;
+    padding: 60px 0;
+
+    h1 {
+        font-size: $font-xl;
+    }
+}
+
+main {
+    @include amargin();
+    width: $content-width;
+    display: flex;
+}
+
+label {
+    font-size: $font-m;
+}
