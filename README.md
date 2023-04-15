@@ -1,2 +1,3 @@
-# MIDIthizer
-Plug in your favorite MIDI controller and play away.
+# KeyJammer
+Play some synth with your keyboard.
+Renamed from MIDIthizer, since MIDI is no longer handled.
