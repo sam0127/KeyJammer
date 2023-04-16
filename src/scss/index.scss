@@ -3,5 +3,11 @@
 
 .control-panel {
     @include border();
-    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+
+    > * {
+        margin: 5px 0;
+    }
 }
