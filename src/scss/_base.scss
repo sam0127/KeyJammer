@@ -18,8 +18,24 @@ main {
     @include amargin();
     width: $content-width;
     display: flex;
+    justify-content: center;
 }
 
 label {
     font-size: $font-m;
+}
+
+button {
+    @include border();
+    font-family: $main-font;
+    font-size: $font-m;
+    padding: 5px;
+    
+    &:hover, &:focus {
+        filter: $hover-filter;
+    }
+
+    &:active {
+        filter: $click-filter;
+    }
 }

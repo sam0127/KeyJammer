@@ -1,9 +1,17 @@
 {
-    "files": ["src/ts/index.ts", "src/ts/interface.ts"],
     "compilerOptions": {
         "module": "esnext",
         "noImplicitAny": true,
         "lib": ["es6", "dom", "es5"],
         "target": "es2017",
     },
+    "files": [
+        "src/ts/index.ts",
+        "src/ts/document.ts",
+        "src/ts/Keyboard.ts",
+        "src/ts/Envelope.ts",
+        "src/ts/NodeChain.ts",
+        "src/ts/Note.ts",
+        "src/ts/Synth.ts",
+    ]
 }
