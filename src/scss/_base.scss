@@ -18,6 +18,7 @@ main {
     @include amargin();
     width: $content-width;
     display: flex;
+    justify-content: center;
 }
 
 label {

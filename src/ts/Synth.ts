@@ -8,34 +8,49 @@ export class Synth {
     ampEnvelope: Envelope
     filterEnvelope: Envelope
     globalChain: NodeChain
+    tuningSystem: Map<string, number>
 
-    constructor() {
+    constructor(tuningSystem: Map<string, number>) {
         this.context = new AudioContext()
         this.ampEnvelope = new Envelope(0,0,0,0)
         this.filterEnvelope = new Envelope(0,0,0,0)
         this.globalChain = new NodeChain([
             this.context.createGain()
         ])
+        this.tuningSystem = tuningSystem
 
         this.globalChain.last().connect(this.context.destination)
         const mainGain = <GainNode>this.globalChain.last()
-        mainGain.gain.value = 0.1
+        mainGain.gain.value = 0.125
         this.notes = new Map<string, Note>()
     }
 
-    get latency(): Number {
+    private createNote(value: number, key: string, map: Map<string, number>) {
+        const note = new Note(this.context, value)
+        note.connect(this.globalChain.first())
+        note.init()
+        this.notes.set(key, note)
+    }
+
+    get latency(): number {
         return this.context.baseLatency + this.context.outputLatency
     }
 
-    initNotes() {
-        const note = new Note(this.context, 440)
-        note.connect(this.globalChain.first())
-        note.init()
-        this.notes.set('A4', note)
+    init() {
+        this.tuningSystem.forEach((value, key) => {
+            const note = new Note(this.context, value)
+            note.connect(this.globalChain.first())
+            note.init()
+            this.notes.set(key, note)
+        })
     }
 
-    playNote() {
-        this.notes.get('A4').gain.gain.value = 1
+    triggerNoteStart(name: string) {
+        this.notes.get(name).gain.gain.value = 1
+    }
+
+    triggerNoteStop(name: string) {
+        this.notes.get(name).gain.gain.value = 0;
     }
 
 

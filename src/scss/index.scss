@@ -6,6 +6,15 @@
     display: flex;
     flex-direction: column;
     padding: 20px 30px;
+    margin: 0 10px 10px 10px;
+
+    &:first-child {
+        margin: 0 10px 10px 0;
+    }
+
+    &:last-child {
+        margin: 0 0 10px 10px;
+    }
 
     > * {
         margin: 5px 0;

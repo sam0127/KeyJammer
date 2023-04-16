@@ -2,14 +2,12 @@ export class Note {
     oscillator: OscillatorNode
     gain: GainNode
     filter: BiquadFilterNode
-    //frequency: Number
 
     constructor(context: AudioContext, frequency: number)
     {
         this.oscillator = context.createOscillator()
         this.gain = context.createGain()
         this.filter = context.createBiquadFilter()
-        //this.frequency = frequency
 
         this.oscillator.connect(this.gain)
         this.gain.connect(this.filter)
