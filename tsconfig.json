@@ -8,8 +8,9 @@
     "files": [
         "src/ts/index.ts",
         "src/ts/document.ts",
-        "src/ts/Keyboard.ts",
         "src/ts/Envelope.ts",
+        "src/ts/Keyboard.ts",
+        "src/ts/oscilloscope.ts",
         "src/ts/NodeChain.ts",
         "src/ts/Note.ts",
         "src/ts/Synth.ts",

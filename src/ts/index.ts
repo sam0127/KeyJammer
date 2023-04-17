@@ -1,9 +1,9 @@
 import { Synth } from './Synth.js'
-import { documentInit } from './document.js'
 import { Keyboard } from './Keyboard.js'
 
-//KeyToNoteMap: Map containing key bindings to note names, i.e 
-//    'a': 'C4', 's': 'D4', 'd': 'E4', 'f': 'F4' ...
+import { documentInit } from './document.js'
+
+//KeyToNoteMap: Map containing key bindings to note names, 'KeyCode': frequencyHz
 const keyToNoteMap: Map<string, string> = new Map()
 keyToNoteMap.set('KeyQ', 'C2')
 keyToNoteMap.set('Digit2', 'C#2')
@@ -43,8 +43,13 @@ keyToNoteMap.set('KeyL', 'A#4')
 keyToNoteMap.set('Period', 'B4')
 keyToNoteMap.set('Slash', 'C5')
 
-//NoteToFrequencyMap: Map representing the tuning system, 'note-name': 'frequencyHz' 
-//    'C4': 261.63, 'D4': 293.66, ...
+const controlKeySet: Set<string> = new Set()
+controlKeySet.add('Space')
+controlKeySet.add('ShiftLeft')
+controlKeySet.add('ShiftRight')
+controlKeySet.add('CapsLock')
+
+//NoteToFrequencyMap: Map representing the tuning system, 'note-name': 'frequencyHz'
 const noteToFrequencyMap: Map<string, number> = new Map()
 noteToFrequencyMap.set('C2', 65.41)
 noteToFrequencyMap.set('C#2', 69.30)
@@ -84,14 +89,12 @@ noteToFrequencyMap.set('A#4', 466.16)
 noteToFrequencyMap.set('B4', 493.88)
 noteToFrequencyMap.set('C5', 523.25)
 
-const keyboard = new Keyboard(keyToNoteMap)
+const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
 const synth = new Synth(noteToFrequencyMap)
 
 console.log(synth.context.state)
 console.log(synth.latency)
 
-//synth.init()
-
-documentInit(synth)
-
-keyboard.init(synth)
+document.addEventListener('DOMContentLoaded', () => {
+    documentInit(synth, keyboard)
+})
