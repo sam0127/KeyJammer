@@ -48,6 +48,7 @@ controlKeySet.add('Space')
 controlKeySet.add('ShiftLeft')
 controlKeySet.add('ShiftRight')
 controlKeySet.add('CapsLock')
+controlKeySet.add('Escape')
 
 //NoteToFrequencyMap: Map representing the tuning system, 'note-name': 'frequencyHz'
 const noteToFrequencyMap: Map<string, number> = new Map()
