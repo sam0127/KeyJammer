@@ -18,7 +18,7 @@ main {
     @include amargin();
     width: $content-width;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
 label {
@@ -38,4 +38,8 @@ button {
     &:active {
         filter: $click-filter;
     }
+}
+
+canvas {
+    border: 1px solid black;
 }

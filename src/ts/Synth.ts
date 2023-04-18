@@ -12,20 +12,25 @@ export class Synth {
 
     constructor(tuningSystem: Map<string, number>) {
         this.context = new AudioContext()
+        this.context.suspend()
         this.ampEnvelope = new Envelope(0,0,0,0)
         this.filterEnvelope = new Envelope(0,0,0,0)
         this.globalChain = new NodeChain([
+            this.context.createGain(),
+            this.context.createAnalyser(),
             this.context.createGain()
         ])
         this.tuningSystem = tuningSystem
 
         this.globalChain.last().connect(this.context.destination)
-        const mainGain = <GainNode>this.globalChain.last()
-        mainGain.gain.value = 0.125
+        const mainGain = <GainNode>this.globalChain.first()
+        const volumeGain = <GainNode>this.globalChain.last()
+        mainGain.gain.value = 0.25
+        volumeGain.gain.value = 0.5
         this.notes = new Map<string, Note>()
     }
 
-    private createNote(value: number, key: string, map: Map<string, number>) {
+    private createNote(value: number, key: string) {
         const note = new Note(this.context, value)
         note.connect(this.globalChain.first())
         note.init()
@@ -38,10 +43,7 @@ export class Synth {
 
     init() {
         this.tuningSystem.forEach((value, key) => {
-            const note = new Note(this.context, value)
-            note.connect(this.globalChain.first())
-            note.init()
-            this.notes.set(key, note)
+            this.createNote(value, key)
         })
     }
 
