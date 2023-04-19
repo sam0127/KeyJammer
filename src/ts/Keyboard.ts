@@ -30,7 +30,6 @@ export class Keyboard {
                     })
 
                 }
-                console.log(this.drone)
             } else if(this.isSustainKey(key)) {
                 this.sustain = true
             } else if(key === "Escape") {
@@ -62,9 +61,10 @@ export class Keyboard {
             if(!this.pressedKeys.has(e.code)) {
                 this.pressedKeys.add(e.code)
                 
-                console.log(e.code)
+                //console.log(e.code)
                 //pressed key is a note key
                 if(this.bindingMap.has(e.code)) {
+                    //console.log("note start")
                     synth.triggerNoteStart(this.bindingMap.get(e.code))
                 } else if(this.controlKeys.has(e.code)) { //pressed key is a control key
                     this.onControlInput(synth, e.code, true)

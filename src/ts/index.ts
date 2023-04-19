@@ -93,9 +93,6 @@ noteToFrequencyMap.set('C5', 523.25)
 const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
 const synth = new Synth(noteToFrequencyMap)
 
-console.log(synth.context.state)
-console.log(synth.latency)
-
 document.addEventListener('DOMContentLoaded', () => {
     documentInit(synth, keyboard)
 })
