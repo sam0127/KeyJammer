@@ -21,14 +21,98 @@
       </section>
     </div>
     <div class="row">
+      <section class="control-panel simple-wave-controls">
+        <div class="vertical-slider-container">
+          <label for="wave-input">Wave</label>
+          <div class="wave-input-container">
+            <ul class="wave-icons">
+              <li><img src="./assets/img/custom-osc.png"></li>
+              <li><img src="./assets/img/tri-osc.png"></li>
+              <li><img src="./assets/img/saw-osc.png"></li>
+              <li><img src="./assets/img/square-osc.png"></li>
+              <li><img src="./assets/img/sine-osc.png"></li>
+            </ul>
+            <input type="range" name="wave-input" max="4" value="2"></input>
+          </div>
+        </div>
+      </section>
+      <section class="control-panel filter">
+        <h3>Filter</h3>
+        <div class="filter-container">
+          <div class="filter-type">
+            <label for="low-pass">Low Pass</label>
+            <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
+          </div>
+          <div class="filter-type">
+            <label for="high-pass">High Pass</label>
+            <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
+          </div>
+          <div class="filter-slider">
+            <label for="cutoff">Cutoff</label>
+            <input type="range" name="cutoff" min="0.25" max="4" step="0.25" value="0.75"></input>
+          </div>
+          <div class="filter-slider">
+            <label for="env-cutoff">Env Cutoff</label>
+            <input type="range" name="env-cutoff" min="0.25" max="4" step="0.25" value="3"></input>
+          </div>
+          <div class="filter-slider">
+            <label for="resonance">Resonance</label>
+            <input type="range" name="resonance" min="1" max="10" step="1" value="6"></input>
+          </div>
+        </div>
+      </section>
+      <section class="control-panel envelope-controls">
+        <h3>Amplitude Env</h3>
+        <div class="controls-container">
+          <div class="vertical-slider-container">
+            <label for="amp-attack-input">A</label>
+            <input type="range" name="amp-attack-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="amp-decay-input">D</label>
+            <input type="range" name="amp-decay-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="amp-sustain-input">S</label>
+            <input type="range" name="amp-sustain-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="amp-release-input">R</label>
+            <input type="range" name="amp-release-input" value="5"></input>
+          </div>
+        </div>
+      </section>
+      <section class="control-panel envelope-controls">
+        <h3>Filter Env</h3>
+        <div class="controls-container">
+          <div class="vertical-slider-container">
+            <label for="filter-attack-input">A</label>
+            <input type="range" name="filter-attack-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="filter-decay-input">D</label>
+            <input type="range" name="filter-decay-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="filter-sustain-input">S</label>
+            <input type="range" name="filter-sustain-input" value="100"></input>
+          </div>
+          <div class="vertical-slider-container">
+            <label for="filter-release-input">R</label>
+            <input type="range" name="filter-release-input" value="5"></input>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="row">
       <section class="control-panel oscilloscope">
         <label>Oscilloscope</label>
-        <canvas id="oscilloscope" width="316" height="200">
+        <canvas id="oscilloscope" width="326" height="200">
         </canvas>
       </section>
       <section class="control-panel spectrograph">
         <label>Spectrograph</label>
-        <canvas id="spectrograph" width="316" height="200">
+        <canvas id="spectrograph" width="326" height="200">
         </canvas>
       </section>
     </div>
