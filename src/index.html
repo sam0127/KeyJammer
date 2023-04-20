@@ -26,13 +26,13 @@
           <label for="wave-input">Wave</label>
           <div class="wave-input-container">
             <ul class="wave-icons">
-              <li><img src="./assets/img/custom-osc.png"></li>
+              <!--li><img src="./assets/img/custom-osc.png"></li-->
               <li><img src="./assets/img/tri-osc.png"></li>
               <li><img src="./assets/img/saw-osc.png"></li>
               <li><img src="./assets/img/square-osc.png"></li>
               <li><img src="./assets/img/sine-osc.png"></li>
             </ul>
-            <input type="range" name="wave-input" max="4" value="2"></input>
+            <input type="range" name="wave-input" max="3" value="2"></input>
           </div>
         </div>
       </section>
@@ -49,11 +49,11 @@
           </div>
           <div class="filter-slider">
             <label for="cutoff">Cutoff</label>
-            <input type="range" name="cutoff" min="0.25" max="4" step="0.25" value="0.75"></input>
+            <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
           </div>
           <div class="filter-slider">
             <label for="env-cutoff">Env Cutoff</label>
-            <input type="range" name="env-cutoff" min="0.25" max="4" step="0.25" value="3"></input>
+            <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="4"></input>
           </div>
           <div class="filter-slider">
             <label for="resonance">Resonance</label>
@@ -78,7 +78,7 @@
           </div>
           <div class="vertical-slider-container">
             <label for="amp-release-input">R</label>
-            <input type="range" name="amp-release-input" value="5"></input>
+            <input type="range" name="amp-release-input" value="0"></input>
           </div>
         </div>
       </section>
@@ -87,32 +87,42 @@
         <div class="controls-container">
           <div class="vertical-slider-container">
             <label for="filter-attack-input">A</label>
-            <input type="range" name="filter-attack-input" value="100"></input>
+            <input type="range" name="filter-attack-input" value="50"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-decay-input">D</label>
-            <input type="range" name="filter-decay-input" value="100"></input>
+            <input type="range" name="filter-decay-input" value="5"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-sustain-input">S</label>
-            <input type="range" name="filter-sustain-input" value="100"></input>
+            <input type="range" name="filter-sustain-input" value="30"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-release-input">R</label>
-            <input type="range" name="filter-release-input" value="5"></input>
+            <input type="range" name="filter-release-input" value="60"></input>
           </div>
+        </div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="control-panel octave-offset">
+        <label>Octave +</label>
+        <div class="octave-offset-container">
+          <button name="decrease-octave"><</button>
+          <span>0</span>
+          <button name="increase-octave">></button>
         </div>
       </section>
     </div>
     <div class="row">
       <section class="control-panel oscilloscope">
         <label>Oscilloscope</label>
-        <canvas id="oscilloscope" width="326" height="200">
+        <canvas id="oscilloscope" width="376" height="200">
         </canvas>
       </section>
       <section class="control-panel spectrograph">
         <label>Spectrograph</label>
-        <canvas id="spectrograph" width="326" height="200">
+        <canvas id="spectrograph" width="376" height="200">
         </canvas>
       </section>
     </div>

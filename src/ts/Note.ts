@@ -13,7 +13,7 @@ export class Note {
         this.oscillator.connect(this.gain)
         this.gain.connect(this.filter)
 
-        this.oscillator.type = 'sawtooth'
+        //this.oscillator.type = 'sawtooth'
         this.frequency = frequency
         this.oscillator.frequency.value = this.frequency
 

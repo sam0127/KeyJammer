@@ -39,14 +39,26 @@
             top: 10px;
         }
     }
+
+    &.octave-offset {
+        max-width: min-content;
+
+        label {
+            white-space: nowrap;
+        }
+    }
 }
 
 .wave-icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px;
     list-style: none;
     margin: 0;
     padding: 0;
     position: relative;
-    top: 18px;
+    top: 22px;
     right: 20px;
 
     li {
@@ -71,9 +83,9 @@
     }
 
     input[name=wave-input] {
-        left: -40px;
-        top: 120px;
-        width: 160px;
+        left: -69px;
+        top: 150px;
+        width: 200px;
     }
 }
 
@@ -94,6 +106,26 @@
     }
 
     label {
+        font-size: $font-s;
+    }
+}
+
+.octave-offset-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        background: none;
+        border: none;
+        padding: 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    span {
         font-size: $font-s;
     }
 }

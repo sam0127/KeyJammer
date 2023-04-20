@@ -7,7 +7,7 @@ body {
 
 header {
     text-align: center;
-    padding: 60px 0;
+    padding: 40px 0;
 
     h1 {
         font-size: $font-xl;
@@ -15,7 +15,7 @@ header {
 }
 
 main {
-    @include amargin();
+    @include amargin(0, 100px);
     width: $content-width;
     display: flex;
     flex-direction: column;
@@ -24,6 +24,33 @@ main {
 label, h3 {
     font-size: $font-m;
     font-weight: 400;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    margin-bottom: 30px;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-webkit-slider-thumb {
+        @include thumb();
+    }
+
+    &::-moz-range-thumb {
+        @include thumb();
+    }
+
+    &::-webkit-slider-runnable-track {
+        @include track();
+    }
+
+    &::-moz-range-track {
+        @include track();
+    }
 }
 
 button {
