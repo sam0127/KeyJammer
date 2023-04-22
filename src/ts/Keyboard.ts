@@ -33,13 +33,7 @@ export class Keyboard {
             } else if(this.isSustainKey(key)) {
                 this.sustain = true
             } else if(key === "Escape") {
-
-                this.droneKeys.forEach((dronedKey) => {
-                    synth.triggerNoteStop(this.bindingMap.get(dronedKey))
-                })
-
-                this.droneKeys.clear()
-
+                this.clearAllNotes(synth)
             }
         } else {
             if(this.isSustainKey(key)) {
@@ -61,7 +55,7 @@ export class Keyboard {
             if(!this.pressedKeys.has(e.code)) {
                 this.pressedKeys.add(e.code)
                 
-                //console.log(e.code)
+                console.log(e.code)
                 //pressed key is a note key
                 if(this.bindingMap.has(e.code)) {
                     //console.log("note start")
@@ -88,5 +82,27 @@ export class Keyboard {
                 this.onControlInput(synth, e.code, false)
             }
         })
+    }
+
+    clearAllNotes(synth: Synth) {
+        this.pressedKeys.forEach((key) => {
+            if(this.bindingMap.has(key)) {
+                synth.triggerNoteStop(this.bindingMap.get(key))
+            }
+        })
+        this.sustainKeys.forEach((key) => {
+            if(this.bindingMap.has(key)) {
+                synth.triggerNoteStop(this.bindingMap.get(key))
+            }
+        })
+        this.droneKeys.forEach((key) => {
+            if(this.bindingMap.has(key)) {
+                synth.triggerNoteStop(this.bindingMap.get(key))
+            }
+        })
+
+        this.pressedKeys.clear()
+        this.sustainKeys.clear()
+        this.droneKeys.clear()
     }
 }
