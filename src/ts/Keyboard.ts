@@ -26,12 +26,14 @@ export class Keyboard {
         this.controlKeys = controlKeys
     }
 
+    //Control Input sub-method - return true if key is a sustain key
     private isSustainKey(key: string) {
         return key === "Space"
             || key === "ShiftLeft"
             || key === "ShiftRight"
     }
 
+    //On control inputs - perform control functionality
     private onControlInput(synth: Synth, key: string, keydown: boolean) {
         if(keydown) {
             if(key === "CapsLock") {
@@ -62,6 +64,7 @@ export class Keyboard {
         }
     }
 
+    //Initialize Keyboard listeners, conditionally trigger synth notes
     init(synth: Synth) {
         document.addEventListener("keydown", (e: any) => {
             if(!this.pressedKeys.has(e.code)) {
@@ -95,6 +98,7 @@ export class Keyboard {
         })
     }
 
+    //Trigger note stop on all currently playing notes, clear note sets
     clearAllNotes(synth: Synth) {
         console.log("Clearing all notes:")
         console.log("Pressed Keys -")
