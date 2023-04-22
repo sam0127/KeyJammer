@@ -1,7 +1,7 @@
 {
     "name": "Default",
     "waveType": 3,
-    "filterType": "lowpass",
+    "filterType": 0,
     "cutoff": 3.75,
     "envCutoff": 0,
     "resonance": 4,

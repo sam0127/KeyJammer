@@ -1,7 +1,7 @@
 {
     "name": "Trumpet",
     "waveType": 2,
-    "filterType": "lowpass",
+    "filterType": 0,
     "cutoff": 3.75,
     "envCutoff": 1,
     "resonance": 4,

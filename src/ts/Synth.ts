@@ -22,6 +22,11 @@ export class Synth {
         'custom'
     ]
 
+    readonly filterTypes: Array<string> = [
+        'lowpass',
+        'highpass'
+    ]
+
     constructor(tuningSystem: Map<string, number>) {
         this.context = new AudioContext()
         this.context.suspend()
@@ -150,8 +155,8 @@ export class Synth {
         }
     }
 
-    setFilterType(type: string) {
-        this.filter.type = type
+    setFilterType(value: number) {
+        this.filter.type = this.filterTypes[value]
     }
 
     setFilterCutoff(factor: number) {
