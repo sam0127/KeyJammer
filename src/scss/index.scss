@@ -47,6 +47,11 @@
             white-space: nowrap;
         }
     }
+
+    &.presets {
+        text-align: left;
+        justify-content: flex-start;
+    }
 }
 
 .wave-icons {
@@ -127,6 +132,17 @@
 
     span {
         font-size: $font-s;
+    }
+}
+
+.load-presets-container {
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+    white-space: nowrap;
+
+    > * {
+        margin: 5px;
     }
 }
 

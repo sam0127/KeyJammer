@@ -10,6 +10,13 @@
     <h1>KeyJammer</h1>
   </header>
   <main>
+    <!--div class="row">
+      <section class="instructions">
+        <div class="controls-icons-container">
+
+        </div>
+      </section>
+    </div-->
     <div class="row">
       <section class="control-panel allow-audio">
         <label for="allow-audio">Click to allow audio</label>
@@ -18,6 +25,16 @@
       <section class="control-panel master-volume">
         <label for="master-volume">Master Volume</label>
         <input type="range" name="master-volume" value="50"></input>
+      </section>
+    </div>
+    <div class="row">
+      <section class="control-panel presets">
+        <div class="load-presets-container">
+          <label for="load-presets">Load a preset: </label>
+          <select name="load-presets">
+            <!--option value="default" selected>Default</option-->
+          </select>
+        </div>
       </section>
     </div>
     <div class="row">
@@ -32,7 +49,7 @@
               <li><img src="./assets/img/square-osc.png"></li>
               <li><img src="./assets/img/sine-osc.png"></li>
             </ul>
-            <input type="range" name="wave-input" max="3" value="2"></input>
+            <input type="range" name="wave-input" max="3" value="0"></input>
           </div>
         </div>
       </section>
@@ -53,11 +70,11 @@
           </div>
           <div class="filter-slider">
             <label for="env-cutoff">Env Cutoff</label>
-            <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="4"></input>
+            <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
           </div>
           <div class="filter-slider">
             <label for="resonance">Resonance</label>
-            <input type="range" name="resonance" min="1" max="10" step="1" value="6"></input>
+            <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
           </div>
         </div>
       </section>
@@ -66,15 +83,15 @@
         <div class="controls-container">
           <div class="vertical-slider-container">
             <label for="amp-attack-input">A</label>
-            <input type="range" name="amp-attack-input" value="100"></input>
+            <input type="range" name="amp-attack-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="amp-decay-input">D</label>
-            <input type="range" name="amp-decay-input" value="100"></input>
+            <input type="range" name="amp-decay-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="amp-sustain-input">S</label>
-            <input type="range" name="amp-sustain-input" value="100"></input>
+            <input type="range" name="amp-sustain-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="amp-release-input">R</label>
@@ -87,19 +104,19 @@
         <div class="controls-container">
           <div class="vertical-slider-container">
             <label for="filter-attack-input">A</label>
-            <input type="range" name="filter-attack-input" value="50"></input>
+            <input type="range" name="filter-attack-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-decay-input">D</label>
-            <input type="range" name="filter-decay-input" value="5"></input>
+            <input type="range" name="filter-decay-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-sustain-input">S</label>
-            <input type="range" name="filter-sustain-input" value="30"></input>
+            <input type="range" name="filter-sustain-input" value="0"></input>
           </div>
           <div class="vertical-slider-container">
             <label for="filter-release-input">R</label>
-            <input type="range" name="filter-release-input" value="60"></input>
+            <input type="range" name="filter-release-input" value="0"></input>
           </div>
         </div>
       </section>
