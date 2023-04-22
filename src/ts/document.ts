@@ -27,8 +27,8 @@ async function fetchDefaultPresets() {
   }
 
 const documentInit = (synth: Synth, keyboard: Keyboard) => {
-    //Preset saving and loading
 
+    //Preset saving and loading
     const saveDefaultPresets = () => {
         fetchDefaultPresets().then(data => {
             data.forEach((item: any) => {
@@ -47,14 +47,16 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const generatePresetOption = (preset: any) => {
-        const optionElement = document.createElement("option")
-        optionElement.value = preset["name"]
-        optionElement.text = preset["name"]
-
-        if(preset["name"] === "Default") {
-            optionElement.selected = true
+        if(document.querySelector(`option[value='${preset["name"]}']`) === null) {
+            const optionElement = document.createElement("option")
+            optionElement.value = preset["name"]
+            optionElement.text = preset["name"]
+    
+            if(preset["name"] === "Default") {
+                optionElement.selected = true
+            }
+            document.querySelector('select[name="load-preset"]').appendChild(optionElement)
         }
-        document.querySelector('select[name="load-presets"]').appendChild(optionElement)
     }
 
     const loadPreset = (name: string) => {
@@ -120,16 +122,52 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         setDefaults(synth)
     }
 
+    const onSavePresetInput = (e: any) => {
+        //if text container empty, alert require name
+        //else save preset with name as key
+        if(savePresetNameElement.value === "") {
+            savePresetNameElement.required = true
+            alert("Please enter a name for your preset")
+        } else {
+            console.log(savePresetNameElement.value)
+            savePresetNameElement.required = false
+            var preset: object = {
+                name: savePresetNameElement.value,
+                waveType: parseInt(waveTypeElement.value),
+                filterType: lowPassElement.checked ? 0 : 1, //TODO: when filters are added
+                cutoff: parseFloat(cutoffElement.value),
+                envCutoff: parseFloat(envCutoffElement.value),
+                amplitudeEnv: {
+                    attack: parseInt(ampAttackElement.value),
+                    decay: parseInt(ampDecayElement.value),
+                    sustain: parseInt(ampDecayElement.value),
+                    release: parseInt(ampReleaseElement.value)
+                },
+                filterEnv: {
+                    attack: parseInt(filterAttackElement.value),
+                    decay: parseInt(filterDecayElement.value),
+                    sustain: parseInt(filterSustainElement.value),
+                    release: parseInt(filterReleaseElement.value)
+                },
+                offset: parseInt(octaveDisplayElement.innerHTML)
+            }
+            localStorage.setItem(savePresetNameElement.value, JSON.stringify(preset))
+            console.log("Preset saved: ")
+            console.log(preset)
+            populatePresetsDropdown()
+        }
+    }
+
     const onSimpleWaveInput = (e: any) => {
         synth.setWaveType(e.currentTarget.value)
     }
 
     const onLowPassInput = (e: any) => {
-        synth.setFilterType('lowpass')
+        synth.setFilterType(0)
     }
 
     const onHighPassInput = (e: any) => {
-        synth.setFilterType('highpass')
+        synth.setFilterType(1)
     }
 
     const onCutoffInput = (e: any) => {
@@ -173,7 +211,9 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
-    const loadPresetElement = document.querySelector('select[name="load-presets"]')
+    const loadPresetElement = <HTMLInputElement>document.querySelector('select[name="load-preset"]')
+    const savePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="save-preset"]')
+    const savePresetNameElement = <HTMLInputElement>document.querySelector('input[name="save-preset-name"]')
 
     const waveTypeElement = <HTMLInputElement>document.querySelector('input[name="wave-input"]')
 
@@ -202,9 +242,11 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const oscilloscopeElement = document.getElementById('oscilloscope')
     const spectrographElement = document.getElementById('spectrograph')
 
-    //Load presets from assets, write to local storage
+    //save default presets to localStorage
     saveDefaultPresets()
+    //populate dropdown with all presets in localStorage
     populatePresetsDropdown()
+    //load default preset on DOM
     loadPreset("Default")
     
 
@@ -213,6 +255,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
 
     registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
+    registerInputElement(savePresetButtonElement, 'click', onSavePresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
 

@@ -51,7 +51,14 @@
     &.presets {
         text-align: left;
         justify-content: flex-start;
+        flex-direction: row;
     }
+}
+
+.divider {
+    max-width: 0;
+    border-left: 1px solid $border-gray;
+    margin: 0 20px;
 }
 
 .wave-icons {
@@ -135,7 +142,7 @@
     }
 }
 
-.load-presets-container {
+.preset-container {
     display: flex;
     flex-direction: column;
     width: min-content;
@@ -143,6 +150,19 @@
 
     > * {
         margin: 5px;
+    }
+
+    &.load {
+        select {
+            margin-top: 14px;
+        }
+    }
+}
+
+input[name=save-preset-name] {
+    &:invalid {
+        background-color: #ffe0e0;
+        color: #ff0000;
     }
 }
 

@@ -28,12 +28,20 @@
       </section>
     </div>
     <div class="row">
+      <div class="presets-heading opener">
+        <!--TODO: hide preset options on page load, implement drawer -->
+      </div>
       <section class="control-panel presets">
-        <div class="load-presets-container">
-          <label for="load-presets">Load a preset: </label>
-          <select name="load-presets">
+        <div class="preset-container load">
+          <label for="load-preset">Load preset</label>
+          <select name="load-preset">
             <!--option value="default" selected>Default</option-->
           </select>
+        </div>
+        <div class="divider"></div>
+        <div class="preset-container save">
+          <button name="save-preset">Save As</button>
+          <input type="text" name="save-preset-name">
         </div>
       </section>
     </div>
