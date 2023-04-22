@@ -1,0 +1,23 @@
+{
+    "name": "Default",
+    "waveType": 3,
+    "filterType": "lowpass",
+    "cutoff": 3.75,
+    "envCutoff": 0,
+    "resonance": 4,
+    "amplitudeEnv":
+    {
+        "attack": 20,
+        "decay": 40,
+        "sustain": 60,
+        "release": 10
+    },
+    "filterEnv":
+    {
+        "attack": 0,
+        "decay": 0,
+        "sustain": 0,
+        "release": 0
+    },
+    "offset": 0
+}

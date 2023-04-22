@@ -1,0 +1,23 @@
+{
+    "name": "Marimba",
+    "waveType": 3,
+    "filterType": "lowpass",
+    "cutoff": 3.45,
+    "envCutoff": 1.25,
+    "resonance": 3,
+    "amplitudeEnv":
+    {
+        "attack": 1,
+        "decay": 36,
+        "sustain": 0,
+        "release": 25
+    },
+    "filterEnv":
+    {
+        "attack": 0,
+        "decay": 30,
+        "sustain": 0,
+        "release": 64
+    },
+    "offset": 1
+}
