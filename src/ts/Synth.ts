@@ -3,6 +3,23 @@ import { Filter } from './Filter.js'
 import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
 
+/*
+Synth class
+
+The primary class for this project, has:
+
+A context type AudioContext, the root of all audio functionality,
+a notes Map, to hold all possible notes playable by the synth,
+an Amplitude Envelope, which describes how a note's amplitude behaves over time,
+a Filter Envelope, which describes how a note's filter's cutoff behaves over time,
+a Filter, a class which contains basic synth filter properties like cutoff, envelope cutoff, and resonance,
+a global NodeChain, a chain of AudioNodes that all signals are connected to,
+a tuningSystem, a map of MIDI note names to frequencies, as of now, the set of equal temperament frequencies,
+an octaveOffset number, an integer which represents how many octaves the keyboard is offset by,
+and
+an array of waveTypes, containing all the possible wave types. TODO Custom waveType,
+an array of filterTypes, containing all the possible filter types. TODO highpass and more
+*/
 export class Synth {
     context: AudioContext
     notes: Map<string, Note>
@@ -11,7 +28,6 @@ export class Synth {
     filter: Filter
     globalChain: NodeChain
     tuningSystem: Map<string, number>
-    waveType: string
     octaveOffset: number = 0
 
     readonly waveTypes: Array<string> = [
@@ -22,6 +38,7 @@ export class Synth {
         'custom'
     ]
 
+    //if you add more filters, be sure to update document listener and preset logic for filters
     readonly filterTypes: Array<string> = [
         'lowpass',
         'highpass'
@@ -46,10 +63,9 @@ export class Synth {
         mainGain.gain.value = 0.25
         volumeGain.gain.value = 0.5
         this.notes = new Map<string, Note>()
-
-        //this.waveType = "sine"
     }
 
+    //init sub-method - create one playable note, assign to it a keyboard Key
     private createNote(value: number, key: string) {
         const note = new Note(this.context, value)
         note.connect(this.globalChain.first())
@@ -57,16 +73,20 @@ export class Synth {
         this.notes.set(key, note)
     }
 
+
+    //Debug method - return sum of base and output latencies
     get latency(): number {
         return this.context.baseLatency + this.context.outputLatency
     }
 
+    //init method - create each playable note
     init() {
         this.tuningSystem.forEach((value, key) => {
             this.createNote(value, key)
         })
     }
 
+    //Start playing a note - if the note is playable, start attack -> decay -> release sequence
     triggerNoteStart(name: string) {
         name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
         let note: Note = this.notes.has(name) ? this.notes.get(name) : null
@@ -92,6 +112,7 @@ export class Synth {
         }
     }
 
+    //Stop playing a note - if the note is playable, start sustain -> release -> stop sequence
     triggerNoteStop(name: string) {
         name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
         let note: Note = this.notes.has(name) ? this.notes.get(name) : null
@@ -108,6 +129,7 @@ export class Synth {
         }
     }
 
+    //Update all notes to a wave type
     setWaveType(type: number) {
         if(this.waveTypes[type] !== 'custom') {
             this.notes.forEach((value: Note, key: string) => {
@@ -116,11 +138,13 @@ export class Synth {
         }
     }
 
+    //Sets the master volume of the synth
     setMasterVolume(value: number) {
         const mainGain = <GainNode>this.globalChain.last()
         mainGain.gain.value = value / 100.0
     }
 
+    //Sets amplitude envelope parameters
     setAmpEnvelope(name: string, value: number) {
         switch(name) {
             case "amp-attack-input":
@@ -138,6 +162,7 @@ export class Synth {
         }
     }
 
+    //Sets filter envelope parameters
     setFilterEnvelope(name: string, value: number) {
         switch(name) {
             case "filter-attack-input":
@@ -155,10 +180,12 @@ export class Synth {
         }
     }
 
+    //Sets filter type
     setFilterType(value: number) {
         this.filter.type = this.filterTypes[value]
     }
 
+    //Updates synth filter cutoff and all notes' filter cutoffs
     setFilterCutoff(factor: number) {
         this.filter.cutoff = factor
         this.notes.forEach((value: Note, key: string) => {
@@ -166,10 +193,12 @@ export class Synth {
         })
     }
 
+    //Sets synth filter envelope cutoff
     setFilterEnvCutoff(factor: number) {
         this.filter.envCutoff = factor
     }
 
+    //Sets synth filter resonance
     setFilterResonance(value: number) {
         this.filter.resonance = value
         this.notes.forEach((val: Note, key: string) => {
@@ -177,6 +206,7 @@ export class Synth {
         })
     }
 
+    //Sets synth octave offset
     setOctaveOffset(offset: number) {
         this.octaveOffset = offset
     }
