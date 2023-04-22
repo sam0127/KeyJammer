@@ -64,13 +64,12 @@ export class Synth {
 
     triggerNoteStart(name: string) {
         name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
-        console.log(name)
         let note: Note = this.notes.has(name) ? this.notes.get(name) : null
 
         if(note !== null) {
             const startTime: number = this.context.currentTime
             note.gain.gain.cancelScheduledValues(startTime)
-            note.gain.gain.setValueAtTime(0, startTime)
+            note.gain.gain.setValueAtTime(note.gain.gain.value, startTime)
             note.gain.gain.linearRampToValueAtTime(1.0, startTime + this.ampEnvelope.attack)
             note.gain.gain.linearRampToValueAtTime(this.ampEnvelope.sustain, startTime + this.ampEnvelope.attack + this.ampEnvelope.decay)
     
@@ -174,7 +173,6 @@ export class Synth {
     }
 
     setOctaveOffset(offset: number) {
-        this.octaveOffset += offset
-        console.log(this.octaveOffset)
+        this.octaveOffset = offset
     }
 }

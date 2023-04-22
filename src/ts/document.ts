@@ -6,7 +6,76 @@ const registerInputElement = (element: Element, event: string, listener: (e: Eve
     element.addEventListener(event, listener)
 }
 
+async function fetchDefaultPresets() {
+    let presets = []
+    var response = await fetch("./assets/defaultpresets/default.json");
+    var jsonData = await response.json();
+    presets[0] = jsonData
+
+    response = await fetch("./assets/defaultpresets/trumpet.json");
+    jsonData = await response.json();
+    presets[1] = jsonData
+
+    response = await fetch("./assets/defaultpresets/marimba.json");
+    jsonData = await response.json();
+    presets[2] = jsonData
+
+    response = await fetch("./assets/defaultpresets/wow.json");
+    jsonData = await response.json();
+    presets[3] = jsonData
+    return presets
+  }
+
 const documentInit = (synth: Synth, keyboard: Keyboard) => {
+    //Preset saving and loading
+
+    const saveDefaultPresets = () => {
+        fetchDefaultPresets().then(data => {
+            data.forEach((item: any) => {
+                localStorage.setItem(item["name"], JSON.stringify(item))
+            })
+        })
+    }
+
+    const populatePresetsDropdown = () => {
+        //get presets from local storage
+        var item: any
+        for(let i = 0; i < localStorage.length; i++) {
+            item = JSON.parse(localStorage.getItem(localStorage.key(i)))
+            generatePresetOption(item)
+        }
+    }
+
+    const generatePresetOption = (preset: any) => {
+        const optionElement = document.createElement("option")
+        optionElement.value = preset["name"]
+        optionElement.text = preset["name"]
+
+        if(preset["name"] === "Default") {
+            optionElement.selected = true
+        }
+        document.querySelector('select[name="load-presets"]').appendChild(optionElement)
+    }
+
+    const loadPreset = (name: string) => {
+        const preset = JSON.parse(localStorage.getItem(name))
+
+        waveTypeElement.value = preset["waveType"]
+
+        cutoffElement.value = preset["cutoff"]
+        envCutoffElement.value = preset["envCutoff"]
+        resonanceElement.value = preset["resonance"]
+        ampAttackElement.value = preset["amplitudeEnv"]["attack"]
+        ampDecayElement.value = preset["amplitudeEnv"]["decay"]
+        ampSustainElement.value = preset["amplitudeEnv"]["sustain"]
+        ampReleaseElement.value = preset["amplitudeEnv"]["release"]
+        filterAttackElement.value = preset["filterEnv"]["attack"]
+        filterDecayElement.value = preset["filterEnv"]["decay"]
+        filterSustainElement.value = preset["filterEnv"]["sustain"]
+        filterReleaseElement.value = preset["filterEnv"]["release"]
+        octaveDisplayElement.innerHTML = preset["offset"]
+    }
+
     //sets default synth properties from DOM
     const setDefaults = (synth: Synth) => {
         synth.setWaveType(parseInt(waveTypeElement.value))
@@ -22,6 +91,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         synth.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
         synth.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
         synth.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
+        synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
     }
 
     //User interaction event handlers below
@@ -43,6 +113,11 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
     const onMasterVolumeInput = (e: any) => {
         synth.setMasterVolume(e.currentTarget.value)
+    }
+
+    const onLoadPresetInput = (e: any) => {
+        loadPreset(e.currentTarget.value)
+        setDefaults(synth)
     }
 
     const onSimpleWaveInput = (e: any) => {
@@ -78,18 +153,27 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onOctaveIncreaseInput = (e: any) => {
-        synth.setOctaveOffset(1)
-        octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
+        if(parseInt(octaveDisplayElement.innerHTML) < 2) {
+            keyboard.clearAllNotes(synth)
+            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
+            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
+        }
+
     }
 
     const onOctaveDecreaseInput = (e: any) => {
-        synth.setOctaveOffset(-1)
-        octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
+        if(parseInt(octaveDisplayElement.innerHTML) > -1) {
+            keyboard.clearAllNotes(synth)
+            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
+            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
+        }
     }
 
     //UI Elements
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
+
+    const loadPresetElement = document.querySelector('select[name="load-presets"]')
 
     const waveTypeElement = <HTMLInputElement>document.querySelector('input[name="wave-input"]')
 
@@ -118,9 +202,17 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const oscilloscopeElement = document.getElementById('oscilloscope')
     const spectrographElement = document.getElementById('spectrograph')
 
+    //Load presets from assets, write to local storage
+    saveDefaultPresets()
+    populatePresetsDropdown()
+    loadPreset("Default")
+    
+
     //Attach Event handlers to appropriate element
     registerInputElement(allowAudioElement, 'click', onAllowAudio)
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
+
+    registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
 
@@ -141,6 +233,10 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
     registerInputElement(octaveIncreaseElement, 'click', onOctaveIncreaseInput)
     registerInputElement(octaveDecreaseElement, 'click', onOctaveDecreaseInput)
+
+    window.addEventListener('blur', (e: any) => {
+       // keyboard.clearAllNotes(synth)
+    })
 }
 
 export { documentInit }
