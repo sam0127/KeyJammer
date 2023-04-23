@@ -137,10 +137,11 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
                 filterType: lowPassElement.checked ? 0 : 1, //TODO: when filters are added
                 cutoff: parseFloat(cutoffElement.value),
                 envCutoff: parseFloat(envCutoffElement.value),
+                resonance: parseInt(resonanceElement.value),
                 amplitudeEnv: {
                     attack: parseInt(ampAttackElement.value),
                     decay: parseInt(ampDecayElement.value),
-                    sustain: parseInt(ampDecayElement.value),
+                    sustain: parseInt(ampSustainElement.value),
                     release: parseInt(ampReleaseElement.value)
                 },
                 filterEnv: {
