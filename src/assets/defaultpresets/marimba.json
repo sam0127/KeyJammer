@@ -8,16 +8,16 @@
     "amplitudeEnv":
     {
         "attack": 1,
-        "decay": 36,
+        "decay": 60,
         "sustain": 0,
-        "release": 25
+        "release": 40
     },
     "filterEnv":
     {
         "attack": 0,
-        "decay": 30,
+        "decay": 60,
         "sustain": 0,
-        "release": 64
+        "release": 40
     },
     "offset": 1
 }
