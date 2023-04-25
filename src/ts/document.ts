@@ -105,6 +105,19 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     //User interaction event handlers below
+    const onHeadingClick = (e: any) => {
+        const rowElements = document.querySelectorAll('.row.' + e.currentTarget.classList[1])
+        rowElements.forEach(rowElement => {
+            if(!rowElement.classList.contains('closed')) {
+                rowElement.classList.add('closed')
+                e.currentTarget.classList.add('closed')
+            } else {
+                rowElement.classList.remove('closed')
+                e.currentTarget.classList.remove('closed')
+            }
+        })
+    }
+
     const onAllowAudio = (e: any) => {
         if(synth.context.state === 'suspended') {
             console.log("Initializing Audio")
@@ -223,6 +236,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     //UI Elements
+    const headingElements: NodeListOf<Element> = document.querySelectorAll('.heading-container')
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
@@ -266,6 +280,10 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     populatePresetsDropdown()
     //load default preset on DOM
     loadPreset("Default")
+
+    headingElements.forEach(headingElement => {
+        registerInputElement(headingElement, 'click', onHeadingClick)
+    })
     
 
     //Attach Event handlers to appropriate element

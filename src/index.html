@@ -27,10 +27,13 @@
         <input type="range" name="master-volume" value="50"></input>
       </section>
     </div>
-    <div class="row">
-      <div class="presets-heading opener">
-        <!--TODO: hide preset options on page load, implement drawer -->
+    <div class="row-heading">
+      <div class="heading-container presets">
+        <h2>Presets</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+    </div>
+    <div class="row presets">
       <section class="control-panel presets">
         <div class="preset-container load">
           <label for="load-preset">Load preset</label>
@@ -54,7 +57,13 @@
         </div>
       </section>
     </div>
-    <div class="row">
+    <div class="row-heading">
+      <div class="heading-container controls">
+        <h2>Synth Controls</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
+      </div>
+    </div>
+    <div class="row controls">
       <section class="control-panel simple-wave-controls">
         <div class="vertical-slider-container">
           <label for="wave-input">Wave</label>
@@ -138,7 +147,7 @@
         </div>
       </section>
     </div>
-    <div class="row">
+    <div class="row controls">
       <section class="control-panel octave-offset">
         <label>Octave +</label>
         <div class="octave-offset-container">
@@ -148,7 +157,13 @@
         </div>
       </section>
     </div>
-    <div class="row">
+    <div class="row-heading">
+      <div class="heading-container visualization">
+        <h2>Visualization</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
+      </div>
+    </div>
+    <div class="row visualization">
       <section class="control-panel oscilloscope">
         <label>Oscilloscope</label>
         <canvas id="oscilloscope" width="376" height="200">

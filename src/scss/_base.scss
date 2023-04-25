@@ -21,6 +21,10 @@ main {
     flex-direction: column;
 }
 
+h2 {
+    font-size: $font-l;
+}
+
 label, h3 {
     font-size: $font-m;
     font-weight: 400;
