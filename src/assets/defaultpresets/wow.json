@@ -1,0 +1,23 @@
+{
+    "name": "Wow bass",
+    "waveType": 2,
+    "filterType": 0,
+    "cutoff": 0.75,
+    "envCutoff": 4,
+    "resonance": 4,
+    "amplitudeEnv":
+    {
+        "attack": 8,
+        "decay": 100,
+        "sustain": 100,
+        "release": 12
+    },
+    "filterEnv":
+    {
+        "attack": 25,
+        "decay": 25,
+        "sustain": 20,
+        "release": 8
+    },
+    "offset": -1
+}

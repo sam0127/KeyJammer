@@ -6,7 +6,117 @@ const registerInputElement = (element: Element, event: string, listener: (e: Eve
     element.addEventListener(event, listener)
 }
 
+async function fetchDefaultPresets() {
+    let presets = []
+    var response = await fetch("./assets/defaultpresets/default.json");
+    var jsonData = await response.json();
+    presets[0] = jsonData
+
+    response = await fetch("./assets/defaultpresets/trumpet.json");
+    jsonData = await response.json();
+    presets[1] = jsonData
+
+    response = await fetch("./assets/defaultpresets/marimba.json");
+    jsonData = await response.json();
+    presets[2] = jsonData
+
+    response = await fetch("./assets/defaultpresets/wow.json");
+    jsonData = await response.json();
+    presets[3] = jsonData
+    return presets
+  }
+
 const documentInit = (synth: Synth, keyboard: Keyboard) => {
+
+    //Preset saving and loading
+    const saveDefaultPresets = () => {
+        fetchDefaultPresets().then(data => {
+            data.forEach((item: any) => {
+                localStorage.setItem(item["name"], JSON.stringify(item))
+            })
+        })
+    }
+
+    const populatePresetsDropdown = () => {
+        //get presets from local storage
+        for(let i = 0; i < loadPresetElement.options.length; i++) {
+            loadPresetElement.options[i].remove()
+        }
+        for(let i = 0; i < deletePresetElement.options.length; i++) {
+            deletePresetElement.options[i].remove()
+        }
+        for(let i = 0; i < localStorage.length; i++) {
+            generatePresetOption(loadPresetElement, localStorage.key(i))
+            generatePresetOption(deletePresetElement, localStorage.key(i))
+        }
+        generatePresetOption(deletePresetElement, " ")
+    }
+
+    const generatePresetOption = (selectElement: HTMLSelectElement, name: string) => {
+        if(selectElement.querySelector(`option[value='${name}']`) === null) {
+            const optionElement = document.createElement("option")
+            optionElement.value = name
+            optionElement.text = name
+    
+            if(name === "Default" && selectElement.name === "load-preset"
+                || name === " " && selectElement.name === "delete-preset"
+            ) {
+                optionElement.selected = true
+            }
+            selectElement.appendChild(optionElement)
+        }
+    }
+
+    const loadPreset = (name: string) => {
+        const preset = JSON.parse(localStorage.getItem(name))
+
+        waveTypeElement.value = preset["waveType"]
+
+        cutoffElement.value = preset["cutoff"]
+        envCutoffElement.value = preset["envCutoff"]
+        resonanceElement.value = preset["resonance"]
+        ampAttackElement.value = preset["amplitudeEnv"]["attack"]
+        ampDecayElement.value = preset["amplitudeEnv"]["decay"]
+        ampSustainElement.value = preset["amplitudeEnv"]["sustain"]
+        ampReleaseElement.value = preset["amplitudeEnv"]["release"]
+        filterAttackElement.value = preset["filterEnv"]["attack"]
+        filterDecayElement.value = preset["filterEnv"]["decay"]
+        filterSustainElement.value = preset["filterEnv"]["sustain"]
+        filterReleaseElement.value = preset["filterEnv"]["release"]
+        octaveDisplayElement.innerHTML = preset["offset"]
+    }
+
+    //sets default synth properties from DOM
+    const setDefaults = (synth: Synth) => {
+        synth.setWaveType(parseInt(waveTypeElement.value))
+        //synth.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
+        synth.setFilterCutoff(parseFloat(cutoffElement.value))
+        synth.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
+        synth.setFilterResonance(parseInt(resonanceElement.value))
+        synth.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
+        synth.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
+        synth.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
+        synth.setAmpEnvelope(ampReleaseElement.name, parseInt(ampReleaseElement.value))
+        synth.setFilterEnvelope(filterAttackElement.name, parseInt(filterAttackElement.value))
+        synth.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
+        synth.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
+        synth.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
+        synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
+    }
+
+    //User interaction event handlers below
+    const onHeadingClick = (e: any) => {
+        const rowElements = document.querySelectorAll('.row.' + e.currentTarget.classList[1])
+        rowElements.forEach(rowElement => {
+            if(!rowElement.classList.contains('closed')) {
+                rowElement.classList.add('closed')
+                e.currentTarget.classList.add('closed')
+            } else {
+                rowElement.classList.remove('closed')
+                e.currentTarget.classList.remove('closed')
+            }
+        })
+    }
 
     const onAllowAudio = (e: any) => {
         if(synth.context.state === 'suspended') {
@@ -14,6 +124,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
             synth.context.resume()
             synth.init()
+            setDefaults(synth)
             keyboard.init(synth)
             oscilloscopeInit(
                 <HTMLCanvasElement>oscilloscopeElement,
@@ -24,71 +135,164 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onMasterVolumeInput = (e: any) => {
-        synth.updateMasterVolume(e.currentTarget.value)
+        synth.setMasterVolume(e.currentTarget.value)
+    }
+
+    const onLoadPresetInput = (e: any) => {
+        loadPreset(e.currentTarget.value)
+        setDefaults(synth)
+    }
+
+    const onSavePresetInput = (e: any) => {
+        //if text container empty, alert require name
+        //else save preset with name as key
+        if(savePresetNameElement.value === "") {
+            savePresetNameElement.required = true
+            alert("Please enter a name for your preset")
+        } else {
+            console.log(savePresetNameElement.value)
+            savePresetNameElement.required = false
+            var preset: object = {
+                name: savePresetNameElement.value,
+                waveType: parseInt(waveTypeElement.value),
+                filterType: lowPassElement.checked ? 0 : 1, //TODO: when filters are added
+                cutoff: parseFloat(cutoffElement.value),
+                envCutoff: parseFloat(envCutoffElement.value),
+                resonance: parseInt(resonanceElement.value),
+                amplitudeEnv: {
+                    attack: parseInt(ampAttackElement.value),
+                    decay: parseInt(ampDecayElement.value),
+                    sustain: parseInt(ampSustainElement.value),
+                    release: parseInt(ampReleaseElement.value)
+                },
+                filterEnv: {
+                    attack: parseInt(filterAttackElement.value),
+                    decay: parseInt(filterDecayElement.value),
+                    sustain: parseInt(filterSustainElement.value),
+                    release: parseInt(filterReleaseElement.value)
+                },
+                offset: parseInt(octaveDisplayElement.innerHTML)
+            }
+            localStorage.setItem(savePresetNameElement.value, JSON.stringify(preset))
+            console.log("Preset saved: ")
+            console.log(preset)
+            populatePresetsDropdown()
+        }
+    }
+
+    const onDeletePresetInput = (e: any) => {
+        console.log("Deleting preset " + deletePresetElement.value)
+        localStorage.removeItem(deletePresetElement.value)
+        populatePresetsDropdown()
     }
 
     const onSimpleWaveInput = (e: any) => {
-        synth.updateWaveType(e.currentTarget.value)
+        synth.setWaveType(e.currentTarget.value)
     }
 
     const onLowPassInput = (e: any) => {
-        synth.updateFilterType('lowpass')
+        synth.setFilterType(0)
     }
 
     const onHighPassInput = (e: any) => {
-        synth.updateFilterType('highpass')
+        synth.setFilterType(1)
     }
 
     const onCutoffInput = (e: any) => {
-        synth.updateFilterCutoff(parseFloat(e.currentTarget.value))
+        synth.setFilterCutoff(parseFloat(e.currentTarget.value))
     }
 
     const onEnvCutoffInput = (e: any) => {
-        synth.updateFilterEnvCutoff(parseFloat(e.currentTarget.value))
+        synth.setFilterEnvCutoff(parseFloat(e.currentTarget.value))
     }
 
     const onResonanceInput = (e: any) => {
-        synth.updateFilterResonance(e.currentTarget.value)
+        synth.setFilterResonance(e.currentTarget.value)
     }
 
     const onAmpEnvelopeInput = (e: any) => {
-        synth.updateAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
+        synth.setAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
     const onFilterEnvelopeInput = (e: any) => {
-        synth.updateFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
+        synth.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
+    const onOctaveIncreaseInput = (e: any) => {
+        if(parseInt(octaveDisplayElement.innerHTML) < 2) {
+            keyboard.clearAllNotes(synth)
+            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
+            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
+        }
 
+    }
 
+    const onOctaveDecreaseInput = (e: any) => {
+        if(parseInt(octaveDisplayElement.innerHTML) > -1) {
+            keyboard.clearAllNotes(synth)
+            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
+            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
+        }
+    }
+
+    //UI Elements
+    const headingElements: NodeListOf<Element> = document.querySelectorAll('.heading-container')
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
-    const waveTypeElement = document.querySelector('input[name="wave-input"]')
-
-    const lowPassElement = document.getElementById('low-pass')
-    const highPassElement = document.getElementById('high-pass')
-
-    const cutoffElement = document.querySelector('input[name="cutoff"]')
-    const envCutoffElement = document.querySelector('input[name="env-cutoff"]')
-    const resonanceElement = document.querySelector('input[name="resonance"]')
+    const loadPresetElement = <HTMLSelectElement>document.querySelector('select[name="load-preset"]')
+    const savePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="save-preset"]')
+    const savePresetNameElement = <HTMLInputElement>document.querySelector('input[name="save-preset-name"]')
+    const deletePresetElement = <HTMLSelectElement>document.querySelector('select[name="delete-preset"]')
+    const deletePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="delete-preset"]')
 
 
-    const ampAttackElement = document.querySelector('input[name="amp-attack-input"]')
-    const ampDecayElement = document.querySelector('input[name="amp-decay-input"]')
-    const ampSustainElement = document.querySelector('input[name="amp-sustain-input"]')
-    const ampReleaseElement = document.querySelector('input[name="amp-release-input"]')
+    const waveTypeElement = <HTMLInputElement>document.querySelector('input[name="wave-input"]')
 
-    const filterAttackElement = document.querySelector('input[name="filter-attack-input"]')
-    const filterDecayElement = document.querySelector('input[name="filter-decay-input"]')
-    const filterSustainElement = document.querySelector('input[name="filter-sustain-input"]')
-    const filterReleaseElement = document.querySelector('input[name="filter-release-input"]')
+    const lowPassElement = <HTMLInputElement>document.getElementById('low-pass')
+    const highPassElement = <HTMLInputElement>document.getElementById('high-pass')
+
+    const cutoffElement = <HTMLInputElement>document.querySelector('input[name="cutoff"]')
+    const envCutoffElement = <HTMLInputElement>document.querySelector('input[name="env-cutoff"]')
+    const resonanceElement = <HTMLInputElement>document.querySelector('input[name="resonance"]')
+
+
+    const ampAttackElement = <HTMLInputElement>document.querySelector('input[name="amp-attack-input"]')
+    const ampDecayElement = <HTMLInputElement>document.querySelector('input[name="amp-decay-input"]')
+    const ampSustainElement = <HTMLInputElement>document.querySelector('input[name="amp-sustain-input"]')
+    const ampReleaseElement = <HTMLInputElement>document.querySelector('input[name="amp-release-input"]')
+
+    const filterAttackElement = <HTMLInputElement>document.querySelector('input[name="filter-attack-input"]')
+    const filterDecayElement = <HTMLInputElement>document.querySelector('input[name="filter-decay-input"]')
+    const filterSustainElement = <HTMLInputElement>document.querySelector('input[name="filter-sustain-input"]')
+    const filterReleaseElement = <HTMLInputElement>document.querySelector('input[name="filter-release-input"]')
+
+    const octaveIncreaseElement = document.querySelector('button[name="increase-octave"]')
+    const octaveDecreaseElement = document.querySelector('button[name="decrease-octave"]')
+    const octaveDisplayElement = document.querySelector('.octave-offset-container span')
 
     const oscilloscopeElement = document.getElementById('oscilloscope')
     const spectrographElement = document.getElementById('spectrograph')
 
+    //save default presets to localStorage
+    saveDefaultPresets()
+    //populate dropdown with all presets in localStorage
+    populatePresetsDropdown()
+    //load default preset on DOM
+    loadPreset("Default")
+
+    headingElements.forEach(headingElement => {
+        registerInputElement(headingElement, 'click', onHeadingClick)
+    })
+    
+
+    //Attach Event handlers to appropriate element
     registerInputElement(allowAudioElement, 'click', onAllowAudio)
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
+
+    registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
+    registerInputElement(savePresetButtonElement, 'click', onSavePresetInput)
+    registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
 
@@ -106,6 +310,13 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     registerInputElement(filterDecayElement, 'input', onFilterEnvelopeInput)
     registerInputElement(filterSustainElement, 'input', onFilterEnvelopeInput)
     registerInputElement(filterReleaseElement, 'input', onFilterEnvelopeInput)
+
+    registerInputElement(octaveIncreaseElement, 'click', onOctaveIncreaseInput)
+    registerInputElement(octaveDecreaseElement, 'click', onOctaveDecreaseInput)
+
+    window.addEventListener('blur', (e: any) => {
+       // keyboard.clearAllNotes(synth)
+    })
 }
 
 export { documentInit }

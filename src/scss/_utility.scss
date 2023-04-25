@@ -2,25 +2,48 @@
 $border-gray: #414141;
 
 //filter
-$hover-filter: brightness(95%);
+$hover-filter: brightness(90%);
 $click-filter: brightness(70%);
 //Font
 $main-font: 'Courier New', Courier, monospace;
 $font-xs: 12px;
 $font-s: 16px;
 $font-m: 20px;
-$font-l: 32px;
+$font-l: 28px;
 $font-xl: 48px;
 
 //Margin and Padding
-@mixin amargin($mtb: 0) {
-    margin: $mtb auto;
+@mixin amargin($mt: 0, $mb: 0) {
+    margin: $mt auto $mb auto;
 }
 //Dimensions
-$content-width: 800px;
+$content-width: 900px;
 
 //Misc
 @mixin border($r: 10px) {
     border: 1px solid $border-gray;
     border-radius: $r;
+}
+
+@mixin thumb() {
+    transform: rotateZ(45deg);
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    height: 24px;
+    width: 24px;
+    background: #efefef;
+    cursor: pointer;
+    margin-top: 5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+
+    &:hover{
+        filter: $hover-filter;
+    }
+}
+
+@mixin track() {
+    height: 1px;
+    border: 1px solid black;
 }

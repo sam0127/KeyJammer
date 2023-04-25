@@ -1,0 +1,23 @@
+{
+    "name": "Trumpet",
+    "waveType": 2,
+    "filterType": 0,
+    "cutoff": 3.75,
+    "envCutoff": 1,
+    "resonance": 4,
+    "amplitudeEnv":
+    {
+        "attack": 5,
+        "decay": 82,
+        "sustain": 88,
+        "release": 15
+    },
+    "filterEnv":
+    {
+        "attack": 49,
+        "decay": 36,
+        "sustain": 100,
+        "release": 16
+    },
+    "offset": 1
+}

@@ -61,6 +61,7 @@ gulp.task('watch', () => {
     gulp.watch(config.src.html, gulp.series('html'));
     gulp.watch(config.src.sass, gulp.series('sass'));
     gulp.watch(config.src.ts, gulp.series('ts'));
+    gulp.watch(config.src.assets, gulp.series('assets'));
 });
 
 gulp.task("default",

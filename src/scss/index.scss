@@ -1,10 +1,36 @@
 @use 'base';
 @use 'utility' as *;
 
-.row {
+.row, .row-heading {
     display: flex;
-    //justify-self: stretch;
     width: 100%;
+}
+
+.row-heading {
+    justify-content: center;
+}
+
+.closed {
+    display: none;
+
+    img.arrow-icon {
+        transform: rotateZ(180deg);
+    }
+}
+
+.heading-container {
+    display: flex;
+    width: min-content;
+    cursor: pointer;
+    white-space: nowrap;
+
+    > * {
+        margin: 20px 10px;
+    }
+
+    img {
+        width: 20px;
+    }
 }
 
 .control-panel {
@@ -39,14 +65,38 @@
             top: 10px;
         }
     }
+
+    &.octave-offset {
+        max-width: min-content;
+
+        label {
+            white-space: nowrap;
+        }
+    }
+
+    &.presets {
+        text-align: left;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+}
+
+.divider {
+    max-width: 0;
+    border-left: 1px solid $border-gray;
+    margin: 0 20px;
 }
 
 .wave-icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px;
     list-style: none;
     margin: 0;
     padding: 0;
     position: relative;
-    top: 18px;
+    top: 22px;
     right: 20px;
 
     li {
@@ -71,9 +121,9 @@
     }
 
     input[name=wave-input] {
-        left: -40px;
-        top: 120px;
-        width: 160px;
+        left: -69px;
+        top: 150px;
+        width: 200px;
     }
 }
 
@@ -95,6 +145,65 @@
 
     label {
         font-size: $font-s;
+    }
+}
+
+.octave-offset-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        background: none;
+        border: none;
+        padding: 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    span {
+        font-size: $font-s;
+    }
+}
+
+.preset-container {
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+    white-space: nowrap;
+
+    > * {
+        margin: 5px;
+    }
+
+    &.load, &.delete {
+        select {
+            margin-top: 14px;
+        }
+    }
+
+    &.delete {
+        flex-direction: row;
+
+        .left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 10px;
+            //max-height: 60px;
+            align-self: center;
+        }
+    }
+}
+
+input[name=save-preset-name] {
+    &:invalid {
+        background-color: #ffe0e0;
     }
 }
 
