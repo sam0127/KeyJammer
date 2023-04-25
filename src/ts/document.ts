@@ -23,6 +23,10 @@ async function fetchDefaultPresets() {
     response = await fetch("./assets/defaultpresets/wow.json");
     jsonData = await response.json();
     presets[3] = jsonData
+
+    response = await fetch("./assets/defaultpresets/steelstring.json");
+    jsonData = await response.json();
+    presets[4] = jsonData
     return presets
   }
 
