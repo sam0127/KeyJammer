@@ -39,23 +39,31 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
     const populatePresetsDropdown = () => {
         //get presets from local storage
-        var item: any
-        for(let i = 0; i < localStorage.length; i++) {
-            item = JSON.parse(localStorage.getItem(localStorage.key(i)))
-            generatePresetOption(item)
+        for(let i = 0; i < loadPresetElement.options.length; i++) {
+            loadPresetElement.options[i].remove()
         }
+        for(let i = 0; i < deletePresetElement.options.length; i++) {
+            deletePresetElement.options[i].remove()
+        }
+        for(let i = 0; i < localStorage.length; i++) {
+            generatePresetOption(loadPresetElement, localStorage.key(i))
+            generatePresetOption(deletePresetElement, localStorage.key(i))
+        }
+        generatePresetOption(deletePresetElement, " ")
     }
 
-    const generatePresetOption = (preset: any) => {
-        if(document.querySelector(`option[value='${preset["name"]}']`) === null) {
+    const generatePresetOption = (selectElement: HTMLSelectElement, name: string) => {
+        if(selectElement.querySelector(`option[value='${name}']`) === null) {
             const optionElement = document.createElement("option")
-            optionElement.value = preset["name"]
-            optionElement.text = preset["name"]
+            optionElement.value = name
+            optionElement.text = name
     
-            if(preset["name"] === "Default") {
+            if(name === "Default" && selectElement.name === "load-preset"
+                || name === " " && selectElement.name === "delete-preset"
+            ) {
                 optionElement.selected = true
             }
-            document.querySelector('select[name="load-preset"]').appendChild(optionElement)
+            selectElement.appendChild(optionElement)
         }
     }
 
@@ -159,6 +167,12 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         }
     }
 
+    const onDeletePresetInput = (e: any) => {
+        console.log("Deleting preset " + deletePresetElement.value)
+        localStorage.removeItem(deletePresetElement.value)
+        populatePresetsDropdown()
+    }
+
     const onSimpleWaveInput = (e: any) => {
         synth.setWaveType(e.currentTarget.value)
     }
@@ -212,9 +226,12 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
-    const loadPresetElement = <HTMLInputElement>document.querySelector('select[name="load-preset"]')
+    const loadPresetElement = <HTMLSelectElement>document.querySelector('select[name="load-preset"]')
     const savePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="save-preset"]')
     const savePresetNameElement = <HTMLInputElement>document.querySelector('input[name="save-preset-name"]')
+    const deletePresetElement = <HTMLSelectElement>document.querySelector('select[name="delete-preset"]')
+    const deletePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="delete-preset"]')
+
 
     const waveTypeElement = <HTMLInputElement>document.querySelector('input[name="wave-input"]')
 
@@ -257,6 +274,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
     registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
     registerInputElement(savePresetButtonElement, 'click', onSavePresetInput)
+    registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
 

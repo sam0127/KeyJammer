@@ -50,7 +50,7 @@
 
     &.presets {
         text-align: left;
-        justify-content: flex-start;
+        justify-content: space-between;
         flex-direction: row;
     }
 }
@@ -152,9 +152,25 @@
         margin: 5px;
     }
 
-    &.load {
+    &.load, &.delete {
         select {
             margin-top: 14px;
+        }
+    }
+
+    &.delete {
+        flex-direction: row;
+
+        .left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 10px;
+            //max-height: 60px;
+            align-self: center;
         }
     }
 }
