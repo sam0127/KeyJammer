@@ -1,13 +1,41 @@
 @use 'base';
 @use 'utility' as *;
 
-.row, .row-heading {
+.instructions-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 0 5px;
+    z-index: 2;
+
+    &:hover, &:focus {
+        filter: none;
+    }
+
+    &:active {
+        filter: none;
+    }
+
+    img {
+        width: 40px;
+    }
+}
+
+.instructions-container {
+    width: 800px;
+    padding: 100px;
+    background-color: #ffffff;
+    @include border();
+}
+
+.row, .section-header {
     display: flex;
     width: 100%;
 }
 
-.row-heading {
+.section-header {
     justify-content: center;
+    padding: 10px 0;
 }
 
 .closed {
@@ -18,7 +46,7 @@
     }
 }
 
-.heading-container {
+.header-container {
     display: flex;
     width: min-content;
     cursor: pointer;

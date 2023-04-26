@@ -9,172 +9,181 @@
   <header>
     <h1>KeyJammer</h1>
   </header>
-  <main>
-    <!--div class="row">
-      <section class="instructions">
-        <div class="controls-icons-container">
+  <button name="instructions" class="instructions-button">
+    <img src="./assets/img/keyboard.png">
+  </button>
+  <aside class="instructions">
+    <section class="instructions-container">
 
+    </section>
+  </aside>
+  <main>
+    <section id="top-level-controls">
+      <div class="row">
+        <div class="control-panel allow-audio">
+          <label for="allow-audio">Click to allow audio</label>
+          <button name="allow-audio">Allow Audio</button>
         </div>
-      </section>
-    </div-->
-    <div class="row">
-      <section class="control-panel allow-audio">
-        <label for="allow-audio">Click to allow audio</label>
-        <button name="allow-audio">Allow Audio</button>
-      </section>
-      <section class="control-panel master-volume">
-        <label for="master-volume">Master Volume</label>
-        <input type="range" name="master-volume" value="50"></input>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container presets">
+        <div class="control-panel master-volume">
+          <label for="master-volume">Master Volume</label>
+          <input type="range" name="master-volume" value="50"></input>
+        </div>
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container presets">
         <h2>Presets</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row presets">
-      <section class="control-panel presets">
-        <div class="preset-container load">
-          <label for="load-preset">Load preset</label>
-          <select name="load-preset">
-          </select>
-        </div>
-        <div class="divider"></div>
-        <div class="preset-container save">
-          <button name="save-preset">Save As</button>
-          <input type="text" name="save-preset-name">
-        </div>
-        <div class="divider"></div>
-        <div class="preset-container delete">
-          <div class="left">
-            <label for="delete-preset">Delete preset</label>
-            <select name="delete-preset">
-              <option value="" selected></option>
+    </header>
+    <section id="presets">
+      <div class="row">
+        <div class="control-panel presets">
+          <div class="preset-container load">
+            <label for="load-preset">Load preset</label>
+            <select name="load-preset">
             </select>
           </div>
-          <button name="delete-preset">Delete</button>
+          <div class="divider"></div>
+          <div class="preset-container save">
+            <button name="save-preset">Save As</button>
+            <input type="text" name="save-preset-name">
+          </div>
+          <div class="divider"></div>
+          <div class="preset-container delete">
+            <div class="left">
+              <label for="delete-preset">Delete preset</label>
+              <select name="delete-preset">
+                <option value="" selected></option>
+              </select>
+            </div>
+            <button name="delete-preset">Delete</button>
+          </div>
         </div>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container controls">
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container synth-controls">
         <h2>Synth Controls</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row controls">
-      <section class="control-panel simple-wave-controls">
-        <div class="vertical-slider-container">
-          <label for="wave-input">Wave</label>
-          <div class="wave-input-container">
-            <ul class="wave-icons">
-              <!--li><img src="./assets/img/custom-osc.png"></li-->
-              <li><img src="./assets/img/tri-osc.png"></li>
-              <li><img src="./assets/img/saw-osc.png"></li>
-              <li><img src="./assets/img/square-osc.png"></li>
-              <li><img src="./assets/img/sine-osc.png"></li>
-            </ul>
-            <input type="range" name="wave-input" max="3" value="0"></input>
+    </header>
+    <section id="synth-controls">
+      <div class="row">
+        <div class="control-panel simple-wave-controls">
+          <div class="vertical-slider-container">
+            <label for="wave-input">Wave</label>
+            <div class="wave-input-container">
+              <ul class="wave-icons">
+                <!--li><img src="./assets/img/custom-osc.png"></li-->
+                <li><img src="./assets/img/tri-osc.png"></li>
+                <li><img src="./assets/img/saw-osc.png"></li>
+                <li><img src="./assets/img/square-osc.png"></li>
+                <li><img src="./assets/img/sine-osc.png"></li>
+              </ul>
+              <input type="range" name="wave-input" max="3" value="0"></input>
+            </div>
           </div>
         </div>
-      </section>
-      <section class="control-panel filter">
-        <h3>Filter</h3>
-        <div class="filter-container">
-          <div class="filter-type">
-            <label for="low-pass">Low Pass</label>
-            <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
-          </div>
-          <div class="filter-type">
-            <label for="high-pass">High Pass</label>
-            <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
-          </div>
-          <div class="filter-slider">
-            <label for="cutoff">Cutoff</label>
-            <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
-          </div>
-          <div class="filter-slider">
-            <label for="env-cutoff">Env Cutoff</label>
-            <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
-          </div>
-          <div class="filter-slider">
-            <label for="resonance">Resonance</label>
-            <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
-          </div>
-        </div>
-      </section>
-      <section class="control-panel envelope-controls">
-        <h3>Amplitude Env</h3>
-        <div class="controls-container">
-          <div class="vertical-slider-container">
-            <label for="amp-attack-input">A</label>
-            <input type="range" name="amp-attack-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-decay-input">D</label>
-            <input type="range" name="amp-decay-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-sustain-input">S</label>
-            <input type="range" name="amp-sustain-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-release-input">R</label>
-            <input type="range" name="amp-release-input" value="0"></input>
+        <div class="control-panel filter">
+          <h3>Filter</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-pass">Low Pass</label>
+              <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-pass">High Pass</label>
+              <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
+            </div>
+            <div class="filter-slider">
+              <label for="cutoff">Cutoff</label>
+              <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-cutoff">Env Cutoff</label>
+              <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonance">Resonance</label>
+              <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
+            </div>
           </div>
         </div>
-      </section>
-      <section class="control-panel envelope-controls">
-        <h3>Filter Env</h3>
-        <div class="controls-container">
-          <div class="vertical-slider-container">
-            <label for="filter-attack-input">A</label>
-            <input type="range" name="filter-attack-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-decay-input">D</label>
-            <input type="range" name="filter-decay-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-sustain-input">S</label>
-            <input type="range" name="filter-sustain-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-release-input">R</label>
-            <input type="range" name="filter-release-input" value="0"></input>
+        <div class="control-panel envelope-controls">
+          <h3>Amplitude Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="amp-attack-input">A</label>
+              <input type="range" name="amp-attack-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-decay-input">D</label>
+              <input type="range" name="amp-decay-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-sustain-input">S</label>
+              <input type="range" name="amp-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-release-input">R</label>
+              <input type="range" name="amp-release-input" value="0"></input>
+            </div>
           </div>
         </div>
-      </section>
-    </div>
-    <div class="row controls">
-      <section class="control-panel octave-offset">
-        <label>Octave +</label>
-        <div class="octave-offset-container">
-          <button name="decrease-octave"><</button>
-          <span>0</span>
-          <button name="increase-octave">></button>
+        <div class="control-panel envelope-controls">
+          <h3>Filter Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="filter-attack-input">A</label>
+              <input type="range" name="filter-attack-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-decay-input">D</label>
+              <input type="range" name="filter-decay-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-sustain-input">S</label>
+              <input type="range" name="filter-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-release-input">R</label>
+              <input type="range" name="filter-release-input" value="0"></input>
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container visualization">
+      </div>
+      <div class="row">
+        <section class="control-panel octave-offset">
+          <label>Octave +</label>
+          <div class="octave-offset-container">
+            <button name="decrease-octave"><</button>
+            <span>0</span>
+            <button name="increase-octave">></button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container visualization">
         <h2>Visualization</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row visualization">
-      <section class="control-panel oscilloscope">
-        <label>Oscilloscope</label>
-        <canvas id="oscilloscope" width="376" height="200">
-        </canvas>
-      </section>
-      <section class="control-panel spectrograph">
-        <label>Spectrograph</label>
-        <canvas id="spectrograph" width="376" height="200">
-        </canvas>
-      </section>
-    </div>
+    </header>
+    <section id="visualization">
+      <div class="row">
+        <div class="control-panel oscilloscope">
+          <label>Oscilloscope</label>
+          <canvas id="oscilloscope" width="376" height="200">
+          </canvas>
+        </div>
+        <div class="control-panel spectrograph">
+          <label>Spectrograph</label>
+          <canvas id="spectrograph" width="376" height="200">
+          </canvas>
+        </div>
+      </div>
+    </section>
   </main>
   <script src="./js/index.js" type="module" charset="UTF-8"></script>
 </body>

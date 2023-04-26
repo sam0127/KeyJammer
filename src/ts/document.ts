@@ -2,7 +2,7 @@ import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
 
-const registerInputElement = (element: Element, event: string, listener: (e: Event) => void) => {
+const registerInputElement = (element: Node, event: string, listener: (e: Event) => void) => {
     element.addEventListener(event, listener)
 }
 
@@ -109,17 +109,31 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     //User interaction event handlers below
-    const onHeadingClick = (e: any) => {
-        const rowElements = document.querySelectorAll('.row.' + e.currentTarget.classList[1])
-        rowElements.forEach(rowElement => {
-            if(!rowElement.classList.contains('closed')) {
-                rowElement.classList.add('closed')
-                e.currentTarget.classList.add('closed')
-            } else {
-                rowElement.classList.remove('closed')
-                e.currentTarget.classList.remove('closed')
-            }
-        })
+
+    const onInstructionsClick = (e: any) => {
+        if(!instructionsAsideElement.classList.contains('opened')) {
+            instructionsAsideElement.classList.add('opened')
+        } else {
+            instructionsAsideElement.classList.remove('opened')
+        }
+    }
+
+    const onInstructionsKeyout = (e: any) => {
+        if(instructionsAsideElement.classList.contains('opened') && e.code === "Escape") {
+            instructionsAsideElement.classList.remove('opened')
+        }
+    }
+
+    const onHeaderClick = (e: any) => {
+        const sectionElement = document.getElementById(e.currentTarget.classList[1])
+
+        if(!sectionElement.classList.contains('closed')) {
+            sectionElement.classList.add('closed')
+            e.currentTarget.classList.add('closed')
+        } else {
+            sectionElement.classList.remove('closed')
+            e.currentTarget.classList.remove('closed')
+        }
     }
 
     const onAllowAudio = (e: any) => {
@@ -240,43 +254,45 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     //UI Elements
-    const headingElements: NodeListOf<Element> = document.querySelectorAll('.heading-container')
+    const instructionsButtonElement: HTMLInputElement = document.querySelector('button[name="instructions"]')
+    const instructionsAsideElement: Element = document.querySelector('aside.instructions')
+    const headerElements: NodeListOf<Element> = document.querySelectorAll('.header-container')
     const allowAudioElement = document.querySelector('button[name="allow-audio"]')
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
-    const loadPresetElement = <HTMLSelectElement>document.querySelector('select[name="load-preset"]')
-    const savePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="save-preset"]')
-    const savePresetNameElement = <HTMLInputElement>document.querySelector('input[name="save-preset-name"]')
-    const deletePresetElement = <HTMLSelectElement>document.querySelector('select[name="delete-preset"]')
-    const deletePresetButtonElement = <HTMLInputElement>document.querySelector('button[name="delete-preset"]')
+    const loadPresetElement: HTMLSelectElement = document.querySelector('select[name="load-preset"]')
+    const savePresetButtonElement: HTMLInputElement = document.querySelector('button[name="save-preset"]')
+    const savePresetNameElement: HTMLInputElement = document.querySelector('input[name="save-preset-name"]')
+    const deletePresetElement: HTMLSelectElement = document.querySelector('select[name="delete-preset"]')
+    const deletePresetButtonElement: HTMLInputElement = document.querySelector('button[name="delete-preset"]')
 
 
-    const waveTypeElement = <HTMLInputElement>document.querySelector('input[name="wave-input"]')
+    const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')
 
-    const lowPassElement = <HTMLInputElement>document.getElementById('low-pass')
-    const highPassElement = <HTMLInputElement>document.getElementById('high-pass')
+    const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
+    const highPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('high-pass')
 
-    const cutoffElement = <HTMLInputElement>document.querySelector('input[name="cutoff"]')
-    const envCutoffElement = <HTMLInputElement>document.querySelector('input[name="env-cutoff"]')
-    const resonanceElement = <HTMLInputElement>document.querySelector('input[name="resonance"]')
+    const cutoffElement: HTMLInputElement = document.querySelector('input[name="cutoff"]')
+    const envCutoffElement: HTMLInputElement = document.querySelector('input[name="env-cutoff"]')
+    const resonanceElement: HTMLInputElement = document.querySelector('input[name="resonance"]')
 
 
-    const ampAttackElement = <HTMLInputElement>document.querySelector('input[name="amp-attack-input"]')
-    const ampDecayElement = <HTMLInputElement>document.querySelector('input[name="amp-decay-input"]')
-    const ampSustainElement = <HTMLInputElement>document.querySelector('input[name="amp-sustain-input"]')
-    const ampReleaseElement = <HTMLInputElement>document.querySelector('input[name="amp-release-input"]')
+    const ampAttackElement: HTMLInputElement = document.querySelector('input[name="amp-attack-input"]')
+    const ampDecayElement: HTMLInputElement = document.querySelector('input[name="amp-decay-input"]')
+    const ampSustainElement: HTMLInputElement = document.querySelector('input[name="amp-sustain-input"]')
+    const ampReleaseElement: HTMLInputElement = document.querySelector('input[name="amp-release-input"]')
 
-    const filterAttackElement = <HTMLInputElement>document.querySelector('input[name="filter-attack-input"]')
-    const filterDecayElement = <HTMLInputElement>document.querySelector('input[name="filter-decay-input"]')
-    const filterSustainElement = <HTMLInputElement>document.querySelector('input[name="filter-sustain-input"]')
-    const filterReleaseElement = <HTMLInputElement>document.querySelector('input[name="filter-release-input"]')
+    const filterAttackElement: HTMLInputElement = document.querySelector('input[name="filter-attack-input"]')
+    const filterDecayElement: HTMLInputElement = document.querySelector('input[name="filter-decay-input"]')
+    const filterSustainElement: HTMLInputElement = document.querySelector('input[name="filter-sustain-input"]')
+    const filterReleaseElement: HTMLInputElement = document.querySelector('input[name="filter-release-input"]')
 
-    const octaveIncreaseElement = document.querySelector('button[name="increase-octave"]')
-    const octaveDecreaseElement = document.querySelector('button[name="decrease-octave"]')
-    const octaveDisplayElement = document.querySelector('.octave-offset-container span')
+    const octaveIncreaseElement: HTMLInputElement = document.querySelector('button[name="increase-octave"]')
+    const octaveDecreaseElement: HTMLInputElement = document.querySelector('button[name="decrease-octave"]')
+    const octaveDisplayElement: Element = document.querySelector('.octave-offset-container span')
 
-    const oscilloscopeElement = document.getElementById('oscilloscope')
-    const spectrographElement = document.getElementById('spectrograph')
+    const oscilloscopeElement: Element = document.getElementById('oscilloscope')
+    const spectrographElement: Element = document.getElementById('spectrograph')
 
     //save default presets to localStorage
     saveDefaultPresets()
@@ -285,12 +301,14 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     //load default preset on DOM
     loadPreset("Default")
 
-    headingElements.forEach(headingElement => {
-        registerInputElement(headingElement, 'click', onHeadingClick)
-    })
-    
-
     //Attach Event handlers to appropriate element
+    registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
+    registerInputElement(document, 'keydown', onInstructionsKeyout)
+
+    headerElements.forEach(headerElement => {
+        registerInputElement(headerElement, 'click', onHeaderClick)
+    })
+
     registerInputElement(allowAudioElement, 'click', onAllowAudio)
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
 
