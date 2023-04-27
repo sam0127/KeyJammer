@@ -1,0 +1,23 @@
+{
+    "name": "Steel String Guitar",
+    "waveType": 2,
+    "filterType": 0,
+    "cutoff": 2.15,
+    "envCutoff": 1,
+    "resonance": 4,
+    "amplitudeEnv":
+    {
+        "attack": 0,
+        "decay": 100,
+        "sustain": 0,
+        "release": 50
+    },
+    "filterEnv":
+    {
+        "attack": 0,
+        "decay": 100,
+        "sustain": 0,
+        "release": 80
+    },
+    "offset": 0
+}
