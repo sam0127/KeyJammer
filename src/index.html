@@ -9,172 +9,273 @@
   <header>
     <h1>KeyJammer</h1>
   </header>
-  <main>
-    <!--div class="row">
-      <section class="instructions">
-        <div class="controls-icons-container">
-
+  <button name="instructions" class="instructions-button">
+    <img src="./assets/img/keyboard.png">
+  </button>
+  <aside class="instructions">
+    <section class="instructions-container">
+      <h3>Controls</h3>
+      <p>Toggle Caps Lock to add notes to a continuously playing drone, which can be stopped using the escape key.</p>
+      <div class="keyboard-container">
+        <div class="key-row">
+          <div class="key key-15u escape"><em>ESC</em><br>Kill</div>
+          <div class="key key-1u unused"><em>F1</em></div>
+          <div class="key key-1u unused"><em>F2</em></div>
+          <div class="key key-1u unused"><em>F3</em></div>
+          <div class="key key-1u unused"><em>F4</em></div>
+          <div class="key key-1u unused"><em>F5</em></div>
+          <div class="key key-1u unused"><em>F6</em></div>
+          <div class="key key-1u unused"><em>F7</em></div>
+          <div class="key key-1u unused"><em>F8</em></div>
+          <div class="key key-1u unused"><em>F9</em></div>
+          <div class="key key-1u unused"><em>F10</em></div>
+          <div class="key key-1u unused"><em>F11</em></div>
+          <div class="key key-1u unused"><em>F12</em></div>
+          <div class="key key-15u unused"></div>
         </div>
-      </section>
-    </div-->
-    <div class="row">
-      <section class="control-panel allow-audio">
-        <label for="allow-audio">Click to allow audio</label>
-        <button name="allow-audio">Allow Audio</button>
-      </section>
-      <section class="control-panel master-volume">
-        <label for="master-volume">Master Volume</label>
-        <input type="range" name="master-volume" value="50"></input>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container presets">
+        <div class="key-row">
+          <div class="key key-1u unused"><em>`</em></div>
+          <div class="key key-1u unused"><em>1</em></div>
+          <div class="key key-1u note-accidental"><em>2</em><br>F#2</div>
+          <div class="key key-1u note-accidental"><em>3</em><br>G#2</div>
+          <div class="key key-1u note-accidental"><em>4</em><br>A#2</div>
+          <div class="key key-1u unused"><em>5</em></div>
+          <div class="key key-1u note-accidental"><em>6</em><br>C#3</div>
+          <div class="key key-1u note-accidental"><em>7</em><br>D#3</div>
+          <div class="key key-1u unused"><em>8</em></div>
+          <div class="key key-1u note-accidental"><em>9</em><br>F#3</div>
+          <div class="key key-1u note-accidental"><em>0</em><br>G#3</div>
+          <div class="key key-1u note-accidental"><em>-</em><br>A#3</div>
+          <div class="key key-1u unused"><em>=</em></div>
+          <div class="key key-2u unused"><em>BKSP</em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-15u unused"><em>TAB</em></div>
+          <div class="key key-1u note-natural"><em>Q</em><br>F2</div>
+          <div class="key key-1u note-natural"><em>W</em><br>G2</div>
+          <div class="key key-1u note-natural"><em>E</em><br>A2</div>
+          <div class="key key-1u note-natural"><em>R</em><br>B2</div>
+          <div class="key key-1u note-natural"><em>T</em><br>C3</div>
+          <div class="key key-1u note-natural"><em>Y</em><br>D3</div>
+          <div class="key key-1u note-natural"><em>U</em><br>E3</div>
+          <div class="key key-1u note-natural"><em>I</em><br>F3</div>
+          <div class="key key-1u note-natural"><em>O</em><br>G3</div>
+          <div class="key key-1u note-natural"><em>P</em><br>A3</div>
+          <div class="key key-1u note-natural"><em>[</em><br>B3</div>
+          <div class="key key-1u note-natural"><em>]</em><br>C4</div>
+          <div class="key key-15u unused"><em>\</em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-175u drone"><em>CPSLK</em><br>Drone</div>
+          <div class="key key-1u unused"><em>A</em></div>
+          <div class="key key-1u note-accidental"><em>S</em><br>C#1</div>
+          <div class="key key-1u note-accidental"><em>D</em><br>D#1</div>
+          <div class="key key-1u unused"><em>F</em></div>
+          <div class="key key-1u note-accidental"><em>G</em><br>F#1</div>
+          <div class="key key-1u note-accidental"><em>H</em><br>G#1</div>
+          <div class="key key-1u note-accidental"><em>J</em><br>A#1</div>
+          <div class="key key-1u unused"><em>K</em></div>
+          <div class="key key-1u note-accidental"><em>L</em><br>C#1</div>
+          <div class="key key-1u note-accidental"><em>;</em><br>D#1</div>
+          <div class="key key-1u unused"><em>'</em></div>
+          <div class="key key-2375u unused"><em>Enter</em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-2125u sustain"><em>SHIFT</em><br>Sus</div>
+          <div class="key key-1u note-natural"><em>Z</em><br>C1</div>
+          <div class="key key-1u note-natural"><em>X</em><br>D1</div>
+          <div class="key key-1u note-natural"><em>C</em><br>E1</div>
+          <div class="key key-1u note-natural"><em>V</em><br>F1</div>
+          <div class="key key-1u note-natural"><em>B</em><br>G1</div>
+          <div class="key key-1u note-natural"><em>N</em><br>A1</div>
+          <div class="key key-1u note-natural"><em>M</em><br>B1</div>
+          <div class="key key-1u note-natural"><em>,</em><br>C2</div>
+          <div class="key key-1u note-natural"><em>.</em><br>D2</div>
+          <div class="key key-1u note-natural"><em>/</em><br>E2</div>
+          <div class="key key-2u sustain"><em>SHIFT</em><br>Sus</div>
+          <div class="key key-1u unused"><em></em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-125u unused"></div>
+          <div class="key key-125u unused"></div>
+          <div class="key key-125u unused"></div>
+          <div class="key key-675u sustain"><em>SPACE</em><br>Sustain</div>
+          <div class="key key-1u unused"></div>
+          <div class="key key-1u unused"></div>
+          <div class="key key-1u unused"></div>
+          <div class="key key-1u unused"></div>
+          <div class="key key-1u unused"></div>
+        </div>
+      </div>
+    </section>
+  </aside>
+  <main>
+    <section id="top-level-controls">
+      <div class="row">
+        <div class="control-panel allow-audio">
+          <label for="allow-audio">Click to allow audio</label>
+          <button name="allow-audio">Allow Audio</button>
+        </div>
+        <div class="control-panel master-volume">
+          <label for="master-volume">Master Volume</label>
+          <input type="range" name="master-volume" value="50"></input>
+        </div>
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container presets">
         <h2>Presets</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row presets">
-      <section class="control-panel presets">
-        <div class="preset-container load">
-          <label for="load-preset">Load preset</label>
-          <select name="load-preset">
-          </select>
-        </div>
-        <div class="divider"></div>
-        <div class="preset-container save">
-          <button name="save-preset">Save As</button>
-          <input type="text" name="save-preset-name">
-        </div>
-        <div class="divider"></div>
-        <div class="preset-container delete">
-          <div class="left">
-            <label for="delete-preset">Delete preset</label>
-            <select name="delete-preset">
-              <option value="" selected></option>
+    </header>
+    <section id="presets">
+      <div class="row">
+        <div class="control-panel presets">
+          <div class="preset-container load">
+            <label for="load-preset">Load preset</label>
+            <select name="load-preset">
             </select>
           </div>
-          <button name="delete-preset">Delete</button>
+          <div class="divider"></div>
+          <div class="preset-container save">
+            <button name="save-preset">Save As</button>
+            <input type="text" name="save-preset-name">
+          </div>
+          <div class="divider"></div>
+          <div class="preset-container delete">
+            <div class="left">
+              <label for="delete-preset">Delete preset</label>
+              <select name="delete-preset">
+                <option value="" selected></option>
+              </select>
+            </div>
+            <button name="delete-preset">Delete</button>
+          </div>
         </div>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container controls">
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container synth-controls">
         <h2>Synth Controls</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row controls">
-      <section class="control-panel simple-wave-controls">
-        <div class="vertical-slider-container">
-          <label for="wave-input">Wave</label>
-          <div class="wave-input-container">
-            <ul class="wave-icons">
-              <!--li><img src="./assets/img/custom-osc.png"></li-->
-              <li><img src="./assets/img/tri-osc.png"></li>
-              <li><img src="./assets/img/saw-osc.png"></li>
-              <li><img src="./assets/img/square-osc.png"></li>
-              <li><img src="./assets/img/sine-osc.png"></li>
-            </ul>
-            <input type="range" name="wave-input" max="3" value="0"></input>
+    </header>
+    <section id="synth-controls">
+      <div class="row">
+        <div class="control-panel simple-wave-controls">
+          <div class="vertical-slider-container">
+            <label for="wave-input">Wave</label>
+            <div class="wave-input-container">
+              <ul class="wave-icons">
+                <!--li><img src="./assets/img/custom-osc.png"></li-->
+                <li><img src="./assets/img/tri-osc.png"></li>
+                <li><img src="./assets/img/saw-osc.png"></li>
+                <li><img src="./assets/img/square-osc.png"></li>
+                <li><img src="./assets/img/sine-osc.png"></li>
+              </ul>
+              <input type="range" name="wave-input" max="3" value="0"></input>
+            </div>
           </div>
         </div>
-      </section>
-      <section class="control-panel filter">
-        <h3>Filter</h3>
-        <div class="filter-container">
-          <div class="filter-type">
-            <label for="low-pass">Low Pass</label>
-            <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
-          </div>
-          <div class="filter-type">
-            <label for="high-pass">High Pass</label>
-            <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
-          </div>
-          <div class="filter-slider">
-            <label for="cutoff">Cutoff</label>
-            <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
-          </div>
-          <div class="filter-slider">
-            <label for="env-cutoff">Env Cutoff</label>
-            <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
-          </div>
-          <div class="filter-slider">
-            <label for="resonance">Resonance</label>
-            <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
-          </div>
-        </div>
-      </section>
-      <section class="control-panel envelope-controls">
-        <h3>Amplitude Env</h3>
-        <div class="controls-container">
-          <div class="vertical-slider-container">
-            <label for="amp-attack-input">A</label>
-            <input type="range" name="amp-attack-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-decay-input">D</label>
-            <input type="range" name="amp-decay-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-sustain-input">S</label>
-            <input type="range" name="amp-sustain-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="amp-release-input">R</label>
-            <input type="range" name="amp-release-input" value="0"></input>
+        <div class="control-panel filter">
+          <h3>Filter</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-pass">Low Pass</label>
+              <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-pass">High Pass</label>
+              <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
+            </div>
+            <div class="filter-slider">
+              <label for="cutoff">Cutoff</label>
+              <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-cutoff">Env Cutoff</label>
+              <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonance">Resonance</label>
+              <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
+            </div>
           </div>
         </div>
-      </section>
-      <section class="control-panel envelope-controls">
-        <h3>Filter Env</h3>
-        <div class="controls-container">
-          <div class="vertical-slider-container">
-            <label for="filter-attack-input">A</label>
-            <input type="range" name="filter-attack-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-decay-input">D</label>
-            <input type="range" name="filter-decay-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-sustain-input">S</label>
-            <input type="range" name="filter-sustain-input" value="0"></input>
-          </div>
-          <div class="vertical-slider-container">
-            <label for="filter-release-input">R</label>
-            <input type="range" name="filter-release-input" value="0"></input>
+        <div class="control-panel envelope-controls">
+          <h3>Amplitude Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="amp-attack-input">A</label>
+              <input type="range" name="amp-attack-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-decay-input">D</label>
+              <input type="range" name="amp-decay-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-sustain-input">S</label>
+              <input type="range" name="amp-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-release-input">R</label>
+              <input type="range" name="amp-release-input" value="0"></input>
+            </div>
           </div>
         </div>
-      </section>
-    </div>
-    <div class="row controls">
-      <section class="control-panel octave-offset">
-        <label>Octave +</label>
-        <div class="octave-offset-container">
-          <button name="decrease-octave"><</button>
-          <span>0</span>
-          <button name="increase-octave">></button>
+        <div class="control-panel envelope-controls">
+          <h3>Filter Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="filter-attack-input">A</label>
+              <input type="range" name="filter-attack-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-decay-input">D</label>
+              <input type="range" name="filter-decay-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-sustain-input">S</label>
+              <input type="range" name="filter-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-release-input">R</label>
+              <input type="range" name="filter-release-input" value="0"></input>
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
-    <div class="row-heading">
-      <div class="heading-container visualization">
+      </div>
+      <div class="row">
+        <section class="control-panel octave-offset">
+          <label>Octave +</label>
+          <div class="octave-offset-container">
+            <button name="decrease-octave"><</button>
+            <span>0</span>
+            <button name="increase-octave">></button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <header class="section-header">
+      <div class="header-container visualization">
         <h2>Visualization</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
-    </div>
-    <div class="row visualization">
-      <section class="control-panel oscilloscope">
-        <label>Oscilloscope</label>
-        <canvas id="oscilloscope" width="376" height="200">
-        </canvas>
-      </section>
-      <section class="control-panel spectrograph">
-        <label>Spectrograph</label>
-        <canvas id="spectrograph" width="376" height="200">
-        </canvas>
-      </section>
-    </div>
+    </header>
+    <section id="visualization">
+      <div class="row">
+        <div class="control-panel oscilloscope">
+          <label>Oscilloscope</label>
+          <canvas id="oscilloscope" width="376" height="200">
+          </canvas>
+        </div>
+        <div class="control-panel spectrograph">
+          <label>Spectrograph</label>
+          <canvas id="spectrograph" width="376" height="200">
+          </canvas>
+        </div>
+      </div>
+    </section>
   </main>
   <script src="./js/index.js" type="module" charset="UTF-8"></script>
 </body>

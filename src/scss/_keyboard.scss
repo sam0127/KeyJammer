@@ -1,0 +1,94 @@
+@use 'utility' as *;
+
+.keyboard-container {
+    width: 800px;
+    font-size: $font-s;
+}
+.key-row {
+    @include keyHeight();
+    margin: 5px 0;
+    display: flex;
+    justify-content: center;
+
+    > * {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+}
+
+.key {
+    display: inline-block;
+    //padding: 5px;
+    text-align: center;
+    color: #ffffff;
+    //border-radius: 4px;
+    @include border(4px);
+    background-color: #404040;
+    @include keyHeight();
+
+    em {
+        filter: opacity(0.3);
+    }
+}
+
+.escape {
+
+}
+
+.unused {
+    background-color: $key-unused;
+    color: $unused-font;
+
+    em {
+        filter: none;
+    }
+}
+
+.note-natural {
+    background-color: $key-natural;
+    color: #000;
+}
+
+.note-accidental {
+    background-color: $key-accidental;
+}
+
+.drone {
+
+}
+
+.sustain {
+
+}
+
+.key-1u {
+    @include keyWidth(1);
+}
+
+.key-125u {
+    @include keyWidth(1.25);
+}
+
+.key-15u {
+    @include keyWidth(1.5);
+}
+
+.key-175u {
+    @include keyWidth(1.75);
+}
+
+.key-2u {
+    @include keyWidth(2);
+}
+
+.key-2125u {
+    @include keyWidth(2.125);
+}
+
+.key-2375u {
+    @include keyWidth(2.375);
+}
+
+.key-675u {
+    @include keyWidth(6.75);
+}

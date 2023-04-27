@@ -1,5 +1,13 @@
 //Color
 $border-gray: #414141;
+$transparent-gray: rgba(0,0,0,0.3);
+$key-escape: #ff0000;
+$key-unused: #d0d0d0;
+$unused-font: #808080;
+$key-drone: #ff5500;
+$key-sustain: #ffff00;
+$key-natural: #ffffff;
+$key-accidental: #555555;
 
 //filter
 $hover-filter: brightness(90%);
@@ -18,6 +26,22 @@ $font-xl: 48px;
 }
 //Dimensions
 $content-width: 900px;
+
+
+//Keyboard diagram
+$unit: 40px;
+$row-height: $unit;
+@mixin keyWidth($w) {
+    width: $w * $unit;
+    max-width: $w * $unit;
+    min-width: $w * $unit;
+}
+
+@mixin keyHeight() {
+    height: $unit;
+    max-height: $unit;
+    min-height: $unit;
+}
 
 //Misc
 @mixin border($r: 10px) {
