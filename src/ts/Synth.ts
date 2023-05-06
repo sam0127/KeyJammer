@@ -2,6 +2,8 @@ import { Envelope } from './Envelope.js'
 import { Filter } from './Filter.js'
 import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
+import { CustomWave } from './CustomWave.js'
+
 
 /*
 Synth class
@@ -138,6 +140,29 @@ export class Synth {
         }
     }
 
+    setCustomWave(realCoefficients: Array<number>, imaginaryCoefficients: Array<number>) {
+        const wave = this.context.createPeriodicWave(realCoefficients, imaginaryCoefficients)
+        this.notes.forEach((value: Note, key: string) => {
+            value.oscillator.setPeriodicWave(wave)
+        })
+    }
+    
+    waveFunction(term: number, type: number): number {
+        var coefficient
+        if(type === 0) {
+            coefficient = 1 / (term * Math.PI)
+        } else if(type === 1) {
+
+        } else if(type === 2) {
+            
+        }
+        var a = 8
+        var b = 16
+        //coefficient = 1 / (term * Math.PI)
+        //coefficient = Math.sin(a * term * Math.PI)
+        coefficient = (Math.sin(a * term) * Math.cos(b * term)) / (term/2)
+        return coefficient
+    }
     //Sets the master volume of the synth
     setMasterVolume(value: number) {
         const mainGain = <GainNode>this.globalChain.last()
