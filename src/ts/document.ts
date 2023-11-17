@@ -1,6 +1,8 @@
 import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
+import { parseWaveFunction } from './parser.js'
+import { CustomWave } from './CustomWave.js'
 
 const registerInputElement = (element: Node, event: string, listener: (e: Event) => void) => {
     element.addEventListener(event, listener)
@@ -27,6 +29,10 @@ async function fetchDefaultPresets() {
     response = await fetch("./assets/defaultpresets/steelstring.json");
     jsonData = await response.json();
     presets[4] = jsonData
+
+    response = await fetch("./assets/defaultpresets/custom.json");
+    jsonData = await response.json();
+    presets[5] = jsonData
     return presets
   }
 
@@ -62,7 +68,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
             optionElement.value = name
             optionElement.text = name
     
-            if(name === "Default" && selectElement.name === "load-preset"
+            if(name === "Custom Wave" && selectElement.name === "load-preset"
                 || name === " " && selectElement.name === "delete-preset"
             ) {
                 optionElement.selected = true
@@ -108,6 +114,17 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
     }
 
+    const openCustomWaveControls = () => {
+        if(!customWaveContainerElement.classList.contains('opened')) {
+            customWaveContainerElement.classList.add('opened')
+        }
+    }
+
+    const closeCustomWaveControls = () => {
+        if(customWaveContainerElement.classList.contains('opened')) {
+            customWaveContainerElement.classList.remove('opened')
+        }
+    }
     //User interaction event handlers below
 
     const onInstructionsClick = (e: any) => {
@@ -205,7 +222,23 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onSimpleWaveInput = (e: any) => {
+        if(e.currentTarget.value === '4') {
+            openCustomWaveControls()
+        } else {
+            closeCustomWaveControls()
+        }
         synth.setWaveType(e.currentTarget.value)
+    }
+
+    const onCreateCustomWave = (e: any) => {
+        var realCoeffExpression: string = coefficientAElement.value
+        var imagCoeffExpression: string = coefficientBElement.value
+
+        const customWave = new CustomWave(
+            parseWaveFunction(realCoeffExpression),
+            parseWaveFunction(imagCoeffExpression)
+        )
+        synth.setCustomWave(customWave.realCoefficients, customWave.imaginaryCoefficients)
     }
 
     const onLowPassInput = (e: any) => {
@@ -261,13 +294,18 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const masterVolumeElement = document.querySelector('input[name="master-volume"]')
 
     const loadPresetElement: HTMLSelectElement = document.querySelector('select[name="load-preset"]')
-    const savePresetButtonElement: HTMLInputElement = document.querySelector('button[name="save-preset"]')
+    const savePresetButtonElement: HTMLButtonElement = document.querySelector('button[name="save-preset"]')
     const savePresetNameElement: HTMLInputElement = document.querySelector('input[name="save-preset-name"]')
     const deletePresetElement: HTMLSelectElement = document.querySelector('select[name="delete-preset"]')
     const deletePresetButtonElement: HTMLInputElement = document.querySelector('button[name="delete-preset"]')
 
 
     const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')
+    const customWaveContainerElement: Element = document.querySelector('.custom-wave-container')
+
+    const coefficientAElement: HTMLInputElement = document.querySelector('input[name="An"]')
+    const coefficientBElement: HTMLInputElement = document.querySelector('input[name="Bn"]')
+    const createWaveButtonElement: HTMLButtonElement = document.querySelector('button[name="create-wave"]')
 
     const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
     const highPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('high-pass')
@@ -287,8 +325,8 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const filterSustainElement: HTMLInputElement = document.querySelector('input[name="filter-sustain-input"]')
     const filterReleaseElement: HTMLInputElement = document.querySelector('input[name="filter-release-input"]')
 
-    const octaveIncreaseElement: HTMLInputElement = document.querySelector('button[name="increase-octave"]')
-    const octaveDecreaseElement: HTMLInputElement = document.querySelector('button[name="decrease-octave"]')
+    const octaveIncreaseElement: HTMLButtonElement = document.querySelector('button[name="increase-octave"]')
+    const octaveDecreaseElement: HTMLButtonElement = document.querySelector('button[name="decrease-octave"]')
     const octaveDisplayElement: Element = document.querySelector('.octave-offset-container span')
 
     const oscilloscopeElement: Element = document.getElementById('oscilloscope')
@@ -299,8 +337,8 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     //populate dropdown with all presets in localStorage
     populatePresetsDropdown()
     //load default preset on DOM
-    loadPreset("Default")
-
+    loadPreset("Custom Wave")
+    openCustomWaveControls()
     //Attach Event handlers to appropriate element
     registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
     registerInputElement(document, 'keydown', onInstructionsKeyout)
@@ -317,6 +355,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
+    registerInputElement(createWaveButtonElement, 'click', onCreateCustomWave)
 
     registerInputElement(lowPassElement, 'change', onLowPassInput)
     registerInputElement(highPassElement, 'change', onHighPassInput)

@@ -1,13 +1,19 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "mathjs": ["node_modules/mathjs/lib/esm/index.js"]
+        },
         "module": "esnext",
         "noImplicitAny": true,
-        "lib": ["es6", "dom", "es5"],
+        "lib": ["es2021", "dom", "es5"],
         "target": "es2017",
     },
     "files": [
         "src/ts/index.ts",
         "src/ts/document.ts",
+        "src/ts/parser.ts",
+        "src/ts/CustomWave.ts",
         "src/ts/Envelope.ts",
         "src/ts/Filter.ts",
         "src/ts/Keyboard.ts",

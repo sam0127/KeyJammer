@@ -167,14 +167,28 @@
             <label for="wave-input">Wave</label>
             <div class="wave-input-container">
               <ul class="wave-icons">
-                <!--li><img src="./assets/img/custom-osc.png"></li-->
+                <li><img src="./assets/img/custom-osc.png"></li>
                 <li><img src="./assets/img/tri-osc.png"></li>
                 <li><img src="./assets/img/saw-osc.png"></li>
                 <li><img src="./assets/img/square-osc.png"></li>
                 <li><img src="./assets/img/sine-osc.png"></li>
               </ul>
-              <input type="range" name="wave-input" max="3" value="0"></input>
+              <input type="range" name="wave-input" max="4" value="0"></input>
             </div>
+          </div>
+          <div class="custom-wave-container">
+            <p>Enter Fourier coefficients A<sub>n</sub> and B<sub>n</sub> in terms of n</p>
+            <div>
+              <label for="An">A<sub>n</sub> = </label>
+              <input type="text" name="An">
+            </div>
+            <div>
+              <label for="Bn">B<sub>n</sub> = </label>
+              <input type="text" name="Bn">
+            </div>
+            <button name="create-wave">
+              Create Wave
+            </button>
           </div>
         </div>
         <div class="control-panel filter">
@@ -202,6 +216,16 @@
             </div>
           </div>
         </div>
+        <div class="control-panel octave-offset">
+          <label>Octave +</label>
+          <div class="octave-offset-container">
+            <button name="decrease-octave"><</button>
+            <span>0</span>
+            <button name="increase-octave">></button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="control-panel envelope-controls">
           <h3>Amplitude Env</h3>
           <div class="controls-container">
@@ -244,16 +268,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <section class="control-panel octave-offset">
-          <label>Octave +</label>
-          <div class="octave-offset-container">
-            <button name="decrease-octave"><</button>
-            <span>0</span>
-            <button name="increase-octave">></button>
-          </div>
-        </section>
       </div>
     </section>
     <header class="section-header">
