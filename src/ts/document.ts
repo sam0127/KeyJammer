@@ -114,6 +114,17 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
     }
 
+    const openCustomWaveControls = () => {
+        if(!customWaveContainerElement.classList.contains('opened')) {
+            customWaveContainerElement.classList.add('opened')
+        }
+    }
+
+    const closeCustomWaveControls = () => {
+        if(customWaveContainerElement.classList.contains('opened')) {
+            customWaveContainerElement.classList.remove('opened')
+        }
+    }
     //User interaction event handlers below
 
     const onInstructionsClick = (e: any) => {
@@ -211,13 +222,10 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onSimpleWaveInput = (e: any) => {
-        console.log(e.currentTarget.value)
         if(e.currentTarget.value === '4') {
-            if(!customWaveContainerElement.classList.contains('opened')) {
-                customWaveContainerElement.classList.add('opened')
-            }
-        } else if(customWaveContainerElement.classList.contains('opened')) {
-            customWaveContainerElement.classList.remove('opened')
+            openCustomWaveControls()
+        } else {
+            closeCustomWaveControls()
         }
         synth.setWaveType(e.currentTarget.value)
     }
@@ -330,7 +338,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     populatePresetsDropdown()
     //load default preset on DOM
     loadPreset("Custom Wave")
-
+    openCustomWaveControls()
     //Attach Event handlers to appropriate element
     registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
     registerInputElement(document, 'keydown', onInstructionsKeyout)
