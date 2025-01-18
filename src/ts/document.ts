@@ -68,7 +68,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
             optionElement.value = name
             optionElement.text = name
     
-            if(name === "Custom Wave" && selectElement.name === "load-preset"
+            if(name === "Default" && selectElement.name === "load-preset"
                 || name === " " && selectElement.name === "delete-preset"
             ) {
                 optionElement.selected = true
@@ -124,6 +124,21 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         if(customWaveContainerElement.classList.contains('opened')) {
             customWaveContainerElement.classList.remove('opened')
         }
+    }
+
+    //Create keymap window
+    const createKeymapWindow = () => {
+        keyboard.bindingMap.forEach((value, key) => {
+            const keyboardKey = document.querySelector(`div[data-key="${key}"]`)
+            if(keyboardKey !== null) {
+                keyboardKey.querySelector('span').innerHTML = value
+                if(value.includes('#')) {
+                    keyboardKey.classList.add('note-accidental')
+                } else {
+                    keyboardKey.classList.add('note-natural')
+                }
+            }
+        })
     }
     //User interaction event handlers below
 
@@ -337,8 +352,10 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     //populate dropdown with all presets in localStorage
     populatePresetsDropdown()
     //load default preset on DOM
-    loadPreset("Custom Wave")
-    openCustomWaveControls()
+    loadPreset("Default")
+    //openCustomWaveControls()
+
+    createKeymapWindow()
     //Attach Event handlers to appropriate element
     registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
     registerInputElement(document, 'keydown', onInstructionsKeyout)

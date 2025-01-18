@@ -5,6 +5,7 @@ import { documentInit } from './document.js'
 
 //KeyToNoteMap: Map containing key bindings to note names, 'KeyCode': 'notename'
 const keyToNoteMap: Map<string, string> = new Map()
+// Top down key map
 /*
 keyToNoteMap.set('KeyQ', 'C2')
 keyToNoteMap.set('Digit2', 'C#2')
@@ -45,6 +46,8 @@ keyToNoteMap.set('Period', 'B4')
 keyToNoteMap.set('Slash', 'C5')
 keyToNoteMap.set('Quote', 'C#5')
 */
+//bottom up key map
+/*
 keyToNoteMap.set('KeyZ', 'C2')
 keyToNoteMap.set('KeyS', 'C#2')
 keyToNoteMap.set('KeyX', 'D2')
@@ -82,7 +85,92 @@ keyToNoteMap.set('KeyP', 'A4')
 keyToNoteMap.set('Minus', 'A#4')
 keyToNoteMap.set('BracketLeft', 'B4')
 keyToNoteMap.set('BracketRight', 'C5')
-//keyToNoteMap.set('Quote', 'C#5')
+*/
+//Irish key map
+/*
+keyToNoteMap.set('KeyZ', 'A2')
+keyToNoteMap.set('KeyX', 'B2')
+keyToNoteMap.set('KeyC', 'D3')
+keyToNoteMap.set('KeyV', 'E3')
+keyToNoteMap.set('KeyB', 'F#3')
+keyToNoteMap.set('KeyN', 'G3')
+keyToNoteMap.set('KeyM', 'A3')
+keyToNoteMap.set('Comma', 'B3')
+keyToNoteMap.set('Period', 'C#4')
+keyToNoteMap.set('Slash', 'D4')
+
+keyToNoteMap.set('KeyA', 'G2')
+keyToNoteMap.set('KeyS', 'G3')
+keyToNoteMap.set('KeyD', 'A3')
+keyToNoteMap.set('KeyF', 'B3')
+keyToNoteMap.set('KeyG', 'C4')
+keyToNoteMap.set('KeyH', 'D4')
+keyToNoteMap.set('KeyJ', 'E4')
+keyToNoteMap.set('KeyK', 'F#4')
+keyToNoteMap.set('KeyL', 'G4')
+keyToNoteMap.set('Semicolon', 'A4')
+keyToNoteMap.set('Quote', 'B4')
+
+keyToNoteMap.set('KeyQ', 'A3')
+keyToNoteMap.set('KeyW', 'B3')
+keyToNoteMap.set('KeyE', 'C#4')
+keyToNoteMap.set('KeyR', 'D4')
+keyToNoteMap.set('KeyT', 'E4')
+keyToNoteMap.set('KeyY', 'F#4')
+keyToNoteMap.set('KeyU', 'G#4')
+keyToNoteMap.set('KeyI', 'A4')
+keyToNoteMap.set('KeyO', 'B4')
+keyToNoteMap.set('KeyP', 'C#5')
+keyToNoteMap.set('BracketLeft', 'D5')
+keyToNoteMap.set('BracketRight', 'E5')
+*/
+
+//Split nearly diatonic
+//Left:
+keyToNoteMap.set('KeyZ', 'F1')
+keyToNoteMap.set('KeyX', 'G1')
+keyToNoteMap.set('KeyC', 'A1')
+keyToNoteMap.set('KeyV', 'A#1')
+
+keyToNoteMap.set('KeyA', 'B1')
+keyToNoteMap.set('KeyS', 'C2')
+keyToNoteMap.set('KeyD', 'D2')
+keyToNoteMap.set('KeyF', 'E2')
+
+keyToNoteMap.set('KeyQ', 'F2')
+keyToNoteMap.set('KeyW', 'G2')
+keyToNoteMap.set('KeyE', 'A2')
+keyToNoteMap.set('KeyR', 'A#2')
+
+//Right:
+keyToNoteMap.set('KeyB', 'B2')
+keyToNoteMap.set('KeyN', 'C3')
+keyToNoteMap.set('KeyM', 'D3')
+keyToNoteMap.set('Comma', 'E3')
+keyToNoteMap.set('Period', 'F3')
+keyToNoteMap.set('Slash', 'F#3')
+
+
+keyToNoteMap.set('KeyG', 'G3')
+keyToNoteMap.set('KeyH', 'A3')
+keyToNoteMap.set('KeyJ', 'A#3')
+keyToNoteMap.set('KeyK', 'B3')
+keyToNoteMap.set('KeyL', 'C4')
+keyToNoteMap.set('Semicolon', 'D4')
+keyToNoteMap.set('Quote', 'E4')
+
+
+keyToNoteMap.set('KeyT', 'F4')
+keyToNoteMap.set('KeyY', 'F#4')
+keyToNoteMap.set('KeyU', 'G4')
+keyToNoteMap.set('KeyI', 'A4')
+keyToNoteMap.set('KeyO', 'A#4')
+keyToNoteMap.set('KeyP', 'B4')
+keyToNoteMap.set('BracketLeft', 'C5')
+keyToNoteMap.set('BracketRight', 'D5')
+
+
+
 
 const controlKeySet: Set<string> = new Set()
 controlKeySet.add('Space')
