@@ -9,15 +9,5 @@
         "lib": ["es2021", "dom", "es5"],
         "target": "es2017",
     },
-    "files": [
-        "src/ts/index.ts",
-        "src/ts/document.ts",
-        "src/ts/Envelope.ts",
-        "src/ts/Filter.ts",
-        "src/ts/Keyboard.ts",
-        "src/ts/oscilloscope.ts",
-        "src/ts/NodeChain.ts",
-        "src/ts/Note.ts",
-        "src/ts/Synth.ts",
-    ]
+    "include": ["src/ts/*.ts"]
 }
