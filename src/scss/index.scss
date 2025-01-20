@@ -142,32 +142,6 @@
     }
 }
 
-.custom-wave-container {
-    display: none;
-
-    &.opened {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 220px;
-        margin-left: 30px;
-
-        div {
-            display: flex;
-            margin-bottom: 5px;
-        }
-
-        label {
-            margin-right: 5px;
-            white-space: nowrap;
-        }
-
-        button {
-            align-self: center;
-        }
-    }
-}
-
 .controls-container {
     display: flex;
     flex-direction: row;

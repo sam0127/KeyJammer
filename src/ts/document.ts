@@ -1,8 +1,6 @@
 import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
-import { parseWaveFunction } from './parser.js'
-import { CustomWave } from './CustomWave.js'
 
 const registerInputElement = (element: Node, event: string, listener: (e: Event) => void) => {
     element.addEventListener(event, listener)
@@ -30,9 +28,6 @@ async function fetchDefaultPresets() {
     jsonData = await response.json();
     presets[4] = jsonData
 
-    response = await fetch("./assets/defaultpresets/custom.json");
-    jsonData = await response.json();
-    presets[5] = jsonData
     return presets
   }
 
@@ -112,18 +107,6 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         synth.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
         synth.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
         synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
-    }
-
-    const openCustomWaveControls = () => {
-        if(!customWaveContainerElement.classList.contains('opened')) {
-            customWaveContainerElement.classList.add('opened')
-        }
-    }
-
-    const closeCustomWaveControls = () => {
-        if(customWaveContainerElement.classList.contains('opened')) {
-            customWaveContainerElement.classList.remove('opened')
-        }
     }
 
     //Create keymap window
@@ -237,23 +220,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onSimpleWaveInput = (e: any) => {
-        if(e.currentTarget.value === '4') {
-            openCustomWaveControls()
-        } else {
-            closeCustomWaveControls()
-        }
         synth.setWaveType(e.currentTarget.value)
-    }
-
-    const onCreateCustomWave = (e: any) => {
-        var realCoeffExpression: string = coefficientAElement.value
-        var imagCoeffExpression: string = coefficientBElement.value
-
-        const customWave = new CustomWave(
-            parseWaveFunction(realCoeffExpression),
-            parseWaveFunction(imagCoeffExpression)
-        )
-        synth.setCustomWave(customWave.realCoefficients, customWave.imaginaryCoefficients)
     }
 
     const onLowPassInput = (e: any) => {
@@ -316,11 +283,6 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
 
     const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')
-    const customWaveContainerElement: Element = document.querySelector('.custom-wave-container')
-
-    const coefficientAElement: HTMLInputElement = document.querySelector('input[name="An"]')
-    const coefficientBElement: HTMLInputElement = document.querySelector('input[name="Bn"]')
-    const createWaveButtonElement: HTMLButtonElement = document.querySelector('button[name="create-wave"]')
 
     const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
     const highPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('high-pass')
@@ -353,7 +315,6 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     populatePresetsDropdown()
     //load default preset on DOM
     loadPreset("Default")
-    //openCustomWaveControls()
 
     createKeymapWindow()
     //Attach Event handlers to appropriate element
@@ -372,7 +333,6 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
 
     registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
-    registerInputElement(createWaveButtonElement, 'click', onCreateCustomWave)
 
     registerInputElement(lowPassElement, 'change', onLowPassInput)
     registerInputElement(highPassElement, 'change', onHighPassInput)

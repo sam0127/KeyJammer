@@ -2,7 +2,6 @@ import { Envelope } from './Envelope.js'
 import { Filter } from './Filter.js'
 import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
-import { CustomWave } from './CustomWave.js'
 
 
 /*
@@ -36,8 +35,7 @@ export class Synth {
         'sine',
         'square',
         'sawtooth',
-        'triangle',
-        'custom'
+        'triangle'
     ]
 
     //if you add more filters, be sure to update document listener and preset logic for filters
@@ -133,36 +131,11 @@ export class Synth {
 
     //Update all notes to a wave type
     setWaveType(type: number) {
-        if(this.waveTypes[type] !== 'custom') {
-            this.notes.forEach((value: Note, key: string) => {
-                value.oscillator.type = <OscillatorType>this.waveTypes[type]
-            })
-        }
-    }
-
-    setCustomWave(realCoefficients: Array<number>, imaginaryCoefficients: Array<number>) {
-        const wave = this.context.createPeriodicWave(realCoefficients, imaginaryCoefficients)
         this.notes.forEach((value: Note, key: string) => {
-            value.oscillator.setPeriodicWave(wave)
+            value.oscillator.type = <OscillatorType>this.waveTypes[type]
         })
     }
     
-    waveFunction(term: number, type: number): number {
-        var coefficient
-        if(type === 0) {
-            coefficient = 1 / (term * Math.PI)
-        } else if(type === 1) {
-
-        } else if(type === 2) {
-            
-        }
-        var a = 8
-        var b = 16
-        //coefficient = 1 / (term * Math.PI)
-        //coefficient = Math.sin(a * term * Math.PI)
-        coefficient = (Math.sin(a * term) * Math.cos(b * term)) / (term/2)
-        return coefficient
-    }
     //Sets the master volume of the synth
     setMasterVolume(value: number) {
         const mainGain = <GainNode>this.globalChain.last()
