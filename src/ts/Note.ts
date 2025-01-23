@@ -1,3 +1,6 @@
+/*
+Each note must have its own filter node since filter nodes only have one input :(
+*/
 export class Note {
     oscillator: OscillatorNode
     gain: GainNode
@@ -27,5 +30,12 @@ export class Note {
 
     init() {
         this.oscillator.start()
+    }
+
+    destroy() {
+        this.oscillator.stop()
+        this.oscillator.disconnect()
+        this.gain.disconnect()
+        this.filter.disconnect()
     }
 }

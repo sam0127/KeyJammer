@@ -162,6 +162,34 @@
     </header>
     <section id="synth-controls">
       <div class="row">
+        <div class="control-panel input-controls">
+          <h3>Input Source</h3>
+          <div class="input-container">
+            <div class="input-source">
+              <div class="input-type">
+                <input id="keyboard" type="radio" name="input-src" value="keyboard" checked></input>
+                <label for="keyboard">Keyboard</label>
+              </div>
+              <div class="input-type">
+                <input id="midi" type="radio" name="input-src" value="midi" disabled></input>
+                <label for="midi">MIDI</label>
+              </div>
+            </div>
+            <div class="mono-polyphony">
+              <div class="mono-poly-type">
+                <input id="monophonic" type="radio" name="monopoly" value="monophonic"></input>
+                <label for="monophonic">Monophonic</label>
+              </div>
+              <div class="mono-poly-type">
+                <input id="polyphonic" type="radio" name="monopoly" value="polyphonic" checked></input>
+                <label for="polyphonic">Polyphonic</label>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="control-panel simple-wave-controls">
           <div class="vertical-slider-container">
             <label for="wave-input">Wave</label>

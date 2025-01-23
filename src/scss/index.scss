@@ -148,6 +148,21 @@
     justify-content: space-around;
 }
 
+.input-container {
+    display: flex;
+    flex-direction: row;
+
+    .input-source {
+        display: flex;
+        flex-direction: column;
+        margin-right: 20px;
+    }
+
+    .input-type {
+        text-align: left;
+    }
+}
+
 .vertical-slider-container {
     position: relative;
     input {

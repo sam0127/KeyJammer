@@ -30,6 +30,7 @@ export class Synth {
     globalChain: NodeChain
     tuningSystem: Map<string, number>
     octaveOffset: number = 0
+    isMonophonic: boolean = false
 
     readonly waveTypes: Array<string> = [
         'sine',
@@ -81,15 +82,29 @@ export class Synth {
 
     //init method - create each playable note
     init() {
-        this.tuningSystem.forEach((value, key) => {
-            this.createNote(value, key)
-        })
+        if(this.isMonophonic) {
+            this.createNote(0, "M")
+        } else {
+            this.tuningSystem.forEach((value, key) => {
+                this.createNote(value, key)
+            })
+        }
     }
 
     //Start playing a note - if the note is playable, start attack -> decay -> release sequence
     triggerNoteStart(name: string) {
+        //octave offset calculation
         name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
-        let note: Note = this.notes.has(name) ? this.notes.get(name) : null
+
+        let note: Note = null
+        if(this.isMonophonic) {
+            note = this.notes.has("M") ? this.notes.get("M") : null
+            if(this.tuningSystem.has(name)) {
+                note.frequency = this.tuningSystem.get(name)
+            }
+        } else {
+            note = this.notes.has(name) ? this.notes.get(name) : null
+        }
 
         if(note !== null) {
             const startTime: number = this.context.currentTime
@@ -115,7 +130,14 @@ export class Synth {
     //Stop playing a note - if the note is playable, start sustain -> release -> stop sequence
     triggerNoteStop(name: string) {
         name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
+
         let note: Note = this.notes.has(name) ? this.notes.get(name) : null
+        if(this.isMonophonic) {
+            
+        } else {
+
+        }
+        
 
         if(note != null) {
             const startTime: number = this.context.currentTime
@@ -207,5 +229,26 @@ export class Synth {
     //Sets synth octave offset
     setOctaveOffset(offset: number) {
         this.octaveOffset = offset
+    }
+
+    destroyNotes() {
+        this.notes.forEach((value: Note, key: String) => {
+            value.destroy()
+        })
+        this.notes.clear()
+    }
+
+    setMonophonic() {
+        this.destroyNotes()
+        this.createNote(0, "M")
+        this.isMonophonic = true
+    }
+
+    setPolyphonic() {
+        this.destroyNotes()
+        this.tuningSystem.forEach((value, key) => {
+            this.createNote(value, key)
+        })
+        this.isMonophonic = false
     }
 }

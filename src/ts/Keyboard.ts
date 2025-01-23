@@ -85,12 +85,14 @@ export class Keyboard {
 
             //Released key is a note key
             if(this.bindingMap.has(e.code)) {
-                if(this.drone) {
+                if(!synth.isMonophonic && this.drone) {
                     this.droneKeys.add(e.code)
                 } else if(this.sustain) {
                     this.sustainKeys.add(e.code)
                 } else if(!this.droneKeys.has(e.code)){
-                    synth.triggerNoteStop(this.bindingMap.get(e.code))
+                    if(!synth.isMonophonic || synth.isMonophonic && this.pressedKeys.size == 0) {
+                        synth.triggerNoteStop(this.bindingMap.get(e.code))
+                    }
                 }
             } else if(this.controlKeys.has(e.code)) { //Released key is a control key
                 this.onControlInput(synth, e.code, false)
