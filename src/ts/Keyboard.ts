@@ -1,4 +1,5 @@
 import { Synth } from './Synth'
+import { InputController } from './InputController'
 
 /*
 Keyboard Class
@@ -34,9 +35,10 @@ export class Keyboard {
     }
 
     //On control inputs - perform control functionality
-    private onControlInput(synth: Synth, key: string, keydown: boolean) {
+    private onControlInput(inputController: InputController, key: string, keydown: boolean) {
         if(keydown) {
             if(key === "CapsLock") {
+                /*
                 this.drone = !this.drone
                 if(this.drone) {
                     this.sustainKeys.forEach((sustainedKey) => {
@@ -44,12 +46,16 @@ export class Keyboard {
                     })
 
                 }
+                */
             } else if(this.isSustainKey(key)) {
+                /*
                 this.sustain = true
+                */
             } else if(key === "Escape") {
-                this.clearAllNotes(synth)
+                this.clearAllNotes(inputController)
             }
         } else {
+            /*
             if(this.isSustainKey(key)) {
                 this.sustain = false
 
@@ -61,11 +67,12 @@ export class Keyboard {
 
                 this.sustainKeys.clear()
             }
+            */
         }
     }
 
     //Initialize Keyboard listeners, conditionally trigger synth notes
-    init(synth: Synth) {
+    init(inputController: InputController) {
         document.addEventListener("keydown", (e: any) => {
             if(!this.pressedKeys.has(e.code)) {
                 this.pressedKeys.add(e.code)
@@ -73,9 +80,10 @@ export class Keyboard {
                 //pressed key is a note key
                 if(this.bindingMap.has(e.code)) {
                     //console.log("note start")
-                    synth.triggerNoteStart(this.bindingMap.get(e.code))
+                    //synth.triggerNoteStart(this.bindingMap.get(e.code))
+                    inputController.startSignal(this.bindingMap.get(e.code))
                 } else if(this.controlKeys.has(e.code)) { //pressed key is a control key
-                    this.onControlInput(synth, e.code, true)
+                    this.onControlInput(inputController, e.code, true)
                 }
             }
         })
@@ -85,43 +93,47 @@ export class Keyboard {
 
             //Released key is a note key
             if(this.bindingMap.has(e.code)) {
-                if(!synth.isMonophonic && this.drone) {
-                    this.droneKeys.add(e.code)
+                inputController.stopSignal(this.bindingMap.get(e.code))
+                /*
+                if(this.drone) {
+                    //this.droneKeys.add(e.code)
                 } else if(this.sustain) {
-                    this.sustainKeys.add(e.code)
+                    //this.sustainKeys.add(e.code)
                 } else if(!this.droneKeys.has(e.code)){
-                    if(!synth.isMonophonic || synth.isMonophonic && this.pressedKeys.size == 0) {
-                        synth.triggerNoteStop(this.bindingMap.get(e.code))
+                    if(this.pressedKeys.size == 0) {
+                        //synth.triggerNoteStop(this.bindingMap.get(e.code))
+                        inputController.stopSignal(this.bindingMap.get(e.code))
                     }
                 }
+                    */
             } else if(this.controlKeys.has(e.code)) { //Released key is a control key
-                this.onControlInput(synth, e.code, false)
+                this.onControlInput(inputController, e.code, false)
             }
         })
     }
 
     //Trigger note stop on all currently playing notes, clear note sets
-    clearAllNotes(synth: Synth) {
+    clearAllNotes(inputController: InputController) {
         console.log("Clearing all notes:")
         console.log("Pressed Keys -")
         this.pressedKeys.forEach((key) => {
             if(this.bindingMap.has(key)) {
                 console.log(key)
-                synth.triggerNoteStop(this.bindingMap.get(key))
+                inputController.stopSignal(this.bindingMap.get(key))
             }
         })
         console.log("Sustained Keys -")
         this.sustainKeys.forEach((key) => {
             if(this.bindingMap.has(key)) {
                 console.log(key)
-                synth.triggerNoteStop(this.bindingMap.get(key))
+                inputController.stopSignal(this.bindingMap.get(key))
             }
         })
         console.log("Drone Keys -")
         this.droneKeys.forEach((key) => {
             if(this.bindingMap.has(key)) {
                 console.log(key)
-                synth.triggerNoteStop(this.bindingMap.get(key))
+                inputController.stopSignal(this.bindingMap.get(key))
             }
         })
 

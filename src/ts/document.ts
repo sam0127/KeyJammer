@@ -1,6 +1,7 @@
 import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
+import { InputController } from './InputController.js'
 
 const registerInputElement = (element: Node, event: string, listener: (e: Event) => void) => {
     element.addEventListener(event, listener)
@@ -31,7 +32,7 @@ async function fetchDefaultPresets() {
     return presets
   }
 
-const documentInit = (synth: Synth, keyboard: Keyboard) => {
+const documentInit = (keyboard: Keyboard, inputController: InputController) => {
 
     //Preset saving and loading
     const saveDefaultPresets = () => {
@@ -91,22 +92,22 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         octaveDisplayElement.innerHTML = preset["offset"]
     }
 
-    //sets default synth properties from DOM
-    const setDefaults = (synth: Synth) => {
-        synth.setWaveType(parseInt(waveTypeElement.value))
-        //synth.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
-        synth.setFilterCutoff(parseFloat(cutoffElement.value))
-        synth.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
-        synth.setFilterResonance(parseInt(resonanceElement.value))
-        synth.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
-        synth.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
-        synth.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
-        synth.setAmpEnvelope(ampReleaseElement.name, parseInt(ampReleaseElement.value))
-        synth.setFilterEnvelope(filterAttackElement.name, parseInt(filterAttackElement.value))
-        synth.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
-        synth.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
-        synth.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
-        synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
+    //sets default inputController properties from DOM
+    const setDefaults = (inputController: InputController) => {
+        inputController.setWaveType(parseInt(waveTypeElement.value))
+        //inputController.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
+        inputController.setFilterCutoff(parseFloat(cutoffElement.value))
+        inputController.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
+        inputController.setFilterResonance(parseInt(resonanceElement.value))
+        inputController.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
+        inputController.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
+        inputController.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
+        inputController.setAmpEnvelope(ampReleaseElement.name, parseInt(ampReleaseElement.value))
+        inputController.setFilterEnvelope(filterAttackElement.name, parseInt(filterAttackElement.value))
+        inputController.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
+        inputController.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
+        inputController.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
+        inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
     }
 
     //Create keymap window
@@ -152,28 +153,28 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onAllowAudio = (e: any) => {
-        if(synth.context.state === 'suspended') {
+        if(inputController.context.state === 'suspended') {
             console.log("Initializing Audio")
 
-            synth.context.resume()
-            synth.init()
-            setDefaults(synth)
-            keyboard.init(synth)
+            inputController.context.resume()
+            inputController.init()
+            setDefaults(inputController)
+            keyboard.init(inputController)
             oscilloscopeInit(
                 <HTMLCanvasElement>oscilloscopeElement,
                 <HTMLCanvasElement>spectrographElement,
-                <AnalyserNode>synth.globalChain.get(1)
+                <AnalyserNode>inputController.globalChain.get(1)
             )
         }
     }
 
     const onMasterVolumeInput = (e: any) => {
-        synth.setMasterVolume(e.currentTarget.value)
+        inputController.setMasterVolume(e.currentTarget.value)
     }
 
     const onLoadPresetInput = (e: any) => {
         loadPreset(e.currentTarget.value)
-        setDefaults(synth)
+        setDefaults(inputController)
     }
 
     const onSavePresetInput = (e: any) => {
@@ -228,49 +229,49 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onMonophonicInput = (e: any) => {
-        synth.setMonophonic()
+        inputController.setMonophonic()
     }
 
     const onPolyphonicInput = (e: any) => {
-        synth.setPolyphonic()
+        inputController.setPolyphonic()
     }
 
     const onSimpleWaveInput = (e: any) => {
-        synth.setWaveType(e.currentTarget.value)
+        inputController.setWaveType(e.currentTarget.value)
     }
 
     const onLowPassInput = (e: any) => {
-        synth.setFilterType(0)
+        inputController.setFilterType(0)
     }
 
     const onHighPassInput = (e: any) => {
-        synth.setFilterType(1)
+        inputController.setFilterType(1)
     }
 
     const onCutoffInput = (e: any) => {
-        synth.setFilterCutoff(parseFloat(e.currentTarget.value))
+        inputController.setFilterCutoff(parseFloat(e.currentTarget.value))
     }
 
     const onEnvCutoffInput = (e: any) => {
-        synth.setFilterEnvCutoff(parseFloat(e.currentTarget.value))
+        inputController.setFilterEnvCutoff(parseFloat(e.currentTarget.value))
     }
 
     const onResonanceInput = (e: any) => {
-        synth.setFilterResonance(e.currentTarget.value)
+        inputController.setFilterResonance(e.currentTarget.value)
     }
 
     const onAmpEnvelopeInput = (e: any) => {
-        synth.setAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
+        inputController.setAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
     const onFilterEnvelopeInput = (e: any) => {
-        synth.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
+        inputController.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
     const onOctaveIncreaseInput = (e: any) => {
         if(parseInt(octaveDisplayElement.innerHTML) < 2) {
-            keyboard.clearAllNotes(synth)
-            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
+            keyboard.clearAllNotes(inputController)
+            inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
             octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
         }
 
@@ -278,8 +279,8 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
 
     const onOctaveDecreaseInput = (e: any) => {
         if(parseInt(octaveDisplayElement.innerHTML) > -1) {
-            keyboard.clearAllNotes(synth)
-            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
+            keyboard.clearAllNotes(inputController)
+            inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
             octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
         }
     }
@@ -388,7 +389,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     //Attach Event handlers to appropriate element
 
     window.addEventListener('blur', (e: any) => {
-       // keyboard.clearAllNotes(synth)
+       // keyboard.clearAllNotes(inputController)
     })
 }
 

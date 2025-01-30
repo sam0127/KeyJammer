@@ -2,26 +2,11 @@ import { Envelope } from './Envelope.js'
 import { Filter } from './Filter.js'
 import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
+import { SignalCollection } from './SignalCollection.js'
+import { Signal } from './Signal.js'
+import { LinkedStack } from './LinkedStack.js'
 
-
-/*
-Synth class
-
-The primary class for this project, has:
-
-A context type AudioContext, the root of all audio functionality,
-a notes Map, to hold all possible notes playable by the synth,
-an Amplitude Envelope, which describes how a note's amplitude behaves over time,
-a Filter Envelope, which describes how a note's filter's cutoff behaves over time,
-a Filter, a class which contains basic synth filter properties like cutoff, envelope cutoff, and resonance,
-a global NodeChain, a chain of AudioNodes that all signals are connected to,
-a tuningSystem, a map of MIDI note names to frequencies, as of now, the set of equal temperament frequencies,
-an octaveOffset number, an integer which represents how many octaves the keyboard is offset by,
-and
-an array of waveTypes, containing all the possible wave types. TODO Custom waveType,
-an array of filterTypes, containing all the possible filter types. TODO highpass and more
-*/
-export class Synth {
+export class InputController {
     context: AudioContext
     notes: Map<string, Note>
     ampEnvelope: Envelope
@@ -31,6 +16,11 @@ export class Synth {
     tuningSystem: Map<string, number>
     octaveOffset: number = 0
     isMonophonic: boolean = false
+    activeSignals: SignalCollection
+    availableSignals: LinkedStack<Signal>
+    heldInputs: LinkedStack<number>
+
+    signalCapacity: number
 
     readonly waveTypes: Array<string> = [
         'sine',
@@ -63,52 +53,83 @@ export class Synth {
         const volumeGain = <GainNode>this.globalChain.last()
         mainGain.gain.value = 0.25
         volumeGain.gain.value = 0.5
-        this.notes = new Map<string, Note>()
+        //this.notes = new Map<string, Note>()
+
+        //NEW
+        this.signalCapacity = 6
+        this.activeSignals = new SignalCollection(this.signalCapacity)
+        this.availableSignals = new LinkedStack<Signal>()
+
+        for(let i = 0; i < this.signalCapacity; i++) {
+            let signal = new Signal(this.context)
+            signal.connect(this.globalChain.first())
+            this.availableSignals.push(signal)
+        }
+
+        this.heldInputs = new LinkedStack<number>()
+
+        ///
     }
 
-    /* REFACTOR NOTES
-    keep synth.tuningSystem
+    //NEW
 
-    oscillator1: Oscillator
-    oscillator2: Oscillator
-
-    constructor()
-
-    //start oscillator note
     startSignal(name: string) {
-        if(oscillator1.isOn() && tuningSystem.has(name)) {
-            oscillator1.start(tuningSystem.has(name))
-        }
+        if(this.tuningSystem.has(name)) {
+            
+            let freq = this.tuningSystem.get(name)
+            this.heldInputs.push(freq)
+            if(!this.availableSignals.isEmpty()) {
+                let signal = this.availableSignals.pop()
+                signal.start(freq, this.ampEnvelope, this.filterEnvelope)
+                this.activeSignals.push(signal)
+            } else {
+                let signal = this.activeSignals.pop()
+                signal.move(freq)
+                this.activeSignals.push(signal)
+            }
 
-        if(oscillator2.isOn()) {
-            oscillator2.start(name)
+            //console.log("AVAILABLE SIGNALS: " + this.availableSignals.toString())
+            
+            //console.log("ACTIVE SIGNALS: " + this.activeSignals.toString())
+            //console.log("HELD INPUTS: " + this.heldInputs.toString())
+            //console.log("================================================================")
         }
     }
 
-    //move note for monophonic inputs
-    moveSignal(name: string) {
-        if(oscillator1.isOn()) {
-            oscillator1.move(name)
-        }
-
-        if(oscillator2.isOn()) {
-            oscillator2.move(name)
-        }
-    }
-
-
-    //stop oscillator note
     stopSignal(name: string) {
-        if(oscillator1.isOn()) {
-            oscillator1.stop(name)
-        }
+        if(this.tuningSystem.has(name)) {
+            let freq = this.tuningSystem.get(name)
+            this.heldInputs.remove(freq)
+            if(!this.activeSignals.isEmpty()) {
+                let signal = this.activeSignals.remove(freq)
 
-        if(oscillator2.isOn()) {
-            oscillator2.stop(name)
+                if(signal) {
+                    if(this.heldInputs.getSize() > this.activeSignals.getSize()) {
+                        let found = false
+                        this.heldInputs.forEach((item: number) => {
+
+                            if(!this.activeSignals.has(item) && !found) {
+                                signal.move(item)
+                                this.activeSignals.push(signal)
+                                found = true
+                            }
+                        })
+                    } else {
+                        //signal.baseFrequency = 0
+                        signal.stop(freq, this.ampEnvelope, this.filterEnvelope)
+                        this.availableSignals.push(signal)
+                    }
+                }
+            }
+
+
+            //console.log("ACTIVE SIGNALS: " + this.activeSignals.toString())
+            //console.log("HELD INPUTS: " + this.heldInputs.toString())
+            //console.log("================================================================")
         }
     }
 
-    */
+
 
     //init sub-method - create one playable note, assign to it a keyboard Key
     private createNote(value: number, key: string) {
@@ -126,6 +147,7 @@ export class Synth {
 
     //init method - create each playable note
     init() {
+        /*
         if(this.isMonophonic) {
             this.createNote(0, "M")
         } else {
@@ -133,56 +155,23 @@ export class Synth {
                 this.createNote(value, key)
             })
         }
-    }
-
-    //Start playing a note - if the note is playable, start attack -> decay -> release sequence
-    triggerNoteStart(name: string) {
-        //octave offset calculation
-        name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
-        let note = this.notes.has(name) ? this.notes.get(name) : null
-        if(note !== null) {
-            const startTime: number = this.context.currentTime
-            note.gain.gain.cancelScheduledValues(startTime)
-            note.gain.gain.setValueAtTime(note.gain.gain.value, startTime)
-            note.gain.gain.linearRampToValueAtTime(1.0, startTime + this.ampEnvelope.attack)
-            note.gain.gain.linearRampToValueAtTime(this.ampEnvelope.sustain, startTime + this.ampEnvelope.attack + this.ampEnvelope.decay)
-    
-            note.filter.Q.value = this.filter.resonance
-            note.filter.frequency.cancelScheduledValues(startTime)
-            note.filter.frequency.setValueAtTime(this.filter.cutoff * note.frequency, startTime)
-    
-            note.filter.frequency.linearRampToValueAtTime(
-                (this.filter.cutoff + this.filter.envCutoff) * note.frequency,
-                startTime + this.filterEnvelope.attack
-                )
-            note.filter.frequency.linearRampToValueAtTime(
-                (this.filter.cutoff + this.filterEnvelope.sustain * this.filter.envCutoff) * note.frequency,
-                startTime + this.filterEnvelope.attack + this.filterEnvelope.decay)
-        }
-    }
-
-    //Stop playing a note - if the note is playable, start sustain -> release -> stop sequence
-    triggerNoteStop(name: string) {
-        name = name.substring(0,name.length-1) + (parseInt(name[name.length-1]) + this.octaveOffset)
-
-        let note: Note = this.notes.has(name) ? this.notes.get(name) : null
-
-        if(note != null) {
-            const startTime: number = this.context.currentTime
-            note.gain.gain.cancelScheduledValues(startTime)
-            note.gain.gain.setValueAtTime(note.gain.gain.value, startTime)
-            note.gain.gain.linearRampToValueAtTime(0, startTime + this.ampEnvelope.release)
-    
-            note.filter.frequency.cancelScheduledValues(startTime)
-            note.filter.frequency.setValueAtTime(note.filter.frequency.value, startTime)
-            note.filter.frequency.linearRampToValueAtTime(this.filter.cutoff * note.frequency, startTime + this.filterEnvelope.release)
-        }
+            */
     }
 
     //Update all notes to a wave type
     setWaveType(type: number) {
+        /*
         this.notes.forEach((value: Note, key: string) => {
             value.oscillator.type = <OscillatorType>this.waveTypes[type]
+        })
+            */
+
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
         })
     }
     
@@ -235,10 +224,20 @@ export class Synth {
 
     //Updates synth filter cutoff and all notes' filter cutoffs
     setFilterCutoff(factor: number) {
+        /*
         this.filter.cutoff = factor
         this.notes.forEach((value: Note, key: string) => {
             value.filter.frequency.setValueAtTime(value.frequency * this.filter.cutoff, this.context.currentTime)
         })
+
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterA().getFrequencyParam.setValue
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
+        })
+            */
     }
 
     //Sets synth filter envelope cutoff
@@ -248,10 +247,12 @@ export class Synth {
 
     //Sets synth filter resonance
     setFilterResonance(value: number) {
+        /*
         this.filter.resonance = value
         this.notes.forEach((val: Note, key: string) => {
             val.filter.Q.value = this.filter.resonance
         })
+            */
     }
 
     //Sets synth octave offset

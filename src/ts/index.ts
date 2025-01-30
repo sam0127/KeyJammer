@@ -2,6 +2,7 @@ import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 
 import { documentInit } from './document.js'
+import { InputController } from './InputController.js'
 
 //KeyToNoteMap: Map containing key bindings to note names, 'KeyCode': 'notename'
 const keyToNoteMap: Map<string, string> = new Map()
@@ -259,8 +260,9 @@ noteToFrequencyMap.set('B6', 1975.53)
 noteToFrequencyMap.set('C7', 2093.00)
 
 const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
-const synth = new Synth(noteToFrequencyMap)
+//const synth = new Synth(noteToFrequencyMap)
+const inputController = new InputController(noteToFrequencyMap)
 
 document.addEventListener('DOMContentLoaded', () => {
-    documentInit(synth, keyboard)
+    documentInit(keyboard, inputController)
 })
