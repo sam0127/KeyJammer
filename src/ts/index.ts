@@ -1,4 +1,3 @@
-import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 
 import { documentInit } from './document.js'

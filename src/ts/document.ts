@@ -1,4 +1,3 @@
-import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
 import { InputController } from './InputController.js'
@@ -140,6 +139,14 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         }
     }
 
+    const onInstructionsClickout = (e: any) => {
+        if(e.target.classList.contains('instructions')) {
+            if(instructionsAsideElement.classList.contains('opened')) {
+                instructionsAsideElement.classList.remove('opened')
+            }
+        }
+    }
+
     const onHeaderClick = (e: any) => {
         const sectionElement = document.getElementById(e.currentTarget.classList[1])
 
@@ -157,7 +164,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             console.log("Initializing Audio")
 
             inputController.context.resume()
-            inputController.init()
+            //inputController.init()
             setDefaults(inputController)
             keyboard.init(inputController)
             oscilloscopeInit(
@@ -228,12 +235,9 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         
     }
 
-    const onMonophonicInput = (e: any) => {
-        inputController.setMonophonic()
-    }
-
-    const onPolyphonicInput = (e: any) => {
-        inputController.setPolyphonic()
+    const onVoicesInput = (e: any) => {
+        e.currentTarget.parentElement.querySelector('label span').innerHTML = e.currentTarget.value
+        inputController.setSignalCapacity(e.currentTarget.value)
     }
 
     const onSimpleWaveInput = (e: any) => {
@@ -289,11 +293,13 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
 
     //Keyboard
     registerInputElement(document, 'keydown', onInstructionsKeyout)
+    
 
     //Instructions
     const instructionsButtonElement: HTMLInputElement = document.querySelector('button[name="instructions"]')
     registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
     const instructionsAsideElement: Element = document.querySelector('aside.instructions')
+    registerInputElement(instructionsAsideElement, 'click', onInstructionsClickout)
 
     //Collapsible sections
     const headerElements: NodeListOf<Element> = document.querySelectorAll('.header-container')
@@ -324,10 +330,10 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     registerInputElement(keyboardInputElement, 'change', onKeyboardInput)
     const midiInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('midi')
     registerInputElement(midiInputElement, 'change', onMidiInput)
-    const monophonicInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('monophonic')
-    registerInputElement(monophonicInputElement, 'change', onMonophonicInput)
-    const polyphonicInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('polyphonic')
-    registerInputElement(polyphonicInputElement, 'change', onPolyphonicInput)
+
+    const voicesElement = document.querySelector('input[name="voices"]')
+    registerInputElement(voicesElement, 'input', onVoicesInput)
+
 
     //Oscillators
     const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')

@@ -1,3 +1,4 @@
+/*
 import { Envelope } from './Envelope.js'
 import { Filter } from './Filter.js'
 import { Note } from './Note.js'
@@ -20,7 +21,7 @@ an octaveOffset number, an integer which represents how many octaves the keyboar
 and
 an array of waveTypes, containing all the possible wave types. TODO Custom waveType,
 an array of filterTypes, containing all the possible filter types. TODO highpass and more
-*/
+
 export class Synth {
     context: AudioContext
     notes: Map<string, Note>
@@ -107,8 +108,7 @@ export class Synth {
             oscillator2.stop(name)
         }
     }
-
-    */
+    
 
     //init sub-method - create one playable note, assign to it a keyboard Key
     private createNote(value: number, key: string) {
@@ -280,3 +280,4 @@ export class Synth {
         this.isMonophonic = false
     }
 }
+*/

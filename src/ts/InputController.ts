@@ -1,5 +1,5 @@
 import { Envelope } from './Envelope.js'
-import { Filter } from './Filter.js'
+import { FilterSettings } from './FilterSettings.js'
 import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
 import { SignalCollection } from './SignalCollection.js'
@@ -11,7 +11,7 @@ export class InputController {
     notes: Map<string, Note>
     ampEnvelope: Envelope
     filterEnvelope: Envelope
-    filter: Filter
+    filter: FilterSettings
     globalChain: NodeChain
     tuningSystem: Map<string, number>
     octaveOffset: number = 0
@@ -40,31 +40,27 @@ export class InputController {
         this.context.suspend()
         this.ampEnvelope = new Envelope(1, 1, 1, 0.05)
         this.filterEnvelope = new Envelope(1, 1, 1, 0.05)
-        this.filter = new Filter('lowpass', 0.75, 3, 6)
+        this.filter = new FilterSettings('lowpass', 0.75, 3, 6)
         this.globalChain = new NodeChain([
             this.context.createGain(),
             this.context.createAnalyser(),
+            this.context.createGain(),
             this.context.createGain()
         ])
         this.tuningSystem = tuningSystem
 
         this.globalChain.last().connect(this.context.destination)
-        const mainGain = <GainNode>this.globalChain.first()
+        const analyzerGain = <GainNode>this.globalChain.first()
+        const gateGain = <GainNode>this.globalChain.get(2)
         const volumeGain = <GainNode>this.globalChain.last()
-        mainGain.gain.value = 0.25
+        analyzerGain.gain.value = 0.2
+        gateGain.gain.value = 0.2
         volumeGain.gain.value = 0.5
         //this.notes = new Map<string, Note>()
 
         //NEW
-        this.signalCapacity = 6
-        this.activeSignals = new SignalCollection(this.signalCapacity)
-        this.availableSignals = new LinkedStack<Signal>()
-
-        for(let i = 0; i < this.signalCapacity; i++) {
-            let signal = new Signal(this.context)
-            signal.connect(this.globalChain.first())
-            this.availableSignals.push(signal)
-        }
+        this.signalCapacity = 8
+        this.createSignals()
 
         this.heldInputs = new LinkedStack<number>()
 
@@ -84,7 +80,7 @@ export class InputController {
                 this.activeSignals.push(signal)
             } else {
                 let signal = this.activeSignals.pop()
-                signal.move(freq)
+                signal.move(freq, this.ampEnvelope, this.filterEnvelope)
                 this.activeSignals.push(signal)
             }
 
@@ -109,7 +105,7 @@ export class InputController {
                         this.heldInputs.forEach((item: number) => {
 
                             if(!this.activeSignals.has(item) && !found) {
-                                signal.move(item)
+                                signal.move(item, this.ampEnvelope, this.filterEnvelope)
                                 this.activeSignals.push(signal)
                                 found = true
                             }
@@ -130,7 +126,7 @@ export class InputController {
     }
 
 
-
+    /*
     //init sub-method - create one playable note, assign to it a keyboard Key
     private createNote(value: number, key: string) {
         const note = new Note(this.context, value)
@@ -138,6 +134,7 @@ export class InputController {
         note.init()
         this.notes.set(key, note)
     }
+        */
 
 
     //Debug method - return sum of base and output latencies
@@ -145,9 +142,10 @@ export class InputController {
         return this.context.baseLatency + this.context.outputLatency
     }
 
+    /*
     //init method - create each playable note
     init() {
-        /*
+        
         if(this.isMonophonic) {
             this.createNote(0, "M")
         } else {
@@ -155,7 +153,32 @@ export class InputController {
                 this.createNote(value, key)
             })
         }
-            */
+            
+    }
+    */
+
+    createSignals() {
+        this.activeSignals = new SignalCollection(this.signalCapacity)
+        this.availableSignals = new LinkedStack<Signal>()
+
+        for(let i = 0; i < this.signalCapacity; i++) {
+            let signal = new Signal(this.context)
+            signal.connect(this.globalChain.first())
+            this.availableSignals.push(signal)
+        }
+    }
+
+    clearAllSignals() {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.destroy()
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.destroy()
+        })
+
+        this.activeSignals = null
+        this.availableSignals = null
     }
 
     //Update all notes to a wave type
@@ -168,11 +191,19 @@ export class InputController {
 
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
+            signal.getOscillatorB().setWaveform(<OscillatorType>this.waveTypes[type])
         })
 
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
+            signal.getOscillatorB().setWaveform(<OscillatorType>this.waveTypes[type])
         })
+    }
+
+    setSignalCapacity(capacity: number) {
+        this.clearAllSignals()
+        this.signalCapacity = capacity
+        this.createSignals()
     }
     
     //Sets the master volume of the synth
@@ -242,7 +273,7 @@ export class InputController {
 
     //Sets synth filter envelope cutoff
     setFilterEnvCutoff(factor: number) {
-        this.filter.envCutoff = factor
+        this.filter.envFrequency = factor
     }
 
     //Sets synth filter resonance
@@ -267,6 +298,7 @@ export class InputController {
         this.notes.clear()
     }
 
+    /*
     setMonophonic() {
         this.destroyNotes()
         this.createNote(0, "M")
@@ -280,4 +312,5 @@ export class InputController {
         })
         this.isMonophonic = false
     }
+        */
 }

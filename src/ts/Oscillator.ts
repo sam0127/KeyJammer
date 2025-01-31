@@ -1,25 +1,39 @@
-import { AudioNodeWrapper } from "./AudioNodeWrapper.js"
+import { NodeChain } from "./NodeChain.js"
 import { Envelope } from "./Envelope.js"
 
-export class Oscillator extends AudioNodeWrapper {
+export class Oscillator extends NodeChain {
     private sourceNode: OscillatorNode
     private gainNode: GainNode
     private waveform: string
     private amplitude: number
     private detune: number
-    private offset: number
     private on: boolean
 
     private ampEnvelope: Envelope
 
     constructor(context: AudioContext) {
         super([context.createOscillator(),context.createGain()])
-        this.sourceNode = <OscillatorNode>this.first()
-        this.gainNode = <GainNode>this.last()
-        this.offset = 0
+        this.sourceNode = <OscillatorNode>this.nodes[0]
+        this.gainNode = <GainNode>this.nodes[1]
         this.detune = 0
         this.gainNode.gain.value = 0
         this.sourceNode.start()
+    }
+
+    destroy() {
+        this.sourceNode.stop()
+        this.sourceNode.disconnect()
+        this.gainNode.disconnect()
+        this.gainNode = null
+        this.sourceNode = null
+    }
+
+    first() {
+        return this.sourceNode
+    }
+
+    last() {
+        return this.gainNode
     }
 
     setWaveform(waveform: OscillatorType) {
@@ -54,11 +68,6 @@ export class Oscillator extends AudioNodeWrapper {
 
     setFrequency(freq: number) {
         this.sourceNode.frequency.value = freq
-    }
-
-    setOffset(offset: number) {
-        this.offset = offset
-        this.sourceNode.frequency.value = this.sourceNode.frequency.value * 2^(offset)
     }
 
     setDetune(detune: number) {

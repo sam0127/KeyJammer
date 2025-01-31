@@ -1,5 +1,5 @@
 import { Envelope } from "./Envelope.js"
-import { Filter } from "./Filter2.js"
+import { Filter } from "./Filter.js"
 import { Oscillator } from "./Oscillator.js"
 
 /*
@@ -33,7 +33,12 @@ export class Signal {
         this.oscillatorB.connect(this.filterB.first())
 
         this.oscillatorA.setAmplitude(1)
-        this.oscillatorA.setWaveform("sawtooth")
+        //this.oscillatorA.setWaveform("sine")
+
+        this.oscillatorB.setAmplitude(1)
+        //this.oscillatorB.setWaveform("sine")
+        //this.oscillatorB.setOffset(1)
+        this.oscillatorB.setDetune(1200)
 
 
         this.filterA.connect(this.signalGain)
@@ -50,6 +55,16 @@ export class Signal {
         //this.filter.type = 'lowpass'
 
         //this.oscillator.start()
+    }
+
+    
+    destroy() {
+        this.oscillatorA.destroy()
+        this.oscillatorB.destroy()
+        this.filterA.destroy()
+        this.filterB.destroy()
+        this.signalGain.disconnect()
+        this.signalGain = null
     }
 
     getOscillatorA(): Oscillator {
@@ -105,36 +120,73 @@ export class Signal {
         }
 
         if(this.oscillatorB.getAmplitude() > 0) { //Oscillator B is on
-
+            this.oscillatorB.setFrequency(baseFrequency)
+            let gainParam = this.oscillatorB.getGainParam()
+            gainParam.cancelScheduledValues(startTime)
+            gainParam.setValueAtTime(this.oscillatorB.getGain(), startTime)
+            gainParam.linearRampToValueAtTime(this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack)
+            gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
         }
     }
 
-    move(baseFrequency: number) {
+    move(baseFrequency: number, ampEnvelope: Envelope, filterEnvelope: Envelope) {
         this.baseFrequency = baseFrequency
 
         const startTime: number = this.context.currentTime
 
         if(this.oscillatorA.getAmplitude() > 0) {
+            let gainParam = this.oscillatorA.getGainParam()
             let frequencyParam = this.oscillatorA.getFrequencyParam()
+
             frequencyParam.cancelScheduledValues(startTime)
             frequencyParam.setValueAtTime(baseFrequency, startTime)
+            if(ampEnvelope.sustain == 0) {
+                gainParam.cancelScheduledValues(startTime)
+                gainParam.setValueAtTime(this.oscillatorA.getGain(), startTime)
+                gainParam.linearRampToValueAtTime(this.oscillatorA.getAmplitude(), startTime + ampEnvelope.attack)
+                gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorA.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
+            } else {
+
+            }
+        }
+
+        if(this.oscillatorB.getAmplitude() > 0) {
+            let gainParam = this.oscillatorB.getGainParam()
+            let frequencyParam = this.oscillatorB.getFrequencyParam()
+
+            frequencyParam.cancelScheduledValues(startTime)
+            frequencyParam.setValueAtTime(baseFrequency, startTime)
+            if(ampEnvelope.sustain == 0) {
+                gainParam.cancelScheduledValues(startTime)
+                gainParam.setValueAtTime(this.oscillatorB.getGain(), startTime)
+                gainParam.linearRampToValueAtTime(this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack)
+                gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
+            } else {
+
+            }
         }
     }
 
     stop(baseFrequency: number, ampEnvelope: Envelope, filterEnvelope: Envelope) {
         this.baseFrequency = 0
-        let gainParam = this.oscillatorA.getGainParam()
-        let frequencyParam = this.filterA.getFrequencyParam()
+        let gainParamA = this.oscillatorA.getGainParam()
+        let frequencyParamA = this.filterA.getFrequencyParam()
+        let gainParamB = this.oscillatorB.getGainParam()
+        let frequencyParamB = this.filterB.getFrequencyParam()
         const startTime: number = this.context.currentTime
-        gainParam.cancelScheduledValues(startTime)
-        gainParam.setValueAtTime(this.oscillatorA.getGain(), startTime)
-        gainParam.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
+        gainParamA.cancelScheduledValues(startTime)
+        gainParamA.setValueAtTime(this.oscillatorA.getGain(), startTime)
+        gainParamA.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
 
         /*
         frequencyParam.cancelScheduledValues(startTime)
         frequencyParam.setValueAtTime(frequencyParam.value, startTime)
         frequencyParam.linearRampToValueAtTime(this.filterA.getFrequency() * baseFrequency, startTime + filterEnvelope.release)
         */
+
+        gainParamB.cancelScheduledValues(startTime)
+        gainParamB.setValueAtTime(this.oscillatorB.getGain(), startTime)
+        gainParamB.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
     }
 
     setFilterA(filter: Filter) { // could replace Filter with Object?
@@ -151,12 +203,6 @@ export class Signal {
 
 
 
-    destroy() {
-        //this.oscillator.stop()
-        //this.oscillator.disconnect()
-        //this.gain.disconnect()
-        //this.filter.disconnect()
-    }
 
     toString() {
         return this.baseFrequency

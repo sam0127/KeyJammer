@@ -1,6 +1,6 @@
 export class NodeChain {
-    nodes: Array<AudioNode>
-    size: number
+    protected nodes: Array<AudioNode>
+    private size: number
 
     constructor(nodes: Array<AudioNode>) {
         this.nodes = nodes;
@@ -20,5 +20,9 @@ export class NodeChain {
 
     last() {
         return this.nodes[this.size - 1]
+    }
+
+    connect(destination: AudioNode) {
+        this.last().connect(destination)
     }
 }

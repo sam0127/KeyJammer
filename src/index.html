@@ -116,17 +116,15 @@
           <label for="allow-audio">Click to allow audio</label>
           <button name="allow-audio">Allow Audio</button>
         </div>
-        <div class="control-panel master-volume">
-          <label for="master-volume">Master Volume</label>
-          <input type="range" name="master-volume" value="50"></input>
-        </div>
       </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container presets">
         <h2>Presets</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="presets">
       <div class="row">
@@ -155,15 +153,17 @@
       </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container synth-controls">
         <h2>Synth Controls</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="synth-controls">
       <div class="row">
         <div class="control-panel input-controls">
-          <h3>Input Source</h3>
+          <h3>Input</h3>
           <div class="input-container">
             <div class="input-source">
               <div class="input-type">
@@ -175,17 +175,17 @@
                 <label for="midi">MIDI</label>
               </div>
             </div>
-            <div class="mono-polyphony">
-              <div class="mono-poly-type">
-                <input id="monophonic" type="radio" name="monopoly" value="monophonic"></input>
-                <label for="monophonic">Monophonic</label>
-              </div>
-              <div class="mono-poly-type">
-                <input id="polyphonic" type="radio" name="monopoly" value="polyphonic" checked></input>
-                <label for="polyphonic">Polyphonic</label>
+            <div class="voices-quantity">
+              <div class="voices-slider">
+                <label for="voices">Voices: <span>8</span></label>
+                <input type="range" name="voices" min="1" max="10" value="8"></input>
               </div>
             </div>
             </div>
+          </div>
+          <div class="control-panel master-volume">
+            <label for="master-volume">Master Volume</label>
+            <input type="range" name="master-volume" value="50"></input>
           </div>
         </div>
       </div>
@@ -284,10 +284,12 @@
       </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container visualization">
         <h2>Visualization</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="visualization">
       <div class="row">

@@ -1,4 +1,3 @@
-import { Synth } from './Synth'
 import { InputController } from './InputController'
 
 /*

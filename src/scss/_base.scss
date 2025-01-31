@@ -40,6 +40,7 @@ aside {
 
 h2 {
     font-size: $font-l;
+    margin: 0;
 }
 
 label, h3 {
@@ -54,7 +55,7 @@ input[type=range] {
     margin-bottom: 30px;
 
     &:focus {
-        outline: none;
+        //outline: none;
     }
 
     &::-webkit-slider-thumb {
