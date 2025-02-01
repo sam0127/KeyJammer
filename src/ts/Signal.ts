@@ -2,9 +2,6 @@ import { Envelope } from "./Envelope.js"
 import { Filter } from "./Filter.js"
 import { Oscillator } from "./Oscillator.js"
 
-/*
-Each note must have its own filter node since each note needs its own filter envelope :(
-*/
 export class Signal {
     private context: AudioContext
     private baseFrequency: number
@@ -102,8 +99,8 @@ export class Signal {
             gainParam.cancelScheduledValues(startTime)
             gainParam.setValueAtTime(this.oscillatorA.getGain(), startTime)
             gainParam.linearRampToValueAtTime(this.oscillatorA.getAmplitude(), startTime + ampEnvelope.attack)
+            gainParam.exponentialRampToValueAtTime(ampEnvelope.sustain * this.oscillatorA.getAmplitude() + 0.01, startTime + ampEnvelope.attack + ampEnvelope.decay)
             gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorA.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
-
             /*
             let frequencyParam = this.filterA.getFrequencyParam()
             frequencyParam.cancelScheduledValues(startTime)
@@ -125,7 +122,8 @@ export class Signal {
             gainParam.cancelScheduledValues(startTime)
             gainParam.setValueAtTime(this.oscillatorB.getGain(), startTime)
             gainParam.linearRampToValueAtTime(this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack)
-            gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorB.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
+            gainParam.exponentialRampToValueAtTime(ampEnvelope.sustain * this.oscillatorA.getAmplitude() + 0.01, startTime + ampEnvelope.attack + ampEnvelope.decay)
+            gainParam.linearRampToValueAtTime(ampEnvelope.sustain * this.oscillatorA.getAmplitude(), startTime + ampEnvelope.attack + ampEnvelope.decay)
         }
     }
 
@@ -176,6 +174,8 @@ export class Signal {
         const startTime: number = this.context.currentTime
         gainParamA.cancelScheduledValues(startTime)
         gainParamA.setValueAtTime(this.oscillatorA.getGain(), startTime)
+        //gainParamA.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
+        gainParamA.exponentialRampToValueAtTime(0.01, startTime + ampEnvelope.release)
         gainParamA.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
 
         /*
@@ -186,6 +186,8 @@ export class Signal {
 
         gainParamB.cancelScheduledValues(startTime)
         gainParamB.setValueAtTime(this.oscillatorB.getGain(), startTime)
+        //gainParamB.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
+        gainParamB.exponentialRampToValueAtTime(0.01, startTime + ampEnvelope.release)
         gainParamB.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
     }
 

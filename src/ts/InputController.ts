@@ -164,6 +164,7 @@ export class InputController {
         for(let i = 0; i < this.signalCapacity; i++) {
             let signal = new Signal(this.context)
             signal.connect(this.globalChain.first())
+            //Set wavetypes of each OscA and OscB
             this.availableSignals.push(signal)
         }
     }
@@ -219,13 +220,13 @@ export class InputController {
                 this.ampEnvelope.attack = value / 100.0
                 break
             case "amp-decay-input":
-                this.ampEnvelope.decay = value / 100.0
+                this.ampEnvelope.decay = value / 25.0
                 break
             case "amp-sustain-input":
                 this.ampEnvelope.sustain = value / 100.0
                 break
             case "amp-release-input":
-                this.ampEnvelope.release = value / 100.0
+                this.ampEnvelope.release = value / 25.0
                 break
         }
     }
