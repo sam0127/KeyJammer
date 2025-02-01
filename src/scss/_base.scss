@@ -54,10 +54,6 @@ input[type=range] {
     background: transparent;
     margin-bottom: 30px;
 
-    &:focus {
-        //outline: none;
-    }
-
     &::-webkit-slider-thumb {
         @include thumb();
     }

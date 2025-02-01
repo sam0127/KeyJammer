@@ -167,6 +167,32 @@ hr {
     }
 }
 
+.oscillator-container {
+    > div {
+        margin: 5px 0;
+    }
+    .wave-source {
+        display: flex;
+        justify-content: space-evenly;
+    
+        .wave-type {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        img {
+            margin-left: 4px;
+        }
+    }
+
+    .osc-slider {
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+
 .controls-container {
     display: flex;
     flex-direction: row;

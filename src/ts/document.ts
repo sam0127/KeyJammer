@@ -32,18 +32,21 @@ async function fetchDefaultPresets() {
   }
 
 const documentInit = (keyboard: Keyboard, inputController: InputController) => {
-
+    /*
     //Preset saving and loading
     const saveDefaultPresets = () => {
+        
         fetchDefaultPresets().then(data => {
             data.forEach((item: any) => {
                 localStorage.setItem(item["name"], JSON.stringify(item))
             })
         })
+            
     }
 
     const populatePresetsDropdown = () => {
         //get presets from local storage
+        
         for(let i = 0; i < loadPresetElement.options.length; i++) {
             loadPresetElement.options[i].remove()
         }
@@ -55,9 +58,11 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             generatePresetOption(deletePresetElement, localStorage.key(i))
         }
         generatePresetOption(deletePresetElement, " ")
+        
     }
 
     const generatePresetOption = (selectElement: HTMLSelectElement, name: string) => {
+        
         if(selectElement.querySelector(`option[value='${name}']`) === null) {
             const optionElement = document.createElement("option")
             optionElement.value = name
@@ -70,9 +75,11 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             }
             selectElement.appendChild(optionElement)
         }
+            
     }
 
     const loadPreset = (name: string) => {
+        
         const preset = JSON.parse(localStorage.getItem(name))
 
         waveTypeElement.value = preset["waveType"]
@@ -89,11 +96,14 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         filterSustainElement.value = preset["filterEnv"]["sustain"]
         filterReleaseElement.value = preset["filterEnv"]["release"]
         octaveDisplayElement.innerHTML = preset["offset"]
+        
     }
+        */
 
     //sets default inputController properties from DOM
     const setDefaults = (inputController: InputController) => {
-        inputController.setWaveType(parseInt(waveTypeElement.value))
+        
+        //inputController.setWaveType(parseInt(waveTypeElement.value))
         //inputController.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
         inputController.setFilterCutoff(parseFloat(cutoffElement.value))
         inputController.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
@@ -106,11 +116,12 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
         inputController.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
         inputController.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
-        inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
+        //inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
+        
     }
 
     //Create keymap window
-    const createKeymapWindow = () => {
+    const createKeymapWindowFromBindings = () => {
         keyboard.bindingMap.forEach((value, key) => {
             const keyboardKey = document.querySelector(`div[data-key="${key}"]`)
             if(keyboardKey !== null) {
@@ -179,14 +190,18 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setMasterVolume(e.currentTarget.value)
     }
 
+    /*
     const onLoadPresetInput = (e: any) => {
+        
         loadPreset(e.currentTarget.value)
         setDefaults(inputController)
+        
     }
 
     const onSavePresetInput = (e: any) => {
         //if text container empty, alert require name
         //else save preset with name as key
+        
         if(savePresetNameElement.value === "") {
             savePresetNameElement.required = true
             alert("Please enter a name for your preset")
@@ -219,13 +234,17 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             console.log(preset)
             populatePresetsDropdown()
         }
+            
     }
 
     const onDeletePresetInput = (e: any) => {
+        
         console.log("Deleting preset " + deletePresetElement.value)
         localStorage.removeItem(deletePresetElement.value)
         populatePresetsDropdown()
+        
     }
+        */
 
     const onKeyboardInput = (e: any) => {
         
@@ -240,8 +259,31 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setSignalCapacity(e.currentTarget.value)
     }
 
-    const onSimpleWaveInput = (e: any) => {
-        inputController.setWaveType(e.currentTarget.value)
+    //Oscillator event handlers
+    const onOscAWaveInput = (e: any) => {
+        console.log(e.currentTarget.value)
+        inputController.setWaveTypeA(e.currentTarget.value)
+    }
+
+    const onOscADetuneInput = (e: any) => {
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
+    }
+
+    const onOscAAmplitudeInput = (e: any) => {
+        inputController.setAmplitudeA(e.currentTarget.value)
+    }
+
+    const onOscBWaveInput = (e: any) => {
+        console.log(e.currentTarget.value)
+        inputController.setWaveTypeB(e.currentTarget.value)
+    }
+
+    const onOscBDetuneInput = (e: any) => {
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
+    }
+
+    const onOscBAmplitudeInput = (e: any) => {
+        inputController.setAmplitudeB(e.currentTarget.value)
     }
 
     const onLowPassInput = (e: any) => {
@@ -272,23 +314,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
-    const onOctaveIncreaseInput = (e: any) => {
-        if(parseInt(octaveDisplayElement.innerHTML) < 2) {
-            keyboard.clearAllNotes(inputController)
-            inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
-            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
-        }
-
-    }
-
-    const onOctaveDecreaseInput = (e: any) => {
-        if(parseInt(octaveDisplayElement.innerHTML) > -1) {
-            keyboard.clearAllNotes(inputController)
-            inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
-            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
-        }
-    }
-
     //REGISTER UI CONTROLS ------------------------------------------------------------------------------
 
     //Keyboard
@@ -316,6 +341,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
 
     //Presets
+    /*
     const loadPresetElement: HTMLSelectElement = document.querySelector('select[name="load-preset"]')
     registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
     const savePresetButtonElement: HTMLButtonElement = document.querySelector('button[name="save-preset"]')
@@ -324,6 +350,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     const deletePresetElement: HTMLSelectElement = document.querySelector('select[name="delete-preset"]')
     const deletePresetButtonElement: HTMLInputElement = document.querySelector('button[name="delete-preset"]')
     registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
+    */
 
     //Input controls
     const keyboardInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('keyboard')
@@ -336,8 +363,29 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
 
 
     //Oscillators
-    const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')
-    registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
+    const oscAWaveTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="wave-src-oscA"]')
+    oscAWaveTypeElements.forEach(oscAWaveTypeElement => {
+        registerInputElement(oscAWaveTypeElement, 'input', onOscAWaveInput)
+    })
+    const oscACoarseDetuneElement: HTMLInputElement = document.querySelector('input[name="coarse-detune-oscA"]')
+    registerInputElement(oscACoarseDetuneElement, 'input', onOscADetuneInput)
+    const oscAFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscA"]')
+    registerInputElement(oscAFineDetuneElement, 'input', onOscADetuneInput)
+    const oscAAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscA"]')
+    registerInputElement(oscAAmplitudeElement, 'input', onOscAAmplitudeInput)
+
+    const oscBWaveTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="wave-src-oscB"]')
+    oscBWaveTypeElements.forEach(oscBWaveTypeElement => {
+        registerInputElement(oscBWaveTypeElement, 'input', onOscBWaveInput)
+    })
+    const oscBCoarseDetuneElement: HTMLInputElement = document.querySelector('input[name="coarse-detune-oscB"]')
+    registerInputElement(oscBCoarseDetuneElement, 'input', onOscBDetuneInput)
+    const oscBFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscB"]')
+    registerInputElement(oscBFineDetuneElement, 'input', onOscBDetuneInput)
+    const oscBAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscB"]')
+    registerInputElement(oscBAmplitudeElement, 'input', onOscBAmplitudeInput)
+    
+    //TODO: Make a list of wave inputs for each wave type, each call same listener per oscillator
 
     //Filter
     const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
@@ -371,13 +419,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     const filterReleaseElement: HTMLInputElement = document.querySelector('input[name="filter-release-input"]')
     registerInputElement(filterReleaseElement, 'input', onFilterEnvelopeInput)
 
-    //Octave controls
-    const octaveIncreaseElement: HTMLButtonElement = document.querySelector('button[name="increase-octave"]')
-    registerInputElement(octaveIncreaseElement, 'click', onOctaveIncreaseInput)
-    const octaveDecreaseElement: HTMLButtonElement = document.querySelector('button[name="decrease-octave"]')
-    registerInputElement(octaveDecreaseElement, 'click', onOctaveDecreaseInput)
-    const octaveDisplayElement: Element = document.querySelector('.octave-offset-container span')
-
     //Wave displays
     const oscilloscopeElement: Element = document.getElementById('oscilloscope')
     const spectrographElement: Element = document.getElementById('spectrograph')
@@ -385,13 +426,13 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     //INITIALIZATION ---------------------------------------------------------------
 
     //save default presets to localStorage
-    saveDefaultPresets()
+    //saveDefaultPresets()
     //populate dropdown with all presets in localStorage
-    populatePresetsDropdown()
+    //populatePresetsDropdown()
     //load default preset on DOM
-    loadPreset("Default")
+    //loadPreset("Default")
 
-    createKeymapWindow()
+    createKeymapWindowFromBindings()
     //Attach Event handlers to appropriate element
 
     window.addEventListener('blur', (e: any) => {

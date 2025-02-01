@@ -22,13 +22,6 @@ export class InputController {
 
     signalCapacity: number
 
-    readonly waveTypes: Array<string> = [
-        'sine',
-        'square',
-        'sawtooth',
-        'triangle'
-    ]
-
     //if you add more filters, be sure to update document listener and preset logic for filters
     readonly filterTypes: Array<string> = [
         'lowpass',
@@ -56,7 +49,6 @@ export class InputController {
         analyzerGain.gain.value = 0.2
         gateGain.gain.value = 0.2
         volumeGain.gain.value = 0.5
-        //this.notes = new Map<string, Note>()
 
         //NEW
         this.signalCapacity = 8
@@ -111,7 +103,6 @@ export class InputController {
                             }
                         })
                     } else {
-                        //signal.baseFrequency = 0
                         signal.stop(freq, this.ampEnvelope, this.filterEnvelope)
                         this.availableSignals.push(signal)
                     }
@@ -125,37 +116,10 @@ export class InputController {
         }
     }
 
-
-    /*
-    //init sub-method - create one playable note, assign to it a keyboard Key
-    private createNote(value: number, key: string) {
-        const note = new Note(this.context, value)
-        note.connect(this.globalChain.first())
-        note.init()
-        this.notes.set(key, note)
-    }
-        */
-
-
     //Debug method - return sum of base and output latencies
     get latency(): number {
         return this.context.baseLatency + this.context.outputLatency
     }
-
-    /*
-    //init method - create each playable note
-    init() {
-        
-        if(this.isMonophonic) {
-            this.createNote(0, "M")
-        } else {
-            this.tuningSystem.forEach((value, key) => {
-                this.createNote(value, key)
-            })
-        }
-            
-    }
-    */
 
     createSignals() {
         this.activeSignals = new SignalCollection(this.signalCapacity)
@@ -182,22 +146,65 @@ export class InputController {
         this.availableSignals = null
     }
 
-    //Update all notes to a wave type
-    setWaveType(type: number) {
-        /*
-        this.notes.forEach((value: Note, key: string) => {
-            value.oscillator.type = <OscillatorType>this.waveTypes[type]
-        })
-            */
-
+    //Update all signals' oscA wave
+    setWaveTypeA(type: string) {
         this.activeSignals.forEach((signal: Signal) => {
-            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
-            signal.getOscillatorB().setWaveform(<OscillatorType>this.waveTypes[type])
+            signal.getOscillatorA().setWaveform(<OscillatorType>type)
         })
 
         this.availableSignals.forEach((signal: Signal) => {
-            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
-            signal.getOscillatorB().setWaveform(<OscillatorType>this.waveTypes[type])
+            signal.getOscillatorA().setWaveform(<OscillatorType>type)
+        })
+    }
+
+    //Update all signals' oscB wave
+    setWaveTypeB(type: string) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setWaveform(<OscillatorType>type)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setWaveform(<OscillatorType>type)
+        })
+    }
+
+    setAmplitudeA(value: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setGain(value)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setGain(value)
+        })
+    }
+
+    setAmplitudeB(value: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setGain(value)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setGain(value)
+        })
+    }
+
+    setDetuneA(value: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setDetune(value)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorA().setDetune(value)
+        })
+    }
+
+    setDetuneB(value: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setDetune(value)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getOscillatorB().setDetune(value)
         })
     }
 
@@ -298,20 +305,4 @@ export class InputController {
         })
         this.notes.clear()
     }
-
-    /*
-    setMonophonic() {
-        this.destroyNotes()
-        this.createNote(0, "M")
-        this.isMonophonic = true
-    }
-
-    setPolyphonic() {
-        this.destroyNotes()
-        this.tuningSystem.forEach((value, key) => {
-            this.createNote(value, key)
-        })
-        this.isMonophonic = false
-    }
-        */
 }

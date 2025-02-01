@@ -16,7 +16,7 @@ export class Oscillator extends NodeChain {
         this.sourceNode = <OscillatorNode>this.nodes[0]
         this.gainNode = <GainNode>this.nodes[1]
         this.detune = 0
-        this.gainNode.gain.value = 0
+        this.gainNode.gain.value = 1
         this.sourceNode.start()
     }
 
@@ -40,15 +40,6 @@ export class Oscillator extends NodeChain {
         this.waveform = waveform
         this.sourceNode.type = waveform
     }
-
-    getAmplitude(): number {
-        return this.amplitude
-    }
-
-    setAmplitude(amplitude: number) {
-        this.amplitude = amplitude
-    }
-
 
     getGain(): number {
         return this.gainNode.gain.value

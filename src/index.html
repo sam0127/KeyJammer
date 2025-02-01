@@ -190,20 +190,78 @@
         </div>
       </div>
       <div class="row">
-        <div class="control-panel simple-wave-controls">
-          <div class="vertical-slider-container">
-            <label for="wave-input">Wave</label>
-            <div class="wave-input-container">
-              <ul class="wave-icons">
-                <li><img src="./assets/img/tri-osc.png"></li>
-                <li><img src="./assets/img/saw-osc.png"></li>
-                <li><img src="./assets/img/square-osc.png"></li>
-                <li><img src="./assets/img/sine-osc.png"></li>
-              </ul>
-              <input type="range" name="wave-input" max="3" value="0"></input>
+        <div class="control-panel oscillator">
+          <h3>Osc A</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscA" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscA" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscA" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscA" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscA" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscA" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscA" min="0" max="1" step="0.1" value="1"></input>
             </div>
           </div>
         </div>
+        <div class="control-panel oscillator">
+          <h3>Osc B</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscB" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscB" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscB" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscB" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscB" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscB" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscB" min="0" max="1" step="0.1" value="1"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="control-panel filter">
           <h3>Filter</h3>
           <div class="filter-container">
@@ -229,26 +287,17 @@
             </div>
           </div>
         </div>
-        <div class="control-panel octave-offset">
-          <label>Octave +</label>
-          <div class="octave-offset-container">
-            <button name="decrease-octave"><</button>
-            <span>0</span>
-            <button name="increase-octave">></button>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="control-panel envelope-controls">
           <h3>Amplitude Env</h3>
           <div class="controls-container">
             <div class="vertical-slider-container">
               <label for="amp-attack-input">A</label>
-              <input type="range" name="amp-attack-input" value="0"></input>
+              <input type="range" name="amp-attack-input" min="1" max="200" value="1"></input>
             </div>
             <div class="vertical-slider-container">
               <label for="amp-decay-input">D</label>
-              <input type="range" name="amp-decay-input" value="0"></input>
+              <input type="range" name="amp-decay-input" min="1" value="1"></input>
             </div>
             <div class="vertical-slider-container">
               <label for="amp-sustain-input">S</label>
@@ -256,7 +305,7 @@
             </div>
             <div class="vertical-slider-container">
               <label for="amp-release-input">R</label>
-              <input type="range" name="amp-release-input" value="0"></input>
+              <input type="range" name="amp-release-input" min="1" value="1"></input>
             </div>
           </div>
         </div>
