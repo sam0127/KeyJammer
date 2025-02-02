@@ -6,6 +6,7 @@ export class Filter extends NodeChain {
     private frequency: number
     private envFrequency: number
     private q: number
+    private gain: number
 
     constructor(context: AudioContext) {
         super([context.createBiquadFilter()])
@@ -55,7 +56,16 @@ export class Filter extends NodeChain {
     }
 
     setQ(q: number) {
-        this.q = q
-        this.node.Q.value = q
+        if(this.node.type.includes('shelf')) {
+            this.gain = q - 10
+            this.node.gain.value = q - 10
+        } else {
+            this.q = q
+            this.node.Q.value = q
+        }
+    }
+
+    getGain() {
+        return this.gain
     }
 }

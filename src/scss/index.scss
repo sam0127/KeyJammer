@@ -240,10 +240,16 @@ hr {
     display: flex;
     flex-direction: column;
 
+    .filter-type-row { 
+        display: flex;
+        justify-content: space-evenly;
+    }
+
     .filter-type {
         padding: 5px 0;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        //justify-content: space-between;
     }
 
     .filter-slider {

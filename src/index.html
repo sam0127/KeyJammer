@@ -282,18 +282,37 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="control-panel filter">
           <h3>Filter A</h3>
           <div class="filter-container">
-            <div class="filter-type">
-              <label for="low-passA">Low Pass</label>
-              <input id="low-passA" type="radio" name="filterA" value="lowpass" checked></input>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-passA"><img src="./assets/img/lowpassFilter.png"></label>
+                <input id="low-passA" type="radio" name="filterA" value="lowpass" checked></input>
+              </div>
+              <div class="filter-type">
+                <label for="band-passA"><img src="./assets/img/bandpassFilter.png"></label>
+                <input id="band-passA" type="radio" name="filterA" value="bandpass"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-passA"><img src="./assets/img/highpassFilter.png"></label>
+                <input id="high-passA" type="radio" name="filterA" value="highpass"></input>
+              </div>
             </div>
-            <div class="filter-type">
-              <label for="high-passA">High Pass</label>
-              <input id="high-passA" type="radio" name="filterA" value="highpass"></input>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-shelfA"><img src="./assets/img/lowshelfFilter.png"></label>
+                <input id="low-shelfA" type="radio" name="filterA" value="lowshelf"></input>
+              </div>
+              <div class="filter-type">
+                <label for="notchA"><img src="./assets/img/notchFilter.png"></label>
+                <input id="notchA" type="radio" name="filterA" value="notch"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-shelfA"><img src="./assets/img/highshelfFilter.png"></label>
+                <input id="high-shelfA" type="radio" name="filterA" value="highshelf"></input>
+              </div>
             </div>
             <div class="filter-slider">
               <label for="frequencyA">Frequency</label>
@@ -305,20 +324,40 @@
             </div>
             <div class="filter-slider">
               <label for="resonanceA">Resonance</label>
-              <input type="range" name="resonanceA" min="1" max="20" step="1" value="1"></input>
+              <input type="range" name="resonanceA" min="0" max="20" step="1" value="1"></input>
             </div>
           </div>
         </div>
         <div class="control-panel filter">
           <h3>Filter B</h3>
           <div class="filter-container">
-            <div class="filter-type">
-              <label for="low-passB">Low Pass</label>
-              <input id="low-passB" type="radio" name="filterB" value="lowpass" checked></input>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-passB"><img src="./assets/img/lowpassFilter.png"></label>
+                <input id="low-passB" type="radio" name="filterB" value="lowpass" checked></input>
+              </div>
+              <div class="filter-type">
+                <label for="band-passB"><img src="./assets/img/bandpassFilter.png"></label>
+                <input id="band-passB" type="radio" name="filterB" value="bandpass"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-passB"><img src="./assets/img/highpassFilter.png"></label>
+                <input id="high-passB" type="radio" name="filterB" value="highpass"></input>
+              </div>
             </div>
-            <div class="filter-type">
-              <label for="high-passB">High Pass</label>
-              <input id="high-passB" type="radio" name="filterB" value="highpass"></input>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-shelfB"><img src="./assets/img/lowshelfFilter.png"></label>
+                <input id="low-shelfB" type="radio" name="filterB" value="lowshelf"></input>
+              </div>
+              <div class="filter-type">
+                <label for="notchB"><img src="./assets/img/notchFilter.png"></label>
+                <input id="notchB" type="radio" name="filterB" value="notch"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-shelfB"><img src="./assets/img/highshelfFilter.png"></label>
+                <input id="high-shelfB" type="radio" name="filterB" value="highshelf"></input>
+              </div>
             </div>
             <div class="filter-slider">
               <label for="frequencyB">Frequency</label>
@@ -330,7 +369,7 @@
             </div>
             <div class="filter-slider">
               <label for="resonanceB">Resonance</label>
-              <input type="range" name="resonanceB" min="1" max="20" step="1" value="1"></input>
+              <input type="range" name="resonanceB" min="0" max="20" step="1" value="1"></input>
             </div>
           </div>
         </div>
