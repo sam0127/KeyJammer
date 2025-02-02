@@ -1,6 +1,4 @@
 import { Envelope } from './Envelope.js'
-import { FilterSettings } from './FilterSettings.js'
-import { Note } from './Note.js'
 import { NodeChain } from './NodeChain.js'
 import { SignalCollection } from './SignalCollection.js'
 import { Signal } from './Signal.js'
@@ -8,10 +6,8 @@ import { LinkedStack } from './LinkedStack.js'
 
 export class InputController {
     context: AudioContext
-    notes: Map<string, Note>
     ampEnvelope: Envelope
     filterEnvelope: Envelope
-    filter: FilterSettings
     globalChain: NodeChain
     tuningSystem: Map<string, number>
     octaveOffset: number = 0
@@ -27,7 +23,6 @@ export class InputController {
         this.context.suspend()
         this.ampEnvelope = new Envelope(1, 1, 1, 0.05)
         this.filterEnvelope = new Envelope(1, 1, 1, 0.05)
-        this.filter = new FilterSettings('lowpass', 0.75, 3, 6)
         this.globalChain = new NodeChain([
             this.context.createGain(),
             this.context.createAnalyser(),
@@ -334,12 +329,5 @@ export class InputController {
                 this.filterEnvelope.release = value / 25.0
                 break
         }
-    }
-
-    destroyNotes() {
-        this.notes.forEach((value: Note, key: String) => {
-            value.destroy()
-        })
-        this.notes.clear()
     }
 }
