@@ -275,7 +275,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
 
     //Oscillator event handlers
     const onOscAWaveInput = (e: any) => {
-        console.log(e.currentTarget.value)
         inputController.setWaveTypeA(e.currentTarget.value)
     }
 
@@ -293,7 +292,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
 
     const onOscBWaveInput = (e: any) => {
-        console.log(e.currentTarget.value)
         inputController.setWaveTypeB(e.currentTarget.value)
     }
 

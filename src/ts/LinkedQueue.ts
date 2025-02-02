@@ -1,16 +1,15 @@
-export class LinkedStack<T> {
-    //private capacity: number
+import { LinkedNode } from "./LinkedNode.js"
+
+export class LinkedQueue<T> {
     protected size: number
-    protected first: Node<T>
-    protected last: Node<T>
+    protected first: LinkedNode<T>
+    protected last: LinkedNode<T>
 
 
     constructor() {
-        //this.capacity = _capacity
         this.size = 0
         this.first = null
         this.last = null
-        //this.storage = []
     }
 
     getSize() {
@@ -23,10 +22,10 @@ export class LinkedStack<T> {
 
     push(item: T) {
         if(this.isEmpty()) {
-            var node = new Node<T>(item, null)
+            var node = new LinkedNode<T>(item, null)
             this.first = node
         } else {
-            var node = new Node<T>(item, this.last)
+            var node = new LinkedNode<T>(item, this.last)
             this.last.prev = node
         }
         this.last = node
@@ -35,13 +34,13 @@ export class LinkedStack<T> {
 
     pop(): T {
         if(!this.isEmpty()) {
-            let node = this.last
-            this.last = node.next
-            if(this.last) {
-                this.last.prev = null
-                node.next = null
+            let node = this.first
+            this.first = node.prev
+            if(this.first) {
+                this.first.next = null
+                node.prev = null
             } else {
-                this.first = null
+                this.last = null
             }
             this.size--
             return node.item
@@ -56,15 +55,6 @@ export class LinkedStack<T> {
 
     peakLast(): T {
         return this.last.item
-    }
-
-    peakLastNot(condition: T) {
-        let node = this.last
-        while(node != null && node != condition) {
-            node = node.next
-        }
-
-        return node ? node.item : null
     }
 
     remove(item: T): T {
@@ -124,17 +114,5 @@ export class LinkedStack<T> {
         }
         collectionString += `null | first=${this.first ? this.first.item.toString() : 'null'} last=${this.last ? this.last.item.toString() : 'null'}`
         return collectionString
-    }
-}
-
-class Node<T> {
-    item: T
-    next: Node<T>
-    prev: Node<T>
-
-    constructor(_item: T, _next: Node<T>) {
-        this.item = _item
-        this.next = _next
-        this.prev = null
     }
 }

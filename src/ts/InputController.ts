@@ -1,8 +1,8 @@
 import { Envelope } from './Envelope.js'
 import { NodeChain } from './NodeChain.js'
-import { SignalCollection } from './SignalCollection.js'
+import { SignalQueue } from './SignalQueue.js'
 import { Signal } from './Signal.js'
-import { LinkedStack } from './LinkedStack.js'
+import { LinkedQueue } from './LinkedQueue.js'
 
 export class InputController {
     context: AudioContext
@@ -12,9 +12,9 @@ export class InputController {
     tuningSystem: Map<string, number>
     octaveOffset: number = 0
     isMonophonic: boolean = false
-    activeSignals: SignalCollection
-    availableSignals: LinkedStack<Signal>
-    heldInputs: LinkedStack<number>
+    activeSignals: SignalQueue
+    availableSignals: LinkedQueue<Signal>
+    heldInputs: LinkedQueue<number>
 
     signalCapacity: number
 
@@ -39,20 +39,14 @@ export class InputController {
         gateGain.gain.value = 0.2
         volumeGain.gain.value = 0.5
 
-        //NEW
         this.signalCapacity = 8
         this.createSignals()
 
-        this.heldInputs = new LinkedStack<number>()
-
-        ///
+        this.heldInputs = new LinkedQueue<number>()
     }
-
-    //NEW
 
     startSignal(name: string) {
         if(this.tuningSystem.has(name)) {
-            
             let freq = this.tuningSystem.get(name)
             this.heldInputs.push(freq)
             if(!this.availableSignals.isEmpty()) {
@@ -64,12 +58,6 @@ export class InputController {
                 signal.move(freq, this.ampEnvelope, this.filterEnvelope)
                 this.activeSignals.push(signal)
             }
-
-            //console.log("AVAILABLE SIGNALS: " + this.availableSignals.toString())
-            
-            //console.log("ACTIVE SIGNALS: " + this.activeSignals.toString())
-            //console.log("HELD INPUTS: " + this.heldInputs.toString())
-            //console.log("================================================================")
         }
     }
 
@@ -78,13 +66,11 @@ export class InputController {
             let freq = this.tuningSystem.get(name)
             this.heldInputs.remove(freq)
             if(!this.activeSignals.isEmpty()) {
-                let signal = this.activeSignals.remove(freq)
-
+                let signal = this.activeSignals.removeFrequency(freq)
                 if(signal) {
                     if(this.heldInputs.getSize() > this.activeSignals.getSize()) {
                         let found = false
                         this.heldInputs.forEach((item: number) => {
-
                             if(!this.activeSignals.has(item) && !found) {
                                 signal.move(item, this.ampEnvelope, this.filterEnvelope)
                                 this.activeSignals.push(signal)
@@ -97,11 +83,6 @@ export class InputController {
                     }
                 }
             }
-
-
-            //console.log("ACTIVE SIGNALS: " + this.activeSignals.toString())
-            //console.log("HELD INPUTS: " + this.heldInputs.toString())
-            //console.log("================================================================")
         }
     }
 
@@ -111,13 +92,12 @@ export class InputController {
     }
 
     createSignals() {
-        this.activeSignals = new SignalCollection(this.signalCapacity)
-        this.availableSignals = new LinkedStack<Signal>()
+        this.activeSignals = new SignalQueue(this.signalCapacity)
+        this.availableSignals = new LinkedQueue<Signal>()
 
         for(let i = 0; i < this.signalCapacity; i++) {
             let signal = new Signal(this.context)
             signal.connect(this.globalChain.first())
-            //Set wavetypes of each OscA and OscB
             this.availableSignals.push(signal)
         }
     }
@@ -126,7 +106,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.destroy()
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.destroy()
         })
@@ -136,24 +115,19 @@ export class InputController {
     }
 
     //Oscillator methods
-
-    //Update all signals' oscA wave
     setWaveTypeA(type: string) {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setWaveform(<OscillatorType>type)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setWaveform(<OscillatorType>type)
         })
     }
 
-    //Update all signals' oscB wave
     setWaveTypeB(type: string) {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setWaveform(<OscillatorType>type)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setWaveform(<OscillatorType>type)
         })
@@ -163,7 +137,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setGain(value)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setGain(value)
         })
@@ -173,7 +146,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setGain(value)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setGain(value)
         })
@@ -183,7 +155,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setDetune(value)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorA().setDetune(value)
         })
@@ -193,19 +164,16 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setDetune(value)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getOscillatorB().setDetune(value)
         })
     }
 
     //Filter methods
-
     setFilterTypeA(type: string) {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterA().setType(<BiquadFilterType>type)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterA().setType(<BiquadFilterType>type)
         })
@@ -215,7 +183,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterA().setFrequency(freq)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterA().setFrequency(freq)
         })
@@ -225,7 +192,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterA().setEnvFrequency(freq)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterA().setEnvFrequency(freq)
         })
@@ -235,7 +201,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterA().setQ(q)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterA().setQ(q)
         })
@@ -245,7 +210,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterB().setType(<BiquadFilterType>type)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterB().setType(<BiquadFilterType>type)
         })
@@ -255,7 +219,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterB().setFrequency(freq)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterB().setFrequency(freq)
         })
@@ -265,7 +228,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterB().setEnvFrequency(freq)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterB().setEnvFrequency(freq)
         })
@@ -275,7 +237,6 @@ export class InputController {
         this.activeSignals.forEach((signal: Signal) => {
             signal.getFilterB().setQ(q)
         })
-
         this.availableSignals.forEach((signal: Signal) => {
             signal.getFilterB().setQ(q)
         })
