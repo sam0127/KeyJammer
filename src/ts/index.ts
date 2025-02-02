@@ -86,6 +86,7 @@ keyToNoteMap.set('BracketLeft', 'B4')
 keyToNoteMap.set('BracketRight', 'C5')
 */
 
+/*
 //Split nearly diatonic
 //Left:
 keyToNoteMap.set('KeyZ', 'F1')
@@ -129,16 +130,41 @@ keyToNoteMap.set('KeyO', 'A#4')
 keyToNoteMap.set('KeyP', 'B4')
 keyToNoteMap.set('BracketLeft', 'C5')
 keyToNoteMap.set('BracketRight', 'D5')
+*/
 
+//Split diatonic
+keyToNoteMap.set('KeyZ', 'F1')
+keyToNoteMap.set('KeyX', 'G1')
+keyToNoteMap.set('KeyC', 'A1')
+keyToNoteMap.set('KeyV', 'B1')
 
+keyToNoteMap.set('KeyA', 'C2')
+keyToNoteMap.set('KeyS', 'D2')
+keyToNoteMap.set('KeyD', 'E2')
+keyToNoteMap.set('KeyF', 'F2')
 
+keyToNoteMap.set('KeyQ', 'G2')
+keyToNoteMap.set('KeyW', 'A2')
+keyToNoteMap.set('KeyE', 'B2')
+keyToNoteMap.set('KeyR', 'C3')
 
-const controlKeySet: Set<string> = new Set()
-controlKeySet.add('Space')
-controlKeySet.add('ShiftLeft')
-controlKeySet.add('ShiftRight')
-controlKeySet.add('CapsLock')
-controlKeySet.add('Escape')
+//Right:
+keyToNoteMap.set('KeyN', 'D3')
+keyToNoteMap.set('KeyM', 'E3')
+keyToNoteMap.set('Comma', 'F3')
+keyToNoteMap.set('Period', 'G3')
+
+keyToNoteMap.set('KeyJ', 'A3')
+keyToNoteMap.set('KeyK', 'B3')
+keyToNoteMap.set('KeyL', 'C4')
+keyToNoteMap.set('Semicolon', 'D4')
+
+keyToNoteMap.set('KeyU', 'E4')
+keyToNoteMap.set('KeyI', 'F4')
+keyToNoteMap.set('KeyO', 'G4')
+keyToNoteMap.set('KeyP', 'A4')
+keyToNoteMap.set('BracketLeft', 'B4')
+keyToNoteMap.set('BracketRight', 'C5')
 
 //NoteToFrequencyMap: Map representing the tuning system, 'note-name': 'frequencyHz'
 const noteToFrequencyMap: Map<string, number> = new Map()
@@ -219,7 +245,7 @@ noteToFrequencyMap.set('A#6', 1864.66)
 noteToFrequencyMap.set('B6', 1975.53)
 noteToFrequencyMap.set('C7', 2093.00)
 
-const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
+const keyboard = new Keyboard(keyToNoteMap)
 const inputController = new InputController(noteToFrequencyMap)
 
 document.addEventListener('DOMContentLoaded', () => {
