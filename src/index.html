@@ -116,17 +116,15 @@
           <label for="allow-audio">Click to allow audio</label>
           <button name="allow-audio">Allow Audio</button>
         </div>
-        <div class="control-panel master-volume">
-          <label for="master-volume">Master Volume</label>
-          <input type="range" name="master-volume" value="50"></input>
-        </div>
       </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container presets">
         <h2>Presets</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="presets">
       <div class="row">
@@ -155,15 +153,17 @@
       </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container synth-controls">
         <h2>Synth Controls</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="synth-controls">
       <div class="row">
         <div class="control-panel input-controls">
-          <h3>Input Source</h3>
+          <h3>Input</h3>
           <div class="input-container">
             <div class="input-source">
               <div class="input-type">
@@ -175,80 +175,101 @@
                 <label for="midi">MIDI</label>
               </div>
             </div>
-            <div class="mono-polyphony">
-              <div class="mono-poly-type">
-                <input id="monophonic" type="radio" name="monopoly" value="monophonic"></input>
-                <label for="monophonic">Monophonic</label>
-              </div>
-              <div class="mono-poly-type">
-                <input id="polyphonic" type="radio" name="monopoly" value="polyphonic" checked></input>
-                <label for="polyphonic">Polyphonic</label>
+            <div class="voices-quantity">
+              <div class="voices-slider">
+                <label for="voices">Voices: <span>8</span></label>
+                <input type="range" name="voices" min="1" max="10" value="8"></input>
               </div>
             </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="control-panel simple-wave-controls">
-          <div class="vertical-slider-container">
-            <label for="wave-input">Wave</label>
-            <div class="wave-input-container">
-              <ul class="wave-icons">
-                <li><img src="./assets/img/tri-osc.png"></li>
-                <li><img src="./assets/img/saw-osc.png"></li>
-                <li><img src="./assets/img/square-osc.png"></li>
-                <li><img src="./assets/img/sine-osc.png"></li>
-              </ul>
-              <input type="range" name="wave-input" max="3" value="0"></input>
-            </div>
-          </div>
-        </div>
-        <div class="control-panel filter">
-          <h3>Filter</h3>
-          <div class="filter-container">
-            <div class="filter-type">
-              <label for="low-pass">Low Pass</label>
-              <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
-            </div>
-            <div class="filter-type">
-              <label for="high-pass">High Pass</label>
-              <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
-            </div>
-            <div class="filter-slider">
-              <label for="cutoff">Cutoff</label>
-              <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
-            </div>
-            <div class="filter-slider">
-              <label for="env-cutoff">Env Cutoff</label>
-              <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
-            </div>
-            <div class="filter-slider">
-              <label for="resonance">Resonance</label>
-              <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
-            </div>
-          </div>
-        </div>
-        <div class="control-panel octave-offset">
-          <label>Octave +</label>
-          <div class="octave-offset-container">
-            <button name="decrease-octave"><</button>
-            <span>0</span>
-            <button name="increase-octave">></button>
+          <div class="control-panel master-volume">
+            <label for="master-volume">Master Volume</label>
+            <input type="range" name="master-volume" value="50"></input>
           </div>
         </div>
       </div>
       <div class="row">
+        <div class="control-panel oscillator">
+          <h3>Osc A</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscA" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscA" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscA" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscA" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscA" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscA" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscA" min="0" max="1" step="0.1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel oscillator">
+          <h3>Osc B</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscB" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscB" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscB" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscB" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscB" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscB" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscB" min="0" max="1" step="0.1" value="1"></input>
+            </div>
+          </div>
+        </div>
         <div class="control-panel envelope-controls">
           <h3>Amplitude Env</h3>
           <div class="controls-container">
             <div class="vertical-slider-container">
               <label for="amp-attack-input">A</label>
-              <input type="range" name="amp-attack-input" value="0"></input>
+              <input type="range" name="amp-attack-input" min="1" max="200" value="1"></input>
             </div>
             <div class="vertical-slider-container">
               <label for="amp-decay-input">D</label>
-              <input type="range" name="amp-decay-input" value="0"></input>
+              <input type="range" name="amp-decay-input" min="1" value="1"></input>
             </div>
             <div class="vertical-slider-container">
               <label for="amp-sustain-input">S</label>
@@ -256,7 +277,60 @@
             </div>
             <div class="vertical-slider-container">
               <label for="amp-release-input">R</label>
-              <input type="range" name="amp-release-input" value="0"></input>
+              <input type="range" name="amp-release-input" min="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="control-panel filter">
+          <h3>Filter A</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-passA">Low Pass</label>
+              <input id="low-passA" type="radio" name="filterA" value="lowpass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-passA">High Pass</label>
+              <input id="high-passA" type="radio" name="filterA" value="highpass"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyA">Frequency</label>
+              <input type="range" name="frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyA">Env Frequency</label>
+              <input type="range" name="env-frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceA">Resonance</label>
+              <input type="range" name="resonanceA" min="1" max="20" step="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel filter">
+          <h3>Filter B</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-passB">Low Pass</label>
+              <input id="low-passB" type="radio" name="filterB" value="lowpass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-passB">High Pass</label>
+              <input id="high-passB" type="radio" name="filterB" value="highpass"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyB">Frequency</label>
+              <input type="range" name="frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyB">Env Frequency</label>
+              <input type="range" name="env-frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceB">Resonance</label>
+              <input type="range" name="resonanceB" min="1" max="20" step="1" value="1"></input>
             </div>
           </div>
         </div>
@@ -282,12 +356,18 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        
+        
+      </div>
     </section>
     <header class="section-header">
+      <hr>
       <div class="header-container visualization">
         <h2>Visualization</h2>
         <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
       </div>
+      <hr>
     </header>
     <section id="visualization">
       <div class="row">

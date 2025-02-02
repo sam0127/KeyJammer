@@ -1,6 +1,6 @@
-import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
 import { oscilloscopeInit } from './oscilloscope.js'
+import { InputController } from './InputController.js'
 
 const registerInputElement = (element: Node, event: string, listener: (e: Event) => void) => {
     element.addEventListener(event, listener)
@@ -31,19 +31,22 @@ async function fetchDefaultPresets() {
     return presets
   }
 
-const documentInit = (synth: Synth, keyboard: Keyboard) => {
-
+const documentInit = (keyboard: Keyboard, inputController: InputController) => {
+    /*
     //Preset saving and loading
     const saveDefaultPresets = () => {
+        
         fetchDefaultPresets().then(data => {
             data.forEach((item: any) => {
                 localStorage.setItem(item["name"], JSON.stringify(item))
             })
         })
+            
     }
 
     const populatePresetsDropdown = () => {
         //get presets from local storage
+        
         for(let i = 0; i < loadPresetElement.options.length; i++) {
             loadPresetElement.options[i].remove()
         }
@@ -55,9 +58,11 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
             generatePresetOption(deletePresetElement, localStorage.key(i))
         }
         generatePresetOption(deletePresetElement, " ")
+        
     }
 
     const generatePresetOption = (selectElement: HTMLSelectElement, name: string) => {
+        
         if(selectElement.querySelector(`option[value='${name}']`) === null) {
             const optionElement = document.createElement("option")
             optionElement.value = name
@@ -70,9 +75,11 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
             }
             selectElement.appendChild(optionElement)
         }
+            
     }
 
     const loadPreset = (name: string) => {
+        
         const preset = JSON.parse(localStorage.getItem(name))
 
         waveTypeElement.value = preset["waveType"]
@@ -89,28 +96,46 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         filterSustainElement.value = preset["filterEnv"]["sustain"]
         filterReleaseElement.value = preset["filterEnv"]["release"]
         octaveDisplayElement.innerHTML = preset["offset"]
+        
     }
+        */
 
-    //sets default synth properties from DOM
-    const setDefaults = (synth: Synth) => {
-        synth.setWaveType(parseInt(waveTypeElement.value))
-        //synth.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
-        synth.setFilterCutoff(parseFloat(cutoffElement.value))
-        synth.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
-        synth.setFilterResonance(parseInt(resonanceElement.value))
-        synth.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
-        synth.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
-        synth.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
-        synth.setAmpEnvelope(ampReleaseElement.name, parseInt(ampReleaseElement.value))
-        synth.setFilterEnvelope(filterAttackElement.name, parseInt(filterAttackElement.value))
-        synth.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
-        synth.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
-        synth.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
-        synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
+    //sets inputController properties from DOM
+    const configureInputController = (inputController: InputController) => {
+        const checkedOscAWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscA"]:checked')
+        const checkedOscBWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscB"]:checked')
+        inputController.setWaveTypeA(checkedOscAWaveType.value)
+        inputController.setWaveTypeB(checkedOscBWaveType.value)
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
+        inputController.setAmplitudeA(parseFloat(oscAAmplitudeElement.value))
+        inputController.setAmplitudeB(parseFloat(oscBAmplitudeElement.value))
+
+        const checkedFilterAType: HTMLInputElement = document.querySelector('input[name="filterA"]:checked')
+        const checkedFilterBType: HTMLInputElement = document.querySelector('input[name="filterB"]:checked')
+        inputController.setFilterTypeA(checkedFilterAType.value)
+        inputController.setFilterTypeB(checkedFilterBType.value)
+        inputController.setFilterFrequencyA(Math.pow(2, parseFloat(frequencyAElement.value)))
+        inputController.setFilterFrequencyB(Math.pow(2, parseFloat(frequencyBElement.value)))
+        inputController.setFilterEnvFrequencyA(Math.pow(2, parseFloat(envFrequencyAElement.value)))
+        inputController.setFilterEnvFrequencyB(Math.pow(2, parseFloat(envFrequencyBElement.value)))
+        inputController.setFilterQA(parseFloat(resonanceAElement.value))
+        inputController.setFilterQB(parseInt(resonanceBElement.value))
+
+
+        inputController.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
+        inputController.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
+        inputController.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
+        inputController.setAmpEnvelope(ampReleaseElement.name, parseInt(ampReleaseElement.value))
+        inputController.setFilterEnvelope(filterAttackElement.name, parseInt(filterAttackElement.value))
+        inputController.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
+        inputController.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
+        inputController.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
+        
     }
 
     //Create keymap window
-    const createKeymapWindow = () => {
+    const createKeymapWindowFromBindings = () => {
         keyboard.bindingMap.forEach((value, key) => {
             const keyboardKey = document.querySelector(`div[data-key="${key}"]`)
             if(keyboardKey !== null) {
@@ -139,6 +164,14 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         }
     }
 
+    const onInstructionsClickout = (e: any) => {
+        if(e.target.classList.contains('instructions')) {
+            if(instructionsAsideElement.classList.contains('opened')) {
+                instructionsAsideElement.classList.remove('opened')
+            }
+        }
+    }
+
     const onHeaderClick = (e: any) => {
         const sectionElement = document.getElementById(e.currentTarget.classList[1])
 
@@ -152,33 +185,36 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     }
 
     const onAllowAudio = (e: any) => {
-        if(synth.context.state === 'suspended') {
+        if(inputController.context.state === 'suspended') {
             console.log("Initializing Audio")
 
-            synth.context.resume()
-            synth.init()
-            setDefaults(synth)
-            keyboard.init(synth)
+            inputController.context.resume()
+            configureInputController(inputController)
+            keyboard.init(inputController)
             oscilloscopeInit(
                 <HTMLCanvasElement>oscilloscopeElement,
                 <HTMLCanvasElement>spectrographElement,
-                <AnalyserNode>synth.globalChain.get(1)
+                <AnalyserNode>inputController.globalChain.get(1)
             )
         }
     }
 
     const onMasterVolumeInput = (e: any) => {
-        synth.setMasterVolume(e.currentTarget.value)
+        inputController.setMasterVolume(e.currentTarget.value)
     }
 
+    /*
     const onLoadPresetInput = (e: any) => {
+        
         loadPreset(e.currentTarget.value)
-        setDefaults(synth)
+        setDefaults(inputController)
+        
     }
 
     const onSavePresetInput = (e: any) => {
         //if text container empty, alert require name
         //else save preset with name as key
+        
         if(savePresetNameElement.value === "") {
             savePresetNameElement.required = true
             alert("Please enter a name for your preset")
@@ -211,13 +247,17 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
             console.log(preset)
             populatePresetsDropdown()
         }
+            
     }
 
     const onDeletePresetInput = (e: any) => {
+        
         console.log("Deleting preset " + deletePresetElement.value)
         localStorage.removeItem(deletePresetElement.value)
         populatePresetsDropdown()
+        
     }
+        */
 
     const onKeyboardInput = (e: any) => {
         
@@ -227,72 +267,99 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
         
     }
 
-    const onMonophonicInput = (e: any) => {
-        synth.setMonophonic()
+    const onVoicesInput = (e: any) => {
+        e.currentTarget.parentElement.querySelector('label span').innerHTML = e.currentTarget.value
+        inputController.setSignalCapacity(e.currentTarget.value)
+        configureInputController(inputController)
     }
 
-    const onPolyphonicInput = (e: any) => {
-        synth.setPolyphonic()
+    //Oscillator event handlers
+    const onOscAWaveInput = (e: any) => {
+        inputController.setWaveTypeA(e.currentTarget.value)
     }
 
-    const onSimpleWaveInput = (e: any) => {
-        synth.setWaveType(e.currentTarget.value)
+    const onOscADetuneInput = (e: any) => {
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
     }
 
-    const onLowPassInput = (e: any) => {
-        synth.setFilterType(0)
+    const onOscADetuneDblClickInput = (e: any) => {
+        e.target.value = 0
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
     }
 
-    const onHighPassInput = (e: any) => {
-        synth.setFilterType(1)
+    const onOscAAmplitudeInput = (e: any) => {
+        inputController.setAmplitudeA(e.currentTarget.value)
     }
 
-    const onCutoffInput = (e: any) => {
-        synth.setFilterCutoff(parseFloat(e.currentTarget.value))
+    const onOscBWaveInput = (e: any) => {
+        inputController.setWaveTypeB(e.currentTarget.value)
     }
 
-    const onEnvCutoffInput = (e: any) => {
-        synth.setFilterEnvCutoff(parseFloat(e.currentTarget.value))
+    const onOscBDetuneInput = (e: any) => {
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
     }
 
-    const onResonanceInput = (e: any) => {
-        synth.setFilterResonance(e.currentTarget.value)
+    const onOscBDetuneDblClickInput = (e: any) => {
+        e.target.value = 0
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
+    }
+
+    const onOscBAmplitudeInput = (e: any) => {
+        inputController.setAmplitudeB(e.currentTarget.value)
+    }
+
+    //Filter event handlers
+    const onFilterATypeInput = (e: any) => {
+        inputController.setFilterTypeA(e.currentTarget.value)
+    }   
+
+    const onFrequencyAInput = (e: any) => {
+        inputController.setFilterFrequencyA(Math.pow(2, parseFloat(e.currentTarget.value)))
+    }
+
+    const onEnvFrequencyAInput = (e: any) => {
+        inputController.setFilterEnvFrequencyA(Math.pow(2, parseFloat(e.currentTarget.value)))
+    }
+
+    const onResonanceAInput = (e: any) => {
+        inputController.setFilterQA(parseFloat(e.currentTarget.value))
+    }
+
+    const onFilterBTypeInput = (e: any) => {
+        inputController.setFilterTypeB(e.currentTarget.value)
+    }   
+
+    const onFrequencyBInput = (e: any) => {
+        inputController.setFilterFrequencyB(Math.pow(2, parseFloat(e.currentTarget.value)))
+    }
+
+    const onEnvFrequencyBInput = (e: any) => {
+        inputController.setFilterEnvFrequencyB(Math.pow(2, parseFloat(e.currentTarget.value)))
+    }
+
+    const onResonanceBInput = (e: any) => {
+        inputController.setFilterQB(parseFloat(e.currentTarget.value))
     }
 
     const onAmpEnvelopeInput = (e: any) => {
-        synth.setAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
+        inputController.setAmpEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
     const onFilterEnvelopeInput = (e: any) => {
-        synth.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
-    }
-
-    const onOctaveIncreaseInput = (e: any) => {
-        if(parseInt(octaveDisplayElement.innerHTML) < 2) {
-            keyboard.clearAllNotes(synth)
-            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) + 1)
-            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) + 1).toString()
-        }
-
-    }
-
-    const onOctaveDecreaseInput = (e: any) => {
-        if(parseInt(octaveDisplayElement.innerHTML) > -1) {
-            keyboard.clearAllNotes(synth)
-            synth.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML) - 1)
-            octaveDisplayElement.innerHTML = (parseInt(octaveDisplayElement.innerHTML) - 1).toString()
-        }
+        inputController.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
     //REGISTER UI CONTROLS ------------------------------------------------------------------------------
 
     //Keyboard
     registerInputElement(document, 'keydown', onInstructionsKeyout)
+    
 
     //Instructions
     const instructionsButtonElement: HTMLInputElement = document.querySelector('button[name="instructions"]')
     registerInputElement(instructionsButtonElement, 'click', onInstructionsClick)
     const instructionsAsideElement: Element = document.querySelector('aside.instructions')
+    registerInputElement(instructionsAsideElement, 'click', onInstructionsClickout)
 
     //Collapsible sections
     const headerElements: NodeListOf<Element> = document.querySelectorAll('.header-container')
@@ -309,6 +376,7 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
 
     //Presets
+    /*
     const loadPresetElement: HTMLSelectElement = document.querySelector('select[name="load-preset"]')
     registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
     const savePresetButtonElement: HTMLButtonElement = document.querySelector('button[name="save-preset"]')
@@ -317,32 +385,67 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const deletePresetElement: HTMLSelectElement = document.querySelector('select[name="delete-preset"]')
     const deletePresetButtonElement: HTMLInputElement = document.querySelector('button[name="delete-preset"]')
     registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
+    */
 
     //Input controls
     const keyboardInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('keyboard')
     registerInputElement(keyboardInputElement, 'change', onKeyboardInput)
     const midiInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('midi')
     registerInputElement(midiInputElement, 'change', onMidiInput)
-    const monophonicInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('monophonic')
-    registerInputElement(monophonicInputElement, 'change', onMonophonicInput)
-    const polyphonicInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('polyphonic')
-    registerInputElement(polyphonicInputElement, 'change', onPolyphonicInput)
+
+    const voicesElement = document.querySelector('input[name="voices"]')
+    registerInputElement(voicesElement, 'input', onVoicesInput)
+
 
     //Oscillators
-    const waveTypeElement: HTMLInputElement = document.querySelector('input[name="wave-input"]')
-    registerInputElement(waveTypeElement, 'input', onSimpleWaveInput)
+    const oscAWaveTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="wave-src-oscA"]')
+    oscAWaveTypeElements.forEach(oscAWaveTypeElement => {
+        registerInputElement(oscAWaveTypeElement, 'input', onOscAWaveInput)
+    })
+    const oscACoarseDetuneElement: HTMLInputElement = document.querySelector('input[name="coarse-detune-oscA"]')
+    registerInputElement(oscACoarseDetuneElement, 'input', onOscADetuneInput)
+    const oscAFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscA"]')
+    registerInputElement(oscAFineDetuneElement, 'input', onOscADetuneInput)
+    registerInputElement(oscACoarseDetuneElement, 'dblclick', onOscADetuneDblClickInput)
+    registerInputElement(oscAFineDetuneElement, 'dblclick', onOscADetuneDblClickInput)
+    const oscAAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscA"]')
+    registerInputElement(oscAAmplitudeElement, 'input', onOscAAmplitudeInput)
 
-    //Filter
-    const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
-    registerInputElement(lowPassElement, 'change', onLowPassInput)
-    const highPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('high-pass')
-    registerInputElement(highPassElement, 'change', onHighPassInput)
-    const cutoffElement: HTMLInputElement = document.querySelector('input[name="cutoff"]')
-    registerInputElement(cutoffElement, 'input', onCutoffInput)
-    const envCutoffElement: HTMLInputElement = document.querySelector('input[name="env-cutoff"]')
-    registerInputElement(envCutoffElement, 'input', onEnvCutoffInput)
-    const resonanceElement: HTMLInputElement = document.querySelector('input[name="resonance"]')
-    registerInputElement(resonanceElement, 'input', onResonanceInput)
+    const oscBWaveTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="wave-src-oscB"]')
+    oscBWaveTypeElements.forEach(oscBWaveTypeElement => {
+        registerInputElement(oscBWaveTypeElement, 'input', onOscBWaveInput)
+    })
+    const oscBCoarseDetuneElement: HTMLInputElement = document.querySelector('input[name="coarse-detune-oscB"]')
+    registerInputElement(oscBCoarseDetuneElement, 'input', onOscBDetuneInput)
+    const oscBFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscB"]')
+    registerInputElement(oscBFineDetuneElement, 'input', onOscBDetuneInput)
+    registerInputElement(oscBCoarseDetuneElement, 'dblclick', onOscBDetuneDblClickInput)
+    registerInputElement(oscBFineDetuneElement, 'dblclick', onOscBDetuneDblClickInput)
+    const oscBAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscB"]')
+    registerInputElement(oscBAmplitudeElement, 'input', onOscBAmplitudeInput)
+
+    //Filters
+    const filterATypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="filterA"]')
+    filterATypeElements.forEach(filterATypeElement => {
+        registerInputElement(filterATypeElement, 'input', onFilterATypeInput)
+    })
+    const frequencyAElement: HTMLInputElement = document.querySelector('input[name="frequencyA"]')
+    registerInputElement(frequencyAElement, 'input', onFrequencyAInput)
+    const envFrequencyAElement: HTMLInputElement = document.querySelector('input[name="env-frequencyA"]')
+    registerInputElement(envFrequencyAElement, 'input', onEnvFrequencyAInput)
+    const resonanceAElement: HTMLInputElement = document.querySelector('input[name="resonanceA"]')
+    registerInputElement(resonanceAElement, 'input', onResonanceAInput)
+
+    const filterBTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="filterB"]')
+    filterBTypeElements.forEach(filterBTypeElement => {
+        registerInputElement(filterBTypeElement, 'input', onFilterBTypeInput)
+    })
+    const frequencyBElement: HTMLInputElement = document.querySelector('input[name="frequencyB"]')
+    registerInputElement(frequencyBElement, 'input', onFrequencyBInput)
+    const envFrequencyBElement: HTMLInputElement = document.querySelector('input[name="env-frequencyB"]')
+    registerInputElement(envFrequencyBElement, 'input', onEnvFrequencyBInput)
+    const resonanceBElement: HTMLInputElement = document.querySelector('input[name="resonanceB"]')
+    registerInputElement(resonanceBElement, 'input', onResonanceBInput)
 
     //Amplitude envelope
     const ampAttackElement: HTMLInputElement = document.querySelector('input[name="amp-attack-input"]')
@@ -364,13 +467,6 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     const filterReleaseElement: HTMLInputElement = document.querySelector('input[name="filter-release-input"]')
     registerInputElement(filterReleaseElement, 'input', onFilterEnvelopeInput)
 
-    //Octave controls
-    const octaveIncreaseElement: HTMLButtonElement = document.querySelector('button[name="increase-octave"]')
-    registerInputElement(octaveIncreaseElement, 'click', onOctaveIncreaseInput)
-    const octaveDecreaseElement: HTMLButtonElement = document.querySelector('button[name="decrease-octave"]')
-    registerInputElement(octaveDecreaseElement, 'click', onOctaveDecreaseInput)
-    const octaveDisplayElement: Element = document.querySelector('.octave-offset-container span')
-
     //Wave displays
     const oscilloscopeElement: Element = document.getElementById('oscilloscope')
     const spectrographElement: Element = document.getElementById('spectrograph')
@@ -378,17 +474,17 @@ const documentInit = (synth: Synth, keyboard: Keyboard) => {
     //INITIALIZATION ---------------------------------------------------------------
 
     //save default presets to localStorage
-    saveDefaultPresets()
+    //saveDefaultPresets()
     //populate dropdown with all presets in localStorage
-    populatePresetsDropdown()
+    //populatePresetsDropdown()
     //load default preset on DOM
-    loadPreset("Default")
+    //loadPreset("Default")
 
-    createKeymapWindow()
+    createKeymapWindowFromBindings()
     //Attach Event handlers to appropriate element
 
     window.addEventListener('blur', (e: any) => {
-       // keyboard.clearAllNotes(synth)
+       // keyboard.clearAllNotes(inputController)
     })
 }
 
