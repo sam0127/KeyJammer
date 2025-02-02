@@ -1,5 +1,4 @@
 import { Keyboard } from './Keyboard.js'
-
 import { documentInit } from './document.js'
 import { InputController } from './InputController.js'
 
@@ -85,44 +84,6 @@ keyToNoteMap.set('KeyP', 'A4')
 keyToNoteMap.set('Minus', 'A#4')
 keyToNoteMap.set('BracketLeft', 'B4')
 keyToNoteMap.set('BracketRight', 'C5')
-*/
-//Irish key map
-/*
-keyToNoteMap.set('KeyZ', 'A2')
-keyToNoteMap.set('KeyX', 'B2')
-keyToNoteMap.set('KeyC', 'D3')
-keyToNoteMap.set('KeyV', 'E3')
-keyToNoteMap.set('KeyB', 'F#3')
-keyToNoteMap.set('KeyN', 'G3')
-keyToNoteMap.set('KeyM', 'A3')
-keyToNoteMap.set('Comma', 'B3')
-keyToNoteMap.set('Period', 'C#4')
-keyToNoteMap.set('Slash', 'D4')
-
-keyToNoteMap.set('KeyA', 'G2')
-keyToNoteMap.set('KeyS', 'G3')
-keyToNoteMap.set('KeyD', 'A3')
-keyToNoteMap.set('KeyF', 'B3')
-keyToNoteMap.set('KeyG', 'C4')
-keyToNoteMap.set('KeyH', 'D4')
-keyToNoteMap.set('KeyJ', 'E4')
-keyToNoteMap.set('KeyK', 'F#4')
-keyToNoteMap.set('KeyL', 'G4')
-keyToNoteMap.set('Semicolon', 'A4')
-keyToNoteMap.set('Quote', 'B4')
-
-keyToNoteMap.set('KeyQ', 'A3')
-keyToNoteMap.set('KeyW', 'B3')
-keyToNoteMap.set('KeyE', 'C#4')
-keyToNoteMap.set('KeyR', 'D4')
-keyToNoteMap.set('KeyT', 'E4')
-keyToNoteMap.set('KeyY', 'F#4')
-keyToNoteMap.set('KeyU', 'G#4')
-keyToNoteMap.set('KeyI', 'A4')
-keyToNoteMap.set('KeyO', 'B4')
-keyToNoteMap.set('KeyP', 'C#5')
-keyToNoteMap.set('BracketLeft', 'D5')
-keyToNoteMap.set('BracketRight', 'E5')
 */
 
 //Split nearly diatonic
@@ -259,7 +220,6 @@ noteToFrequencyMap.set('B6', 1975.53)
 noteToFrequencyMap.set('C7', 2093.00)
 
 const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
-//const synth = new Synth(noteToFrequencyMap)
 const inputController = new InputController(noteToFrequencyMap)
 
 document.addEventListener('DOMContentLoaded', () => {

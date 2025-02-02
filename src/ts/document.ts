@@ -105,9 +105,9 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         
         //inputController.setWaveType(parseInt(waveTypeElement.value))
         //inputController.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
-        inputController.setFilterCutoff(parseFloat(cutoffElement.value))
-        inputController.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
-        inputController.setFilterResonance(parseInt(resonanceElement.value))
+        //inputController.setFilterCutoff(parseFloat(cutoffElement.value))
+        //inputController.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
+        //inputController.setFilterResonance(parseInt(resonanceElement.value))
         inputController.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
         inputController.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
         inputController.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
@@ -269,6 +269,11 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
     }
 
+    const onOscADetuneDblClickInput = (e: any) => {
+        e.target.value = 0
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
+    }
+
     const onOscAAmplitudeInput = (e: any) => {
         inputController.setAmplitudeA(e.currentTarget.value)
     }
@@ -282,28 +287,46 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
     }
 
+    const onOscBDetuneDblClickInput = (e: any) => {
+        e.target.value = 0
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
+    }
+
     const onOscBAmplitudeInput = (e: any) => {
         inputController.setAmplitudeB(e.currentTarget.value)
     }
 
-    const onLowPassInput = (e: any) => {
-        inputController.setFilterType(0)
+    //Filter event handlers
+    const onFilterATypeInput = (e: any) => {
+        inputController.setFilterTypeA(e.currentTarget.value)
+    }   
+
+    const onFrequencyAInput = (e: any) => {
+        inputController.setFilterFrequencyA(Math.pow(2, parseFloat(e.currentTarget.value)))
     }
 
-    const onHighPassInput = (e: any) => {
-        inputController.setFilterType(1)
+    const onEnvFrequencyAInput = (e: any) => {
+        inputController.setFilterEnvFrequencyA(parseFloat(e.currentTarget.value))
     }
 
-    const onCutoffInput = (e: any) => {
-        inputController.setFilterCutoff(parseFloat(e.currentTarget.value))
+    const onResonanceAInput = (e: any) => {
+        inputController.setFilterQA(parseFloat(e.currentTarget.value))
     }
 
-    const onEnvCutoffInput = (e: any) => {
-        inputController.setFilterEnvCutoff(parseFloat(e.currentTarget.value))
+    const onFilterBTypeInput = (e: any) => {
+        inputController.setFilterTypeB(e.currentTarget.value)
+    }   
+
+    const onFrequencyBInput = (e: any) => {
+        inputController.setFilterFrequencyB(Math.pow(2, parseFloat(e.currentTarget.value)))
     }
 
-    const onResonanceInput = (e: any) => {
-        inputController.setFilterResonance(e.currentTarget.value)
+    const onEnvFrequencyBInput = (e: any) => {
+        inputController.setFilterEnvFrequencyB(parseFloat(e.currentTarget.value))
+    }
+
+    const onResonanceBInput = (e: any) => {
+        inputController.setFilterQB(parseFloat(e.currentTarget.value))
     }
 
     const onAmpEnvelopeInput = (e: any) => {
@@ -371,6 +394,8 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     registerInputElement(oscACoarseDetuneElement, 'input', onOscADetuneInput)
     const oscAFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscA"]')
     registerInputElement(oscAFineDetuneElement, 'input', onOscADetuneInput)
+    registerInputElement(oscACoarseDetuneElement, 'dblclick', onOscADetuneDblClickInput)
+    registerInputElement(oscAFineDetuneElement, 'dblclick', onOscADetuneDblClickInput)
     const oscAAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscA"]')
     registerInputElement(oscAAmplitudeElement, 'input', onOscAAmplitudeInput)
 
@@ -382,22 +407,33 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     registerInputElement(oscBCoarseDetuneElement, 'input', onOscBDetuneInput)
     const oscBFineDetuneElement: HTMLInputElement = document.querySelector('input[name="fine-detune-oscB"]')
     registerInputElement(oscBFineDetuneElement, 'input', onOscBDetuneInput)
+    registerInputElement(oscBCoarseDetuneElement, 'dblclick', onOscBDetuneDblClickInput)
+    registerInputElement(oscBFineDetuneElement, 'dblclick', onOscBDetuneDblClickInput)
     const oscBAmplitudeElement: HTMLInputElement = document.querySelector('input[name="amplitude-oscB"]')
     registerInputElement(oscBAmplitudeElement, 'input', onOscBAmplitudeInput)
-    
-    //TODO: Make a list of wave inputs for each wave type, each call same listener per oscillator
 
-    //Filter
-    const lowPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('low-pass')
-    registerInputElement(lowPassElement, 'change', onLowPassInput)
-    const highPassElement: HTMLInputElement = <HTMLInputElement>document.getElementById('high-pass')
-    registerInputElement(highPassElement, 'change', onHighPassInput)
-    const cutoffElement: HTMLInputElement = document.querySelector('input[name="cutoff"]')
-    registerInputElement(cutoffElement, 'input', onCutoffInput)
-    const envCutoffElement: HTMLInputElement = document.querySelector('input[name="env-cutoff"]')
-    registerInputElement(envCutoffElement, 'input', onEnvCutoffInput)
-    const resonanceElement: HTMLInputElement = document.querySelector('input[name="resonance"]')
-    registerInputElement(resonanceElement, 'input', onResonanceInput)
+    //Filters
+    const filterATypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="filterA"]')
+    filterATypeElements.forEach(filterATypeElement => {
+        registerInputElement(filterATypeElement, 'input', onFilterATypeInput)
+    })
+    const frequencyAElement: HTMLInputElement = document.querySelector('input[name="frequencyA"]')
+    registerInputElement(frequencyAElement, 'input', onFrequencyAInput)
+    const envFrequencyAElement: HTMLInputElement = document.querySelector('input[name="env-frequencyA"]')
+    registerInputElement(envFrequencyAElement, 'input', onEnvFrequencyAInput)
+    const resonanceAElement: HTMLInputElement = document.querySelector('input[name="resonanceA"]')
+    registerInputElement(resonanceAElement, 'input', onResonanceAInput)
+
+    const filterBTypeElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="filterB"]')
+    filterBTypeElements.forEach(filterBTypeElement => {
+        registerInputElement(filterBTypeElement, 'input', onFilterBTypeInput)
+    })
+    const frequencyBElement: HTMLInputElement = document.querySelector('input[name="frequencyB"]')
+    registerInputElement(frequencyBElement, 'input', onFrequencyBInput)
+    const envFrequencyBElement: HTMLInputElement = document.querySelector('input[name="env-frequencyB"]')
+    registerInputElement(envFrequencyBElement, 'input', onEnvFrequencyBInput)
+    const resonanceBElement: HTMLInputElement = document.querySelector('input[name="resonanceB"]')
+    registerInputElement(resonanceBElement, 'input', onResonanceBInput)
 
     //Amplitude envelope
     const ampAttackElement: HTMLInputElement = document.querySelector('input[name="amp-attack-input"]')

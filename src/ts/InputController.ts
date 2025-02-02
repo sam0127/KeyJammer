@@ -146,6 +146,8 @@ export class InputController {
         this.availableSignals = null
     }
 
+    //Oscillator methods
+
     //Update all signals' oscA wave
     setWaveTypeA(type: string) {
         this.activeSignals.forEach((signal: Signal) => {
@@ -208,6 +210,88 @@ export class InputController {
         })
     }
 
+    //Filter methods
+
+    setFilterTypeA(type: string) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setType(<BiquadFilterType>type)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setType(<BiquadFilterType>type)
+        })
+    }
+
+    setFilterFrequencyA(freq: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setFrequency(freq)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setFrequency(freq)
+        })
+    }
+
+    setFilterEnvFrequencyA(freq: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setEnvFrequency(freq)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setEnvFrequency(freq)
+        })
+    }
+
+    setFilterQA(q: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setQ(q)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterA().setQ(q)
+        })
+    }
+
+    setFilterTypeB(type: string) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setType(<BiquadFilterType>type)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setType(<BiquadFilterType>type)
+        })
+    }
+
+    setFilterFrequencyB(freq: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setFrequency(freq)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setFrequency(freq)
+        })
+    }
+
+    setFilterEnvFrequencyB(freq: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setEnvFrequency(freq)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setEnvFrequency(freq)
+        })
+    }
+
+    setFilterQB(q: number) {
+        this.activeSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setQ(q)
+        })
+
+        this.availableSignals.forEach((signal: Signal) => {
+            signal.getFilterB().setQ(q)
+        })
+    }
+
     setSignalCapacity(capacity: number) {
         this.clearAllSignals()
         this.signalCapacity = capacity
@@ -254,49 +338,6 @@ export class InputController {
                 this.filterEnvelope.release = value / 100.0
                 break
         }
-    }
-
-    //Sets filter type
-    setFilterType(value: number) {
-        this.filter.type = this.filterTypes[value]
-    }
-
-    //Updates synth filter cutoff and all notes' filter cutoffs
-    setFilterCutoff(factor: number) {
-        /*
-        this.filter.cutoff = factor
-        this.notes.forEach((value: Note, key: string) => {
-            value.filter.frequency.setValueAtTime(value.frequency * this.filter.cutoff, this.context.currentTime)
-        })
-
-        this.activeSignals.forEach((signal: Signal) => {
-            signal.getFilterA().getFrequencyParam.setValue
-        })
-
-        this.availableSignals.forEach((signal: Signal) => {
-            signal.getOscillatorA().setWaveform(<OscillatorType>this.waveTypes[type])
-        })
-            */
-    }
-
-    //Sets synth filter envelope cutoff
-    setFilterEnvCutoff(factor: number) {
-        this.filter.envFrequency = factor
-    }
-
-    //Sets synth filter resonance
-    setFilterResonance(value: number) {
-        /*
-        this.filter.resonance = value
-        this.notes.forEach((val: Note, key: string) => {
-            val.filter.Q.value = this.filter.resonance
-        })
-            */
-    }
-
-    //Sets synth octave offset
-    setOctaveOffset(offset: number) {
-        this.octaveOffset = offset
     }
 
     destroyNotes() {

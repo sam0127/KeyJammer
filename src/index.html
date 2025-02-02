@@ -260,34 +260,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="control-panel filter">
-          <h3>Filter</h3>
-          <div class="filter-container">
-            <div class="filter-type">
-              <label for="low-pass">Low Pass</label>
-              <input id="low-pass" type="radio" name="filter" value="low-pass" checked></input>
-            </div>
-            <div class="filter-type">
-              <label for="high-pass">High Pass</label>
-              <input id="high-pass" type="radio" name="filter" value="high-pass" disabled></input>
-            </div>
-            <div class="filter-slider">
-              <label for="cutoff">Cutoff</label>
-              <input type="range" name="cutoff" min="0.25" max="8" step="0.1" value="1"></input>
-            </div>
-            <div class="filter-slider">
-              <label for="env-cutoff">Env Cutoff</label>
-              <input type="range" name="env-cutoff" min="0" max="8" step="0.25" value="0"></input>
-            </div>
-            <div class="filter-slider">
-              <label for="resonance">Resonance</label>
-              <input type="range" name="resonance" min="1" max="10" step="1" value="1"></input>
-            </div>
-          </div>
-        </div>
-      <div class="row">
         <div class="control-panel envelope-controls">
           <h3>Amplitude Env</h3>
           <div class="controls-container">
@@ -306,6 +278,59 @@
             <div class="vertical-slider-container">
               <label for="amp-release-input">R</label>
               <input type="range" name="amp-release-input" min="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="control-panel filter">
+          <h3>Filter A</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-passA">Low Pass</label>
+              <input id="low-passA" type="radio" name="filterA" value="lowpass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-passA">High Pass</label>
+              <input id="high-passA" type="radio" name="filterA" value="highpass"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyA">Frequency</label>
+              <input type="range" name="frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyA">Env Frequency</label>
+              <input type="range" name="env-frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceA">Resonance</label>
+              <input type="range" name="resonanceA" min="1" max="20" step="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel filter">
+          <h3>Filter B</h3>
+          <div class="filter-container">
+            <div class="filter-type">
+              <label for="low-passB">Low Pass</label>
+              <input id="low-passB" type="radio" name="filterB" value="lowpass" checked></input>
+            </div>
+            <div class="filter-type">
+              <label for="high-passB">High Pass</label>
+              <input id="high-passB" type="radio" name="filterB" value="highpass"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyB">Frequency</label>
+              <input type="range" name="frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyB">Env Frequency</label>
+              <input type="range" name="env-frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceB">Resonance</label>
+              <input type="range" name="resonanceB" min="1" max="20" step="1" value="1"></input>
             </div>
           </div>
         </div>
@@ -330,6 +355,10 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="row">
+        
+        
       </div>
     </section>
     <header class="section-header">
