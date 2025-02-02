@@ -100,14 +100,29 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
         */
 
-    //sets default inputController properties from DOM
-    const setDefaults = (inputController: InputController) => {
-        
-        //inputController.setWaveType(parseInt(waveTypeElement.value))
-        //inputController.setFilterType(lowPassElement.checked ? 'lowpass' : 'highpass')
-        //inputController.setFilterCutoff(parseFloat(cutoffElement.value))
-        //inputController.setFilterEnvCutoff(parseFloat(envCutoffElement.value))
-        //inputController.setFilterResonance(parseInt(resonanceElement.value))
+    //sets inputController properties from DOM
+    const configureInputController = (inputController: InputController) => {
+        const checkedOscAWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscA"]:checked')
+        const checkedOscBWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscB"]:checked')
+        inputController.setWaveTypeA(checkedOscAWaveType.value)
+        inputController.setWaveTypeB(checkedOscBWaveType.value)
+        inputController.setDetuneA(Number(oscACoarseDetuneElement.value)*100 + Number(oscAFineDetuneElement.value))
+        inputController.setDetuneB(Number(oscBCoarseDetuneElement.value)*100 + Number(oscBFineDetuneElement.value))
+        inputController.setAmplitudeA(parseFloat(oscAAmplitudeElement.value))
+        inputController.setAmplitudeB(parseFloat(oscBAmplitudeElement.value))
+
+        const checkedFilterAType: HTMLInputElement = document.querySelector('input[name="filterA"]:checked')
+        const checkedFilterBType: HTMLInputElement = document.querySelector('input[name="filterB"]:checked')
+        inputController.setFilterTypeA(checkedFilterAType.value)
+        inputController.setFilterTypeB(checkedFilterBType.value)
+        inputController.setFilterFrequencyA(Math.pow(2, parseFloat(frequencyAElement.value)))
+        inputController.setFilterFrequencyB(Math.pow(2, parseFloat(frequencyBElement.value)))
+        inputController.setFilterEnvFrequencyA(Math.pow(2, parseFloat(envFrequencyAElement.value)))
+        inputController.setFilterEnvFrequencyB(Math.pow(2, parseFloat(envFrequencyBElement.value)))
+        inputController.setFilterQA(parseFloat(resonanceAElement.value))
+        inputController.setFilterQB(parseInt(resonanceBElement.value))
+
+
         inputController.setAmpEnvelope(ampAttackElement.name, parseInt(ampAttackElement.value))
         inputController.setAmpEnvelope(ampDecayElement.name, parseInt(ampDecayElement.value))
         inputController.setAmpEnvelope(ampSustainElement.name, parseInt(ampSustainElement.value))
@@ -116,7 +131,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setFilterEnvelope(filterDecayElement.name, parseInt(filterDecayElement.value))
         inputController.setFilterEnvelope(filterSustainElement.name, parseInt(filterSustainElement.value))
         inputController.setFilterEnvelope(filterReleaseElement.name, parseInt(filterReleaseElement.value))
-        //inputController.setOctaveOffset(parseInt(octaveDisplayElement.innerHTML))
         
     }
 
@@ -175,8 +189,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             console.log("Initializing Audio")
 
             inputController.context.resume()
-            //inputController.init()
-            setDefaults(inputController)
+            configureInputController(inputController)
             keyboard.init(inputController)
             oscilloscopeInit(
                 <HTMLCanvasElement>oscilloscopeElement,
@@ -257,6 +270,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     const onVoicesInput = (e: any) => {
         e.currentTarget.parentElement.querySelector('label span').innerHTML = e.currentTarget.value
         inputController.setSignalCapacity(e.currentTarget.value)
+        configureInputController(inputController)
     }
 
     //Oscillator event handlers
@@ -306,7 +320,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
 
     const onEnvFrequencyAInput = (e: any) => {
-        inputController.setFilterEnvFrequencyA(parseFloat(e.currentTarget.value))
+        inputController.setFilterEnvFrequencyA(Math.pow(2, parseFloat(e.currentTarget.value)))
     }
 
     const onResonanceAInput = (e: any) => {
@@ -322,7 +336,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
 
     const onEnvFrequencyBInput = (e: any) => {
-        inputController.setFilterEnvFrequencyB(parseFloat(e.currentTarget.value))
+        inputController.setFilterEnvFrequencyB(Math.pow(2, parseFloat(e.currentTarget.value)))
     }
 
     const onResonanceBInput = (e: any) => {

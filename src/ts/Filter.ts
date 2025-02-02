@@ -10,6 +10,9 @@ export class Filter extends NodeChain {
     constructor(context: AudioContext) {
         super([context.createBiquadFilter()])
         this.node = <BiquadFilterNode>this.first()
+        this.frequency = 1
+        this.node.frequency.value = 1
+        this.envFrequency = 1
     }
 
     destroy() {

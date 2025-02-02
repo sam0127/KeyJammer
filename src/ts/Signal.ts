@@ -79,20 +79,22 @@ export class Signal {
         gainParam.linearRampToValueAtTime(1, startTime + ampEnvelope.attack)
         gainParam.exponentialRampToValueAtTime(ampEnvelope.sustain * 1 + 0.01, startTime + ampEnvelope.attack + ampEnvelope.decay)
         gainParam.linearRampToValueAtTime(ampEnvelope.sustain * 1, startTime + ampEnvelope.attack + ampEnvelope.decay)
-
-        /*
+        
+        
         let frequencyParam = this.filterA.getFrequencyParam()
+        let sustainVal = this.filterA.getFrequency() + (this.filterA.getEnvFrequency() - this.filterA.getFrequency()) * filterEnvelope.sustain
         frequencyParam.cancelScheduledValues(startTime)
-        frequencyParam.setValueAtTime(this.filterA.getFrequency() * baseFrequency, startTime)
-        frequencyParam.linearRampToValueAtTime(
-            (this.filterA.getFrequency() + this.filterA.getEnvFrequency()) * baseFrequency,
-            startTime + filterEnvelope.attack
-        )
-        frequencyParam.linearRampToValueAtTime(
-            (this.filterA.getFrequency() + filterEnvelope.sustain * this.filterA.getEnvFrequency()) * baseFrequency,
-            startTime + filterEnvelope.attack + filterEnvelope.decay
-        )
-        */
+        frequencyParam.setValueAtTime(frequencyParam.value, startTime)
+        frequencyParam.linearRampToValueAtTime(this.filterA.getEnvFrequency(), startTime + filterEnvelope.attack)
+        frequencyParam.exponentialRampToValueAtTime(sustainVal, startTime + filterEnvelope.attack + filterEnvelope.decay)
+
+        frequencyParam = this.filterB.getFrequencyParam()
+        sustainVal = this.filterB.getFrequency() + (this.filterB.getEnvFrequency() - this.filterB.getFrequency()) * filterEnvelope.sustain
+        frequencyParam.cancelScheduledValues(startTime)
+        frequencyParam.setValueAtTime(frequencyParam.value, startTime)
+        frequencyParam.linearRampToValueAtTime(this.filterB.getEnvFrequency(), startTime + filterEnvelope.attack)
+        frequencyParam.exponentialRampToValueAtTime(sustainVal, startTime + filterEnvelope.attack + filterEnvelope.decay)
+        
     }
 
     move(baseFrequency: number, ampEnvelope: Envelope, filterEnvelope: Envelope) {
@@ -116,9 +118,7 @@ export class Signal {
         }
     }
 
-    stop(baseFrequency: number, ampEnvelope: Envelope, filterEnvelope: Envelope) {
-        //this.baseFrequency = 0
-
+    stop(ampEnvelope: Envelope, filterEnvelope: Envelope) {
         let gainParam = this.signalGain.gain
         const startTime: number = this.context.currentTime
         gainParam.cancelScheduledValues(startTime)
@@ -127,27 +127,21 @@ export class Signal {
         gainParam.linearRampToValueAtTime(0, startTime + ampEnvelope.release)
 
 
-        /*
+        let frequencyParam = this.filterA.getFrequencyParam()
         frequencyParam.cancelScheduledValues(startTime)
         frequencyParam.setValueAtTime(frequencyParam.value, startTime)
-        frequencyParam.linearRampToValueAtTime(this.filterA.getFrequency() * baseFrequency, startTime + filterEnvelope.release)
-        */
-    }
+        frequencyParam.exponentialRampToValueAtTime(this.filterA.getFrequency(), startTime + filterEnvelope.release)
 
-    setFilterA(filter: Filter) { // could replace Filter with Object?
-        
-    }
-
-    setFilterB(filter: Filter) { // could replace Filter with Object?
+        frequencyParam = this.filterB.getFrequencyParam()
+        frequencyParam.cancelScheduledValues(startTime)
+        frequencyParam.setValueAtTime(frequencyParam.value, startTime)
+        frequencyParam.exponentialRampToValueAtTime(this.filterB.getFrequency(), startTime + filterEnvelope.release)
         
     }
 
     connect(destination: AudioNode) {
         this.signalGain.connect(destination)
     }
-
-
-
 
     toString() {
         return this.baseFrequency

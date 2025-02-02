@@ -22,12 +22,6 @@ export class InputController {
 
     signalCapacity: number
 
-    //if you add more filters, be sure to update document listener and preset logic for filters
-    readonly filterTypes: Array<string> = [
-        'lowpass',
-        'highpass'
-    ]
-
     constructor(tuningSystem: Map<string, number>) {
         this.context = new AudioContext()
         this.context.suspend()
@@ -103,7 +97,7 @@ export class InputController {
                             }
                         })
                     } else {
-                        signal.stop(freq, this.ampEnvelope, this.filterEnvelope)
+                        signal.stop(this.ampEnvelope, this.filterEnvelope)
                         this.availableSignals.push(signal)
                     }
                 }
@@ -293,9 +287,11 @@ export class InputController {
     }
 
     setSignalCapacity(capacity: number) {
-        this.clearAllSignals()
-        this.signalCapacity = capacity
-        this.createSignals()
+        if(this.signalCapacity != capacity) {
+            this.clearAllSignals()
+            this.signalCapacity = capacity
+            this.createSignals()
+        }
     }
     
     //Sets the master volume of the synth
@@ -329,13 +325,13 @@ export class InputController {
                 this.filterEnvelope.attack = value / 100.0
                 break
             case "filter-decay-input":
-                this.filterEnvelope.decay = value / 100.0
+                this.filterEnvelope.decay = value / 25.0
                 break
             case "filter-sustain-input":
                 this.filterEnvelope.sustain = value / 100.0
                 break
             case "filter-release-input":
-                this.filterEnvelope.release = value / 100.0
+                this.filterEnvelope.release = value / 25.0
                 break
         }
     }
