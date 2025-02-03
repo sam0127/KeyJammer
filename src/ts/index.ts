@@ -1,10 +1,10 @@
-import { Synth } from './Synth.js'
 import { Keyboard } from './Keyboard.js'
-
-import { documentInit } from './document.js'
+import { documentInit, fetchDefaultPresets } from './document.js'
+import { InputController } from './InputController.js'
 
 //KeyToNoteMap: Map containing key bindings to note names, 'KeyCode': 'notename'
 const keyToNoteMap: Map<string, string> = new Map()
+// Top down key map
 /*
 keyToNoteMap.set('KeyQ', 'C2')
 keyToNoteMap.set('Digit2', 'C#2')
@@ -45,6 +45,7 @@ keyToNoteMap.set('Period', 'B4')
 keyToNoteMap.set('Slash', 'C5')
 keyToNoteMap.set('Quote', 'C#5')
 */
+//bottom up key map
 keyToNoteMap.set('KeyZ', 'C2')
 keyToNoteMap.set('KeyS', 'C#2')
 keyToNoteMap.set('KeyX', 'D2')
@@ -82,14 +83,43 @@ keyToNoteMap.set('KeyP', 'A4')
 keyToNoteMap.set('Minus', 'A#4')
 keyToNoteMap.set('BracketLeft', 'B4')
 keyToNoteMap.set('BracketRight', 'C5')
-//keyToNoteMap.set('Quote', 'C#5')
 
-const controlKeySet: Set<string> = new Set()
-controlKeySet.add('Space')
-controlKeySet.add('ShiftLeft')
-controlKeySet.add('ShiftRight')
-controlKeySet.add('CapsLock')
-controlKeySet.add('Escape')
+
+/*
+//Split diatonic
+keyToNoteMap.set('KeyZ', 'F1')
+keyToNoteMap.set('KeyX', 'G1')
+keyToNoteMap.set('KeyC', 'A1')
+keyToNoteMap.set('KeyV', 'B1')
+
+keyToNoteMap.set('KeyA', 'C2')
+keyToNoteMap.set('KeyS', 'D2')
+keyToNoteMap.set('KeyD', 'E2')
+keyToNoteMap.set('KeyF', 'F2')
+
+keyToNoteMap.set('KeyQ', 'G2')
+keyToNoteMap.set('KeyW', 'A2')
+keyToNoteMap.set('KeyE', 'B2')
+keyToNoteMap.set('KeyR', 'C3')
+
+//Right:
+keyToNoteMap.set('KeyN', 'D3')
+keyToNoteMap.set('KeyM', 'E3')
+keyToNoteMap.set('Comma', 'F3')
+keyToNoteMap.set('Period', 'G3')
+
+keyToNoteMap.set('KeyJ', 'A3')
+keyToNoteMap.set('KeyK', 'B3')
+keyToNoteMap.set('KeyL', 'C4')
+keyToNoteMap.set('Semicolon', 'D4')
+
+keyToNoteMap.set('KeyU', 'E4')
+keyToNoteMap.set('KeyI', 'F4')
+keyToNoteMap.set('KeyO', 'G4')
+keyToNoteMap.set('KeyP', 'A4')
+keyToNoteMap.set('BracketLeft', 'B4')
+keyToNoteMap.set('BracketRight', 'C5')
+*/
 
 //NoteToFrequencyMap: Map representing the tuning system, 'note-name': 'frequencyHz'
 const noteToFrequencyMap: Map<string, number> = new Map()
@@ -170,9 +200,13 @@ noteToFrequencyMap.set('A#6', 1864.66)
 noteToFrequencyMap.set('B6', 1975.53)
 noteToFrequencyMap.set('C7', 2093.00)
 
-const keyboard = new Keyboard(keyToNoteMap, controlKeySet)
-const synth = new Synth(noteToFrequencyMap)
+const keyboard = new Keyboard(keyToNoteMap)
+const inputController = new InputController(noteToFrequencyMap)
+const defaultPresets: Map<string, string> = new Map()
 
 document.addEventListener('DOMContentLoaded', () => {
-    documentInit(synth, keyboard)
+    fetchDefaultPresets().then(data => {
+        data.forEach((item: any) => defaultPresets.set(item["name"], JSON.stringify(item)))
+        documentInit(keyboard, inputController, defaultPresets)
+    })
 })

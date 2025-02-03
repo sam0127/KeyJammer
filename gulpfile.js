@@ -1,14 +1,4 @@
-/*
-IN CASE OF COMMONJS
-
-var gulp = require("gulp");
-var watch = require('gulp-watch');
-var sass = require('gulp-sass')(require('node-sass'));
-var del = require('del');
-var ts = require("gulp-typescript");
-*/
 import gulp from "gulp";
-import watch from "gulp-watch";
 import gulpSass from "gulp-sass";
 import dartSass from "sass";
 import { deleteSync } from "del";
@@ -27,6 +17,7 @@ const config = {
         html: './dist',
         css: './dist/css',
         js: './dist/js',
+        prod_js: './dist/src',
         assets: './dist/assets'
     }
 };
@@ -43,7 +34,7 @@ gulp.task('assets', () => {
 
 gulp.task('clean', () => {
     return deleteSync([
-        config.dist.css + '/*.css',
+        './dist/*',
     ]);
 });
 
@@ -57,12 +48,21 @@ gulp.task('ts', () => {
     return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(config.dist.js));
 });
 
+gulp.task('ts-prod', () => {
+    return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(config.dist.prod_js));
+});
+
 gulp.task('watch', () => {
     gulp.watch(config.src.html, gulp.series('html'));
     gulp.watch(config.src.sass, gulp.series('sass'));
     gulp.watch(config.src.ts, gulp.series('ts'));
     gulp.watch(config.src.assets, gulp.series('assets'));
 });
+
+gulp.task("build-prod",
+    gulp.parallel(['ts-prod',
+    gulp.parallel(['html',
+    gulp.parallel(['assets', 'sass'])])]));
 
 gulp.task("default",
         gulp.parallel(['ts',

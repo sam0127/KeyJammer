@@ -61,7 +61,6 @@ $row-height: $unit;
     background: #efefef;
     cursor: pointer;
     margin-top: 5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-
     &:hover{
         filter: $hover-filter;
     }
