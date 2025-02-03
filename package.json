@@ -26,7 +26,8 @@
     "gulp-sass": "^5.1.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "live-server": "^1.2.2",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "uglify-js": "^3.19.3"
   },
   "dependencies": {
     "del": "^7.0.0",
