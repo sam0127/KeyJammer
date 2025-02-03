@@ -1,5 +1,5 @@
 {
-    "name": "Default",
+    "name": "Plucked String",
     "version": 1.1,
     "signalCapacity": 6,
     "oscA":
@@ -11,37 +11,37 @@
     },
     "oscB":
     {
-        "waveType": "sawtooth",
-        "coarseDetune": 12,
-        "fineDetune": 14,
-        "amplitude": 1
+        "waveType": "sine",
+        "coarseDetune": 0,
+        "fineDetune": 0,
+        "amplitude": 0
     },
     "filterA":
     {
         "filterType": "lowpass",
         "frequency": 6.9,
-        "envFrequency": 11.9,
+        "envFrequency": 10.1,
         "resonance": 0
     },
     "filterB":
     {
         "filterType": "lowpass",
-        "frequency": 9,
-        "envFrequency": 9,
-        "resonance": 1
+        "frequency": 0,
+        "envFrequency": 0,
+        "resonance": 0
     },
     "amplitudeEnv":
     {
         "attack": 1,
-        "decay": 1,
-        "sustain": 100,
-        "release": 25
+        "decay": 100,
+        "sustain": 0,
+        "release": 11
     },
     "filterEnv":
     {
-        "attack": 30,
-        "decay": 30,
-        "sustain": 50,
-        "release": 10
+        "attack": 0,
+        "decay": 43,
+        "sustain": 0,
+        "release": 26
     }
 }

@@ -71,6 +71,10 @@ input[type=range] {
     }
 }
 
+.hidden {
+    display: none;
+}
+
 button {
     @include border();
     font-family: $main-font;

@@ -12,10 +12,11 @@ async function fetchDefaultPresets() {
     var jsonData = await response.json();
     presets[0] = jsonData
 
-    response = await fetch("./assets/defaultpresets/trumpet.json");
+    
+    response = await fetch("./assets/defaultpresets/string.json");
     jsonData = await response.json();
     presets[1] = jsonData
-
+    /*
     response = await fetch("./assets/defaultpresets/marimba.json");
     jsonData = await response.json();
     presets[2] = jsonData
@@ -27,38 +28,30 @@ async function fetchDefaultPresets() {
     response = await fetch("./assets/defaultpresets/steelstring.json");
     jsonData = await response.json();
     presets[4] = jsonData
-
+    */
     return presets
-  }
+}
 
-const documentInit = (keyboard: Keyboard, inputController: InputController) => {
-    /*
+const documentInit = (keyboard: Keyboard, inputController: InputController, defaultPresets: Map<string, string>) => {
+    
     //Preset saving and loading
-    const saveDefaultPresets = () => {
-        
-        fetchDefaultPresets().then(data => {
-            data.forEach((item: any) => {
-                localStorage.setItem(item["name"], JSON.stringify(item))
-            })
-        })
-            
-    }
-
     const populatePresetsDropdown = () => {
-        //get presets from local storage
-        
         for(let i = 0; i < loadPresetElement.options.length; i++) {
             loadPresetElement.options[i].remove()
         }
         for(let i = 0; i < deletePresetElement.options.length; i++) {
             deletePresetElement.options[i].remove()
         }
+
+        defaultPresets.forEach((value: string, key: string) => {
+            generatePresetOption(loadPresetElement, key)
+        })
+
         for(let i = 0; i < localStorage.length; i++) {
             generatePresetOption(loadPresetElement, localStorage.key(i))
             generatePresetOption(deletePresetElement, localStorage.key(i))
         }
-        generatePresetOption(deletePresetElement, " ")
-        
+        generatePresetOption(deletePresetElement, "")
     }
 
     const generatePresetOption = (selectElement: HTMLSelectElement, name: string) => {
@@ -68,10 +61,11 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             optionElement.value = name
             optionElement.text = name
     
-            if(name === "Default" && selectElement.name === "load-preset"
-                || name === " " && selectElement.name === "delete-preset"
-            ) {
+            if(name === "Default" && selectElement.name === "load-preset" || name === "") {
                 optionElement.selected = true
+                if(name === "") {
+                    optionElement.classList.add("hidden")
+                }
             }
             selectElement.appendChild(optionElement)
         }
@@ -79,29 +73,126 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
 
     const loadPreset = (name: string) => {
+        let preset
+        if(localStorage.getItem(name) != null) {
+            preset = JSON.parse(localStorage.getItem(name))
+        } else {
+            preset = JSON.parse(defaultPresets.get(name))
+        }
         
-        const preset = JSON.parse(localStorage.getItem(name))
+        if(preset["version"] == null || parseFloat(preset["version"]) < PRESET_VERSION) {
+            console.error(`Preset ${name} was created on an earlier version of this software, settings may not apply properly.\nPreset version: ${preset["version"]} | Current version ${PRESET_VERSION}`)
+        }
 
-        waveTypeElement.value = preset["waveType"]
+        if(preset["signalCapacity"] != null) {
+            voicesElement.value = preset["signalCapacity"]
+            setVoices(voicesElement.value)
+        }
 
-        cutoffElement.value = preset["cutoff"]
-        envCutoffElement.value = preset["envCutoff"]
-        resonanceElement.value = preset["resonance"]
-        ampAttackElement.value = preset["amplitudeEnv"]["attack"]
-        ampDecayElement.value = preset["amplitudeEnv"]["decay"]
-        ampSustainElement.value = preset["amplitudeEnv"]["sustain"]
-        ampReleaseElement.value = preset["amplitudeEnv"]["release"]
-        filterAttackElement.value = preset["filterEnv"]["attack"]
-        filterDecayElement.value = preset["filterEnv"]["decay"]
-        filterSustainElement.value = preset["filterEnv"]["sustain"]
-        filterReleaseElement.value = preset["filterEnv"]["release"]
-        octaveDisplayElement.innerHTML = preset["offset"]
-        
+        if(preset["oscA"] != null) {
+            if(preset["oscA"]["waveType"] != null) {
+                const selectedWaveTypeA: HTMLInputElement = document.querySelector(`input[name='wave-src-oscA'][value='${preset["oscA"]["waveType"]}']`)
+                selectedWaveTypeA.checked = true
+            }
+            if(preset["oscA"]["coarseDetune"] != null) {
+                oscACoarseDetuneElement.value = preset["oscA"]["coarseDetune"]
+            }
+            if(preset["oscA"]["fineDetune"] != null) {
+                oscAFineDetuneElement.value = preset["oscA"]["fineDetune"]
+            }
+            if(preset["oscA"]["amplitude"] != null) {
+                oscAAmplitudeElement.value = preset["oscA"]["amplitude"]
+            }
+        }
+
+        if(preset["oscB"] != null) {
+            if(preset["oscB"]["waveType"] != null) {
+                const selectedWaveTypeB: HTMLInputElement = document.querySelector(`input[name='wave-src-oscB'][value='${preset["oscB"]["waveType"]}']`)
+                selectedWaveTypeB.checked = true
+            }
+            if(preset["oscB"]["coarseDetune"] != null) {
+                oscBCoarseDetuneElement.value = preset["oscB"]["coarseDetune"]
+            }
+            if(preset["oscB"]["fineDetune"] != null) {
+                oscBFineDetuneElement.value = preset["oscB"]["fineDetune"]
+            }
+            if(preset["oscB"]["amplitude"] != null) {
+                oscBAmplitudeElement.value = preset["oscB"]["amplitude"]
+            }
+        }
+
+        if(preset["filterA"] != null) {
+            if(preset["filterA"]["filterType"] != null) {
+                const selectedFilterTypeA: HTMLInputElement = document.querySelector(`input[name='filterA'][value='${preset["filterA"]["filterType"]}']`)
+                selectedFilterTypeA.checked = true
+            }
+            if(preset["filterA"]["frequency"] != null) {
+                frequencyAElement.value = preset["filterA"]["frequency"]
+            }
+            if(preset["filterA"]["envFrequency"] != null) {
+                envFrequencyAElement.value = preset["filterA"]["envFrequency"]
+            }
+            if(preset["filterA"]["resonance"] != null) {
+                resonanceAElement.value = preset["filterA"]["resonance"]
+            }
+        }
+
+        if(preset["filterB"] != null) {
+            if(preset["filterB"]["filterType"] != null) {
+                const selectedFilterTypeB: HTMLInputElement = document.querySelector(`input[name='filterB'][value='${preset["filterB"]["filterType"]}']`)
+                selectedFilterTypeB.checked = true
+            }
+            if(preset["filterB"]["frequency"] != null) {
+                frequencyBElement.value = preset["filterB"]["frequency"]
+            }
+            if(preset["filterB"]["envFrequency"] != null) {
+                envFrequencyBElement.value = preset["filterB"]["envFrequency"]
+            }
+            if(preset["filterB"]["resonance"] != null) {
+                resonanceBElement.value = preset["filterB"]["resonance"]
+            }
+        }
+
+        if(preset["amplitudeEnv"] != null) {
+            if(preset["amplitudeEnv"]["attack"] != null) {
+                ampAttackElement.value = preset["amplitudeEnv"]["attack"]
+            }
+            if(preset["amplitudeEnv"]["decay"] != null) {
+                ampDecayElement.value = preset["amplitudeEnv"]["decay"]
+            }
+            if(preset["amplitudeEnv"]["sustain"] != null) {
+                ampSustainElement.value = preset["amplitudeEnv"]["sustain"]
+            }
+            if(preset["amplitudeEnv"]["release"] != null) {
+                ampReleaseElement.value = preset["amplitudeEnv"]["release"]
+            }
+        }
+
+        if(preset["filterEnv"] != null) {
+            if(preset["filterEnv"]["attack"] != null) {
+                filterAttackElement.value = preset["filterEnv"]["attack"]
+            }
+            if(preset["filterEnv"]["decay"] != null) {
+                filterDecayElement.value = preset["filterEnv"]["decay"]
+            }
+            if(preset["filterEnv"]["sustain"] != null) {
+                filterSustainElement.value = preset["filterEnv"]["sustain"]
+            }
+            if(preset["filterEnv"]["release"] != null) {
+                filterReleaseElement.value = preset["filterEnv"]["release"]
+            }
+        }
     }
-        */
+    
+    const setVoices = (value: string) => {
+        voicesElement.parentElement.querySelector('label span').innerHTML = value
+    }
 
     //sets inputController properties from DOM
     const configureInputController = (inputController: InputController) => {
+
+        inputController.setSignalCapacity(parseInt(voicesElement.value))
+
         const checkedOscAWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscA"]:checked')
         const checkedOscBWaveType: HTMLInputElement = document.querySelector('input[name="wave-src-oscB"]:checked')
         inputController.setWaveTypeA(checkedOscAWaveType.value)
@@ -203,12 +294,10 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setMasterVolume(e.currentTarget.value)
     }
 
-    /*
+    
     const onLoadPresetInput = (e: any) => {
-        
         loadPreset(e.currentTarget.value)
-        setDefaults(inputController)
-        
+        configureInputController(inputController)
     }
 
     const onSavePresetInput = (e: any) => {
@@ -219,15 +308,43 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
             savePresetNameElement.required = true
             alert("Please enter a name for your preset")
         } else {
-            console.log(savePresetNameElement.value)
             savePresetNameElement.required = false
+            const checkedWaveTypeA: HTMLInputElement = document.querySelector("input[name='wave-src-oscA']:checked")
+            const checkedWaveTypeB: HTMLInputElement = document.querySelector("input[name='wave-src-oscB']:checked")
+            const checkedFilterTypeA: HTMLInputElement = document.querySelector("input[name='filterA']:checked")
+            const checkedFilterTypeB: HTMLInputElement = document.querySelector("input[name='filterB']:checked")
             var preset: object = {
                 name: savePresetNameElement.value,
-                waveType: parseInt(waveTypeElement.value),
-                filterType: lowPassElement.checked ? 0 : 1, //TODO: when filters are added
-                cutoff: parseFloat(cutoffElement.value),
-                envCutoff: parseFloat(envCutoffElement.value),
-                resonance: parseInt(resonanceElement.value),
+                version: PRESET_VERSION,
+                signalCapacity: voicesElement.value,
+                oscA:
+                {
+                    waveType: checkedWaveTypeA.value,
+                    coarseDetune: parseInt(oscACoarseDetuneElement.value),
+                    fineDetune: parseInt(oscAFineDetuneElement.value),
+                    amplitude: parseFloat(oscAAmplitudeElement.value)
+                },
+                oscB:
+                {
+                    waveType: checkedWaveTypeB.value,
+                    coarseDetune: parseInt(oscBCoarseDetuneElement.value),
+                    fineDetune: parseInt(oscBFineDetuneElement.value),
+                    amplitude: parseFloat(oscBAmplitudeElement.value)
+                },
+                filterA:
+                {
+                    filterType: checkedFilterTypeA.value,
+                    frequency: parseFloat(frequencyAElement.value),
+                    envFrequency: parseFloat(envFrequencyAElement.value),
+                    resonance: parseInt(resonanceAElement.value)
+                },
+                filterB:
+                {
+                    filterType: checkedFilterTypeB.value,
+                    frequency: parseFloat(frequencyBElement.value),
+                    envFrequency: parseFloat(envFrequencyBElement.value),
+                    resonance: parseInt(resonanceBElement.value)
+                },
                 amplitudeEnv: {
                     attack: parseInt(ampAttackElement.value),
                     decay: parseInt(ampDecayElement.value),
@@ -239,25 +356,21 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
                     decay: parseInt(filterDecayElement.value),
                     sustain: parseInt(filterSustainElement.value),
                     release: parseInt(filterReleaseElement.value)
-                },
-                offset: parseInt(octaveDisplayElement.innerHTML)
+                }
             }
             localStorage.setItem(savePresetNameElement.value, JSON.stringify(preset))
-            console.log("Preset saved: ")
-            console.log(preset)
             populatePresetsDropdown()
+            savePresetNameElement.value = ""
         }
             
     }
 
     const onDeletePresetInput = (e: any) => {
-        
-        console.log("Deleting preset " + deletePresetElement.value)
-        localStorage.removeItem(deletePresetElement.value)
-        populatePresetsDropdown()
-        
+        if(confirm("Are you sure you want to delete " + deletePresetElement.value + "?")) {
+            localStorage.removeItem(deletePresetElement.value)
+            populatePresetsDropdown()
+        }
     }
-        */
 
     const onKeyboardInput = (e: any) => {
         
@@ -268,8 +381,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     }
 
     const onVoicesInput = (e: any) => {
-        e.currentTarget.parentElement.querySelector('label span').innerHTML = e.currentTarget.value
-        inputController.setSignalCapacity(e.currentTarget.value)
+        setVoices(e.currentTarget.value)
         configureInputController(inputController)
     }
 
@@ -349,6 +461,9 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
         inputController.setFilterEnvelope(e.currentTarget.name, e.currentTarget.value)
     }
 
+    //Used for checking if presets were made on earlier version
+    const PRESET_VERSION = 1.1
+
     //REGISTER UI CONTROLS ------------------------------------------------------------------------------
 
     //Keyboard
@@ -376,7 +491,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     registerInputElement(masterVolumeElement, 'input', onMasterVolumeInput)
 
     //Presets
-    /*
     const loadPresetElement: HTMLSelectElement = document.querySelector('select[name="load-preset"]')
     registerInputElement(loadPresetElement, 'change', onLoadPresetInput)
     const savePresetButtonElement: HTMLButtonElement = document.querySelector('button[name="save-preset"]')
@@ -385,7 +499,6 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     const deletePresetElement: HTMLSelectElement = document.querySelector('select[name="delete-preset"]')
     const deletePresetButtonElement: HTMLInputElement = document.querySelector('button[name="delete-preset"]')
     registerInputElement(deletePresetButtonElement, 'click', onDeletePresetInput)
-    */
 
     //Input controls
     const keyboardInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('keyboard')
@@ -393,7 +506,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     const midiInputElement: HTMLInputElement = <HTMLInputElement>document.getElementById('midi')
     registerInputElement(midiInputElement, 'change', onMidiInput)
 
-    const voicesElement = document.querySelector('input[name="voices"]')
+    const voicesElement: HTMLInputElement = document.querySelector('input[name="voices"]')
     registerInputElement(voicesElement, 'input', onVoicesInput)
 
 
@@ -474,11 +587,12 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     //INITIALIZATION ---------------------------------------------------------------
 
     //save default presets to localStorage
+    //const defaultPresets: Map<string, string> = new Map()
     //saveDefaultPresets()
     //populate dropdown with all presets in localStorage
-    //populatePresetsDropdown()
+    populatePresetsDropdown()
     //load default preset on DOM
-    //loadPreset("Default")
+    loadPreset("Default")
 
     createKeymapWindowFromBindings()
     //Attach Event handlers to appropriate element
@@ -486,6 +600,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController) => {
     window.addEventListener('blur', (e: any) => {
        // keyboard.clearAllNotes(inputController)
     })
+    
 }
 
-export { documentInit }
+export { documentInit, fetchDefaultPresets }
