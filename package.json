@@ -7,6 +7,7 @@
   "scripts": {
     "deploy": "scripts/deploy.sh",
     "build": "gulp",
+    "build-prod": "gulp build-prod",
     "watch": "gulp watch",
     "serve": "live-server --open=dist/ --watch=dist/"
   },
@@ -30,6 +31,7 @@
   "dependencies": {
     "del": "^7.0.0",
     "gulp-watch": "^5.0.1",
+    "rollup": "^4.34.0",
     "sass": "^1.62.0"
   }
 }
