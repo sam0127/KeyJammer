@@ -6,10 +6,22 @@
   "type": "module",
   "scripts": {
     "deploy": "scripts/deploy.sh",
-    "build": "gulp",
-    "build-prod": "gulp build-prod",
-    "watch": "gulp watch",
-    "serve": "live-server --open=dist/ --watch=dist/"
+    "build:html": "cp src/index.html dist/",
+    "build:assets": "mkdirp dist/assets && cp -r src/assets/* dist/assets/",
+    "build:scss-dev": "sass src/scss:dist/css",
+    "build:scss-prod": "sass --no-source-map src/scss:dist/css",
+    "build:ts-dev": "tsc --outDir dist/js/",
+    "build:ts-prod": "tsc --outDir dist/ts/",
+    "build": "npm run build:html && npm run build:assets && npm run build:scss-dev && npm run build:ts-dev",
+    "build-prod": "npm run uglify",
+    "clean": "rm -rf dist/*",
+    "rollup": "rollup dist/ts/index.js --format iife --file dist/js/index.js",
+    "uglify": "uglifyjs dist/js/index.js -o dist/js/index.js --compress",
+    "serve": "live-server --open=dist/ --watch=dist/",
+
+    "prebuild-prod": "npm run build:html && npm run build:assets && npm run build:scss-prod && npm run build:ts-prod",
+    "postbuild-prod": "rm -rf dist/ts",
+    "preuglify": "npm run rollup"
   },
   "repository": {
     "type": "git",
@@ -22,17 +34,14 @@
   },
   "homepage": "https://github.com/sam0127/KeyJammer#readme",
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-sass": "^5.1.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
     "live-server": "^1.2.2",
-    "typescript": "^5.0.4",
+    "mkdirp": "^3.0.1",
+    "typescript": "^5.7.3",
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
     "del": "^7.0.0",
-    "gulp-watch": "^5.0.1",
     "rollup": "^4.34.0",
-    "sass": "^1.62.0"
+    "sass": "^1.83.4"
   }
 }

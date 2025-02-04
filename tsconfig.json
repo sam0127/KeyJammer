@@ -8,7 +8,7 @@
         "noImplicitAny": true,
         "lib": ["es2021", "dom", "es5"],
         "target": "es2017",
-        "removeComments": true,
+        "removeComments": true
     },
     "include": ["src/ts/*.ts"],
 }
