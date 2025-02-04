@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "deploy": "scripts/deploy.sh",
-    "build:html": "cp src/index.html dist/",
-    "build:assets": "mkdirp dist/assets && cp -r src/assets/* dist/assets/",
+    "build:html": "mkdirp dist/ && cp src/index.html dist/",
+    "build:assets": "cp -r src/assets dist/",
     "build:scss-dev": "sass src/scss:dist/css",
     "build:scss-prod": "sass --no-source-map src/scss:dist/css",
     "build:ts-dev": "tsc --outDir dist/js/",
