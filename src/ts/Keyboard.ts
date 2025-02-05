@@ -14,9 +14,12 @@ export class Keyboard {
             if(!this.pressedKeys.has(e.code)) {
                 this.pressedKeys.add(e.code)
                 if(this.bindingMap.has(e.code)) {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    inputController.startSignal(this.bindingMap.get(e.code))
+                    if((<HTMLInputElement>document.activeElement).type !== 'text') {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        inputController.startSignal(this.bindingMap.get(e.code))
+                    }
+                    
                 }
             }
         })
@@ -24,9 +27,11 @@ export class Keyboard {
         document.addEventListener("keyup", (e: any) => {
             this.pressedKeys.delete(e.code)
             if(this.bindingMap.has(e.code)) {
-                e.stopPropagation()
-                e.preventDefault()
-                inputController.stopSignal(this.bindingMap.get(e.code))
+                if((<HTMLInputElement>document.activeElement).type !== 'text') {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    inputController.stopSignal(this.bindingMap.get(e.code))
+                }
             }
         })
     }
