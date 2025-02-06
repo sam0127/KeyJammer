@@ -15,6 +15,10 @@
   <aside class="instructions">
     <section class="instructions-container">
       <h3>Controls</h3>
+      <div class="remap-dialog">
+        <p>Click a key to assign a new note within the range A0 to C8, sharps only.<br>Press enter to save keybinding.</p>
+        <button name="restore-defaults" disabled>Restore defaults</button>
+      </div>
       <div class="keyboard-container">
         <div class="key-row">
           <div class="key key-15u blocked"><em>ESC</em><br></div>
@@ -34,63 +38,63 @@
         </div>
         <div class="key-row">
           <div class="key key-1u blocked"><em>`</em></div>
-          <div class="key key-1u unused" data-key="Digit1"><em>1</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit2"><em>2</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit3"><em>3</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit4"><em>4</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit5"><em>5</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit6"><em>6</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit7"><em>7</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit8"><em>8</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit9"><em>9</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Digit0"><em>0</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Minus"><em>-</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Equal"><em>=</em><br><span></span></div>
+          <div class="key key-1u unused" data-key="Digit1"><em>1</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit2"><em>2</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit3"><em>3</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit4"><em>4</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit5"><em>5</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit6"><em>6</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit7"><em>7</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit8"><em>8</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit9"><em>9</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit0"><em>0</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Minus"><em>-</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Equal"><em>=</em><br><input type="text" maxlength="3" size="1"></div>
           <div class="key key-2u blocked"><em>BKSP</em></div>
         </div>
         <div class="key-row">
           <div class="key key-15u blocked"><em>TAB</em></div>
-          <div class="key key-1u unused" data-key="KeyQ"><em>Q</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyW"><em>W</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyE"><em>E</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyR"><em>R</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyT"><em>T</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyY"><em>Y</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyU"><em>U</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyI"><em>I</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyO"><em>O</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyP"><em>P</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="BracketLeft"><em>[</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="BracketRight"><em>]</em><br><span></span></div>
-          <div class="key key-15u unused" data-key="Backslash"><em>\</em><br><span></span></div>
+          <div class="key key-1u unused" data-key="KeyQ"><em>Q</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyW"><em>W</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyE"><em>E</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyR"><em>R</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyT"><em>T</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyY"><em>Y</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyU"><em>U</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyI"><em>I</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyO"><em>O</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyP"><em>P</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="BracketLeft"><em>[</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="BracketRight"><em>]</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-15u unused" data-key="Backslash"><em>\</em><br><input type="text" maxlength="3" size="1"></div>
         </div>
         <div class="key-row">
           <div class="key key-175u blocked "><em>CPSLK</em><br></div>
-          <div class="key key-1u unused" data-key="KeyA"><em>A</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyS"><em>S</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyD"><em>D</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyF"><em>F</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyG"><em>G</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyH"><em>H</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyJ"><em>J</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyK"><em>K</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyL"><em>L</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Semicolon"><em>;</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Quote"><em>'</em><br><span></span></div>
+          <div class="key key-1u unused" data-key="KeyA"><em>A</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyS"><em>S</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyD"><em>D</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyF"><em>F</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyG"><em>G</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyH"><em>H</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyJ"><em>J</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyK"><em>K</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyL"><em>L</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Semicolon"><em>;</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Quote"><em>'</em><br><input type="text" maxlength="3" size="1"></div>
           <div class="key key-2375u blocked"><em>Enter</em></div>
         </div>
         <div class="key-row">
           <div class="key key-2125u blocked"><em>SHIFT</em><br></div>
-          <div class="key key-1u unused" data-key="KeyZ"><em>Z</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyX"><em>X</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyC"><em>C</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyV"><em>V</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyB"><em>B</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyN"><em>N</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="KeyM"><em>M</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Comma"><em>,</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Period"><em>.</em><br><span></span></div>
-          <div class="key key-1u unused" data-key="Slash"><em>/</em><br><span></span></div>
+          <div class="key key-1u unused" data-key="KeyZ"><em>Z</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyX"><em>X</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyC"><em>C</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyV"><em>V</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyB"><em>B</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyN"><em>N</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyM"><em>M</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Comma"><em>,</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Period"><em>.</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Slash"><em>/</em><br><input type="text" maxlength="3" size="1"></div>
           <div class="key key-2u blocked"><em>SHIFT</em><br></div>
           <div class="key key-1u blocked"><em></em></div>
         </div>
@@ -105,6 +109,10 @@
           <div class="key key-1u blocked"></div>
           <div class="key key-1u blocked"></div>
         </div>
+      </div>
+      <div class="error-container">
+        <p class="hidden" id="invalid-key-error">
+        </p>
       </div>
     </section>
   </aside>

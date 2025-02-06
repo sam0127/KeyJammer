@@ -1,8 +1,8 @@
 import { InputController } from './InputController'
 
 export class Keyboard {
-    pressedKeys: Set<string> = new Set()
-    readonly bindingMap: Map<string, string>
+    private pressedKeys: Set<string> = new Set()
+    private bindingMap: Map<string, string>
 
     constructor(bindingMap: Map<string, string>) {
         this.bindingMap = bindingMap
@@ -30,10 +30,18 @@ export class Keyboard {
                 if((<HTMLInputElement>document.activeElement).type !== 'text') {
                     e.stopPropagation()
                     e.preventDefault()
-                    inputController.stopSignal(this.bindingMap.get(e.code))
                 }
+                inputController.stopSignal(this.bindingMap.get(e.code))
             }
         })
+    }
+
+    setKeyBinding(keyCode: string, noteName: string) {
+        this.bindingMap.set(keyCode, noteName)
+    }
+
+    clearKeyBinding(keyCode: string) {
+        this.bindingMap.delete(keyCode)
     }
 
     clearAllKeys() {
@@ -42,5 +50,9 @@ export class Keyboard {
         })
 
         this.pressedKeys.clear()
+    }
+
+    getBindingMap() {
+        return this.bindingMap
     }
 }

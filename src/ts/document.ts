@@ -226,16 +226,27 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
     }
 
     //Create keymap window
-    const createKeymapWindowFromBindings = () => {
-        keyboard.bindingMap.forEach((value, key) => {
-            const keyboardKey = document.querySelector(`div[data-key="${key}"]`)
-            if(keyboardKey !== null) {
-                keyboardKey.querySelector('span').innerHTML = value
-                if(value.includes('#')) {
-                    keyboardKey.classList.add('note-accidental')
+    const initializeKeyBindings = () => {
+        if(localStorage.getItem('KB_storage') !== 'true') {
+            localStorage.setItem('KB_storage', 'true')
+            keyboard.getBindingMap().forEach((value: string, key: string) => {
+                localStorage.setItem(`KB_${key}`, value)
+            })
+        }
+        keyboard.getBindingMap().clear()
+        const keyboardKeys: NodeListOf<HTMLElement> = document.querySelectorAll("div[data-key]")
+        keyboardKeys.forEach(key => {
+            let code: string = key.dataset.key
+            let binding: string = localStorage.getItem(`KB_${code}`)
+            if(binding) {
+                key.classList.remove('unused')
+                if(binding.includes('#')) {
+                    key.classList.add('note-accidental')
                 } else {
-                    keyboardKey.classList.add('note-natural')
+                    key.classList.add('note-natural')
                 }
+                key.querySelector('input').value = binding
+                keyboard.setKeyBinding(code, binding)
             }
         })
     }
@@ -250,7 +261,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
     }
 
     const onInstructionsKeyout = (e: any) => {
-        if(instructionsAsideElement.classList.contains('opened') && e.code === "Escape") {
+        if(instructionsAsideElement.classList.contains('opened') && e.code === 'Escape') {
             instructionsAsideElement.classList.remove('opened')
         }
     }
@@ -468,6 +479,15 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
 
     //Keyboard
     registerInputElement(document, 'keydown', onInstructionsKeyout)
+
+    const onTextInputFocus = (e: any) => {
+        keyboard.clearAllKeys()
+    }
+
+    const textInputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[type="text"]')
+    textInputElements.forEach((textInputElement) => {
+        registerInputElement(textInputElement, 'focus', onTextInputFocus)
+    })
     
 
     //Instructions
@@ -584,17 +604,106 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
     const oscilloscopeElement: Element = document.getElementById('oscilloscope')
     const spectrographElement: Element = document.getElementById('spectrograph')
 
-    //INITIALIZATION ---------------------------------------------------------------
 
-    //save default presets to localStorage
-    //const defaultPresets: Map<string, string> = new Map()
-    //saveDefaultPresets()
+
+    //Keymapping section
+    const clearKeybindError = () => {
+        if(!errorElement.classList.contains('hidden')) {
+            errorElement.classList.add('hidden')
+        }
+    }
+
+    const generateKeybindError = (value: string) => {
+        errorElement.innerHTML = `${value} is not a valid note name. Please use standard note names with octave numbers as such A0, A#0, B0, C1, ... , A#7, B7, C8. Flats are not recognized.`
+        errorElement.classList.remove('hidden')
+    }
+
+    const resetKeybindToSavedBinding = (input: HTMLInputElement) => {
+        if(input.hasAttribute('data-value')) {
+            input.value = input.getAttribute('data-value')
+        } else {
+            input.value = ""
+            if(!input.classList.contains('unused')) {
+                input.closest('.key').classList.add('unused')
+            }
+            input.closest('.key').classList.remove('note-accidental')
+            input.closest('.key').classList.remove('note-natural')
+        }
+    }
+
+    const setKeyBinding = (input: HTMLInputElement, value: string) => {
+        input.setAttribute('data-value', value)
+        let keyElement: HTMLElement = input.closest('.key')
+
+        keyboard.setKeyBinding(keyElement.dataset.key, value)
+        //TODO: set key bidning to local storage
+        localStorage.setItem(`KB_${keyElement.dataset.key}`, value)
+
+        input.blur()
+        keyElement.classList.remove('unused')
+        if(value.includes('#')) {
+            keyElement.classList.remove('note-natural')
+            keyElement.classList.add('note-accidental')
+        } else {
+            keyElement.classList.remove('note-accidental')
+            keyElement.classList.add('note-natural')
+        }
+    }
+
+    const clearKeyBinding = (input: HTMLInputElement) => {
+        let keyElement: HTMLElement = input.closest('.key')
+        //TODO remove keybind from local storage
+        keyboard.clearKeyBinding(keyElement.dataset.key)
+        localStorage.removeItem(`KB_${keyElement.dataset.key}`)
+        input.removeAttribute('data-value')
+        keyElement.classList.add('unused')
+        keyElement.classList.remove('note-accidental')
+        keyElement.classList.remove('note-natural')
+        input.blur()
+    }
+
+    const onKeymapInputKeydown = (e: any) => {
+        if(e.code === 'Enter') {
+            
+            let value: string = e.currentTarget.value.toUpperCase()
+            if(inputController.tuningSystem.has(value)) {
+                setKeyBinding(e.currentTarget, value)
+                clearKeybindError()
+            } else if(value === "") {
+                clearKeyBinding(e.currentTarget)
+                clearKeybindError()
+            } else {
+                e.currentTarget.classList.add('invalid')
+                generateKeybindError(value)
+                resetKeybindToSavedBinding(e.currentTarget)
+            }            
+        }
+    }
+
+    const onKeymapInputBlur = (e: any) => {
+        if(e.currentTarget.classList.contains('invalid')) {
+            e.currentTarget.classList.remove('invalid')
+            clearKeybindError()
+        }
+
+        resetKeybindToSavedBinding(e.currentTarget)
+    }
+
+    const errorElement: Element = document.getElementById('invalid-key-error')
+
+    const keymapInputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll('.key input')
+    keymapInputElements.forEach((keymapElement) => {
+        registerInputElement(keymapElement, 'keydown', onKeymapInputKeydown)
+        registerInputElement(keymapElement, 'blur', onKeymapInputBlur)
+    })
+
+    //INITIALIZATION ---------------------------------------------------------------
     //populate dropdown with all presets in localStorage
     populatePresetsDropdown()
     //load default preset on DOM
     loadPreset("Default")
-
-    createKeymapWindowFromBindings()
+    initializeKeyBindings()
+    //createKeymapWindowFromBindings()
     //Attach Event handlers to appropriate element
 
     window.addEventListener('blur', (e: any) => {
