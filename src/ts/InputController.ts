@@ -114,6 +114,14 @@ export class InputController {
         this.availableSignals = null
     }
 
+    stopAllSignals() {
+        while(this.activeSignals.peakFirst()) {
+            let signal = this.activeSignals.pop()
+            signal.stop(this.ampEnvelope, this.filterEnvelope)
+            this.availableSignals.push(signal)
+        }
+    }
+
     //Oscillator methods
     setWaveTypeA(type: string) {
         this.activeSignals.forEach((signal: Signal) => {

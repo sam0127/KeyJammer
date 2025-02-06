@@ -598,9 +598,8 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
     //Attach Event handlers to appropriate element
 
     window.addEventListener('blur', (e: any) => {
-       // keyboard.clearAllNotes(inputController)
+        keyboard.clearAllKeys()
     })
-    
 }
 
 export { documentInit, fetchDefaultPresets }

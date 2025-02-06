@@ -35,4 +35,12 @@ export class Keyboard {
             }
         })
     }
+
+    clearAllKeys() {
+        this.pressedKeys.forEach(key => {
+            document.dispatchEvent(new KeyboardEvent('keyup', {'code': key}))
+        })
+
+        this.pressedKeys.clear()
+    }
 }
