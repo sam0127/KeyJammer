@@ -8,6 +8,6 @@ Play some synth with your keyboard.
 `$ git clone https://github.com/sam0127/KeyJammer.git`  
 `$ cd KeyJammer`  
 `$ npm install`  
-`$ npm run build`
+`$ npm run build`  
 In another terminal window, run   
 `$ npm run serve`  
