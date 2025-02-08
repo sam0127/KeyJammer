@@ -48,8 +48,10 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
         })
 
         for(let i = 0; i < localStorage.length; i++) {
-            generatePresetOption(loadPresetElement, localStorage.key(i))
-            generatePresetOption(deletePresetElement, localStorage.key(i))
+            if(localStorage.key(i).includes(presetPrefix)) {
+                generatePresetOption(loadPresetElement, localStorage.key(i).replace(presetPrefix, ''))
+                generatePresetOption(deletePresetElement, localStorage.key(i).replace(presetPrefix, ''))
+            }
         }
         generatePresetOption(deletePresetElement, "")
     }
@@ -74,8 +76,8 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
 
     const loadPreset = (name: string) => {
         let preset
-        if(localStorage.getItem(name) != null) {
-            preset = JSON.parse(localStorage.getItem(name))
+        if(localStorage.getItem(`${presetPrefix}${name}`) != null) {
+            preset = JSON.parse(localStorage.getItem(`${presetPrefix}${name}`))
         } else {
             preset = JSON.parse(defaultPresets.get(name))
         }
@@ -227,17 +229,17 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
 
     //Create keymap window
     const initializeKeyBindings = () => {
-        if(localStorage.getItem('KB_storage') !== 'true') {
-            localStorage.setItem('KB_storage', 'true')
+        if(localStorage.getItem(keybindPrefix + 'storage') !== 'true') {
+            localStorage.setItem(keybindPrefix + 'storage', 'true')
             keyboard.getBindingMap().forEach((value: string, key: string) => {
-                localStorage.setItem(`KB_${key}`, value)
+                localStorage.setItem(`${keybindPrefix}${key}`, value)
             })
         }
         keyboard.getBindingMap().clear()
         const keyboardKeys: NodeListOf<HTMLElement> = document.querySelectorAll("div[data-key]")
         keyboardKeys.forEach(key => {
             let code: string = key.dataset.key
-            let binding: string = localStorage.getItem(`KB_${code}`)
+            let binding: string = localStorage.getItem(`${keybindPrefix}${code}`)
             if(binding) {
                 key.classList.remove('unused')
                 if(binding.includes('#')) {
@@ -246,6 +248,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
                     key.classList.add('note-natural')
                 }
                 key.querySelector('input').value = binding
+                key.querySelector('input').dataset.value = binding
                 keyboard.setKeyBinding(code, binding)
             }
         })
@@ -369,7 +372,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
                     release: parseInt(filterReleaseElement.value)
                 }
             }
-            localStorage.setItem(savePresetNameElement.value, JSON.stringify(preset))
+            localStorage.setItem(`${presetPrefix}${savePresetNameElement.value}`, JSON.stringify(preset))
             populatePresetsDropdown()
             savePresetNameElement.value = ""
         }
@@ -378,7 +381,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
 
     const onDeletePresetInput = (e: any) => {
         if(confirm("Are you sure you want to delete " + deletePresetElement.value + "?")) {
-            localStorage.removeItem(deletePresetElement.value)
+            localStorage.removeItem(`${presetPrefix}${deletePresetElement.value}`)
             populatePresetsDropdown()
         }
     }
@@ -637,7 +640,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
 
         keyboard.setKeyBinding(keyElement.dataset.key, value)
         //TODO: set key bidning to local storage
-        localStorage.setItem(`KB_${keyElement.dataset.key}`, value)
+        localStorage.setItem(`${keybindPrefix}${keyElement.dataset.key}`, value)
 
         input.blur()
         keyElement.classList.remove('unused')
@@ -654,7 +657,7 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
         let keyElement: HTMLElement = input.closest('.key')
         //TODO remove keybind from local storage
         keyboard.clearKeyBinding(keyElement.dataset.key)
-        localStorage.removeItem(`KB_${keyElement.dataset.key}`)
+        localStorage.removeItem(`${keybindPrefix}${keyElement.dataset.key}`)
         input.removeAttribute('data-value')
         keyElement.classList.add('unused')
         keyElement.classList.remove('note-accidental')
@@ -696,6 +699,9 @@ const documentInit = (keyboard: Keyboard, inputController: InputController, defa
         registerInputElement(keymapElement, 'keydown', onKeymapInputKeydown)
         registerInputElement(keymapElement, 'blur', onKeymapInputBlur)
     })
+
+    const keybindPrefix: string = "KB_"
+    const presetPrefix: string = "PR_"
 
     //INITIALIZATION ---------------------------------------------------------------
     //populate dropdown with all presets in localStorage
