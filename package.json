@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "deploy": "scripts/deploy.sh",
-    "build:html": "mkdirp dist/ && cp src/index.html dist/",
+    "build:html": "mkdirp dist/ && cp src/*.html dist/",
     "build:assets": "cp -r src/assets dist/",
     "build:scss-dev": "sass src/scss:dist/css",
     "build:scss-prod": "sass --no-source-map src/scss:dist/css",
@@ -18,7 +18,11 @@
     "rollup": "rollup dist/ts/index.js --format iife --file dist/js/index.js",
     "uglify": "uglifyjs dist/js/index.js -o dist/js/index.js --compress",
     "serve": "live-server --open=dist/ --watch=dist/",
-
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:scss": "onchange 'src/scss/*.scss' -- npm run build:scss-dev",
+    "watch:ts": "onchange 'src/ts/*.ts' -- npm run build:ts-dev",
+    "watch:html": "onchange 'src/index.html' -- npm run build:html",
+    "watch:assets": "onchange 'src/assets/*' -- npm run build:assets",
     "prebuild-prod": "npm run build:html && npm run build:assets && npm run build:scss-prod && npm run build:ts-prod",
     "postbuild-prod": "rm -rf dist/ts",
     "preuglify": "npm run rollup"
@@ -36,11 +40,12 @@
   "devDependencies": {
     "live-server": "^1.2.2",
     "mkdirp": "^3.0.1",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
     "typescript": "^5.7.3",
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "del": "^7.0.0",
     "rollup": "^4.34.0",
     "sass": "^1.83.4"
   }

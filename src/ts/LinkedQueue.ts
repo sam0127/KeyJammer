@@ -50,11 +50,11 @@ export class LinkedQueue<T> {
     }
 
     peakFirst(): T {
-        return this.first.item
+        return this.first ? this.first.item : null
     }
 
     peakLast(): T {
-        return this.last.item
+        return this.last ? this.last.item : null
     }
 
     remove(item: T): T {

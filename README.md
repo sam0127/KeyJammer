@@ -1,5 +1,6 @@
 # KeyJammer
 
+Free, 100% client-side, browser based synthesizer.
 Play some synth with your keyboard.
 
 ## Setup for running locally
@@ -8,6 +9,5 @@ Play some synth with your keyboard.
 `$ cd KeyJammer`  
 `$ npm install`  
 `$ npm run build`  
-`$ npm run watch` (Optional)  
 In another terminal window, run   
 `$ npm run serve`  

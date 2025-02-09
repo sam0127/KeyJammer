@@ -2,6 +2,7 @@
 $border-gray: #414141;
 $transparent-gray: rgba(0,0,0,0.3);
 $key-escape: #ff0000;
+$error: #f00000;
 $key-unused: #d0d0d0;
 $unused-font: #808080;
 $key-drone: #ff5500;
@@ -13,7 +14,7 @@ $key-accidental: #555555;
 $hover-filter: brightness(90%);
 $click-filter: brightness(70%);
 //Font
-$main-font: 'Courier New', Courier, monospace;
+$main-font: 'Trebuchet MS';
 $font-xs: 12px;
 $font-s: 16px;
 $font-m: 20px;
