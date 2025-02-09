@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <title>KeyJammer</title>
+</head>
+<body>
+  <header>
+    <h1>KeyJammer</h1>
+  </header>
+  <button name="instructions" class="instructions-button">
+    <img src="./assets/img/keyboard.png">
+  </button>
+  <aside class="instructions">
+    <section class="instructions-container">
+      <h3>Controls</h3>
+      <div class="remap-dialog">
+        <p>Click a key to assign a new note within the range A0 to C8, sharps only.<br>Press enter to save keybinding.</p>
+        <button name="restore-defaults" disabled>Restore defaults</button>
+      </div>
+      <div class="keyboard-container">
+        <div class="key-row">
+          <div class="key key-15u blocked"><em>ESC</em><br></div>
+          <div class="key key-1u blocked"><em>F1</em></div>
+          <div class="key key-1u blocked"><em>F2</em></div>
+          <div class="key key-1u blocked"><em>F3</em></div>
+          <div class="key key-1u blocked"><em>F4</em></div>
+          <div class="key key-1u blocked"><em>F5</em></div>
+          <div class="key key-1u blocked"><em>F6</em></div>
+          <div class="key key-1u blocked"><em>F7</em></div>
+          <div class="key key-1u blocked"><em>F8</em></div>
+          <div class="key key-1u blocked"><em>F9</em></div>
+          <div class="key key-1u blocked"><em>F10</em></div>
+          <div class="key key-1u blocked"><em>F11</em></div>
+          <div class="key key-1u blocked"><em>F12</em></div>
+          <div class="key key-15u blocked"></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-1u blocked"><em>`</em></div>
+          <div class="key key-1u unused" data-key="Digit1"><em>1</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit2"><em>2</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit3"><em>3</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit4"><em>4</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit5"><em>5</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit6"><em>6</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit7"><em>7</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit8"><em>8</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit9"><em>9</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Digit0"><em>0</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Minus"><em>-</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Equal"><em>=</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-2u blocked"><em>BKSP</em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-15u blocked"><em>TAB</em></div>
+          <div class="key key-1u unused" data-key="KeyQ"><em>Q</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyW"><em>W</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyE"><em>E</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyR"><em>R</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyT"><em>T</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyY"><em>Y</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyU"><em>U</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyI"><em>I</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyO"><em>O</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyP"><em>P</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="BracketLeft"><em>[</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="BracketRight"><em>]</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-15u unused" data-key="Backslash"><em>\</em><br><input type="text" maxlength="3" size="1"></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-175u blocked "><em>CPSLK</em><br></div>
+          <div class="key key-1u unused" data-key="KeyA"><em>A</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyS"><em>S</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyD"><em>D</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyF"><em>F</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyG"><em>G</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyH"><em>H</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyJ"><em>J</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyK"><em>K</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyL"><em>L</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Semicolon"><em>;</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Quote"><em>'</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-2375u blocked"><em>Enter</em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-2125u blocked"><em>SHIFT</em><br></div>
+          <div class="key key-1u unused" data-key="KeyZ"><em>Z</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyX"><em>X</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyC"><em>C</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyV"><em>V</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyB"><em>B</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyN"><em>N</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="KeyM"><em>M</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Comma"><em>,</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Period"><em>.</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-1u unused" data-key="Slash"><em>/</em><br><input type="text" maxlength="3" size="1"></div>
+          <div class="key key-2u blocked"><em>SHIFT</em><br></div>
+          <div class="key key-1u blocked"><em></em></div>
+        </div>
+        <div class="key-row">
+          <div class="key key-125u blocked"></div>
+          <div class="key key-125u blocked"></div>
+          <div class="key key-125u blocked"></div>
+          <div class="key key-675u blocked"><em>SPACE</em><br></div>
+          <div class="key key-1u blocked"></div>
+          <div class="key key-1u blocked"></div>
+          <div class="key key-1u blocked"></div>
+          <div class="key key-1u blocked"></div>
+          <div class="key key-1u blocked"></div>
+        </div>
+      </div>
+      <div class="error-container">
+        <p class="hidden" id="invalid-key-error">
+        </p>
+      </div>
+    </section>
+  </aside>
+  <main>
+    <section id="top-level-controls">
+      <div class="row">
+        <div class="control-panel allow-audio">
+          <label for="allow-audio">Click to allow audio</label>
+          <button name="allow-audio">Allow Audio</button>
+        </div>
+      </div>
+    </section>
+    <header class="section-header">
+      <hr>
+      <div class="header-container presets">
+        <h2>Presets</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
+      </div>
+      <hr>
+    </header>
+    <section id="presets">
+      <div class="row">
+        <div class="control-panel presets">
+          <div class="preset-container load">
+            <label for="load-preset">Load preset</label>
+            <select name="load-preset">
+            </select>
+          </div>
+          <div class="divider"></div>
+          <div class="preset-container save">
+            <button name="save-preset">Save As</button>
+            <input type="text" name="save-preset-name">
+          </div>
+          <div class="divider"></div>
+          <div class="preset-container delete">
+            <div class="left">
+              <label for="delete-preset">Delete preset</label>
+              <select name="delete-preset">
+                <option value="" selected></option>
+              </select>
+            </div>
+            <button name="delete-preset">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <header class="section-header">
+      <hr>
+      <div class="header-container synth-controls">
+        <h2>Synth Controls</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
+      </div>
+      <hr>
+    </header>
+    <section id="synth-controls">
+      <div class="row">
+        <div class="control-panel input-controls">
+          <h3>Input</h3>
+          <div class="input-container">
+            <div class="input-source">
+              <div class="input-type">
+                <input id="keyboard" type="radio" name="input-src" value="keyboard" checked></input>
+                <label for="keyboard">Keyboard</label>
+              </div>
+              <div class="input-type">
+                <input id="midi" type="radio" name="input-src" value="midi" disabled></input>
+                <label for="midi">MIDI</label>
+              </div>
+            </div>
+            <div class="voices-quantity">
+              <div class="voices-slider">
+                <label for="voices">Voices: <span>1</span></label>
+                <input type="range" name="voices" min="1" max="10" value="1"></input>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="control-panel master-volume">
+            <label for="master-volume">Master Volume</label>
+            <input type="range" name="master-volume" value="50"></input>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="control-panel oscillator">
+          <h3>Osc A</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscA" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscA" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscA" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscA" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscA" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscA" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscA" min="0" max="1" step="0.1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel oscillator">
+          <h3>Osc B</h3>
+          <div class="oscillator-container">
+            <div class="wave-source">
+              <div class="wave-type">
+                <label for="sine"><img src="./assets/img/sine-osc.png"></label>
+                <input id="sine" type="radio" name="wave-src-oscB" value="sine" checked></input>
+              </div>
+              <div class="wave-type">
+                <label for="triangle"><img src="./assets/img/tri-osc.png"></label>
+                <input id="triangle" type="radio" name="wave-src-oscB" value="triangle"></input>
+              </div>
+              <div class="wave-type">
+                <label for="sawtooth"><img src="./assets/img/saw-osc.png"></label>
+                <input id="sawtooth" type="radio" name="wave-src-oscB" value="sawtooth"></input>
+              </div>
+              <div class="wave-type">
+                <label for="square"><img src="./assets/img/square-osc.png"></label>
+                <input id="square" type="radio" name="wave-src-oscB" value="square"></input>
+              </div>
+            </div>
+            <div class="osc-slider">
+              <label for="coarse-detune">Coarse Detune</label>
+              <input type="range" name="coarse-detune-oscB" min="-24" max="24" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Fine Detune</label>
+              <input type="range" name="fine-detune-oscB" min="-100" max="100" step="1" value="0"></input>
+            </div>
+            <div class="osc-slider">
+              <label for="fine-detune">Amplitude</label>
+              <input type="range" name="amplitude-oscB" min="0" max="1" step="0.1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel envelope-controls">
+          <h3>Amplitude Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="amp-attack-input">A</label>
+              <input type="range" name="amp-attack-input" min="1" max="200" value="1"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-decay-input">D</label>
+              <input type="range" name="amp-decay-input" min="1" value="1"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-sustain-input">S</label>
+              <input type="range" name="amp-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="amp-release-input">R</label>
+              <input type="range" name="amp-release-input" min="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="control-panel filter">
+          <h3>Filter A</h3>
+          <div class="filter-container">
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-passA"><img src="./assets/img/lowpassFilter.png"></label>
+                <input id="low-passA" type="radio" name="filterA" value="lowpass" checked></input>
+              </div>
+              <div class="filter-type">
+                <label for="band-passA"><img src="./assets/img/bandpassFilter.png"></label>
+                <input id="band-passA" type="radio" name="filterA" value="bandpass"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-passA"><img src="./assets/img/highpassFilter.png"></label>
+                <input id="high-passA" type="radio" name="filterA" value="highpass"></input>
+              </div>
+            </div>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-shelfA"><img src="./assets/img/lowshelfFilter.png"></label>
+                <input id="low-shelfA" type="radio" name="filterA" value="lowshelf"></input>
+              </div>
+              <div class="filter-type">
+                <label for="notchA"><img src="./assets/img/notchFilter.png"></label>
+                <input id="notchA" type="radio" name="filterA" value="notch"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-shelfA"><img src="./assets/img/highshelfFilter.png"></label>
+                <input id="high-shelfA" type="radio" name="filterA" value="highshelf"></input>
+              </div>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyA">Frequency</label>
+              <input type="range" name="frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyA">Env Frequency</label>
+              <input type="range" name="env-frequencyA" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceA">Resonance</label>
+              <input type="range" name="resonanceA" min="0" max="20" step="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel filter">
+          <h3>Filter B</h3>
+          <div class="filter-container">
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-passB"><img src="./assets/img/lowpassFilter.png"></label>
+                <input id="low-passB" type="radio" name="filterB" value="lowpass" checked></input>
+              </div>
+              <div class="filter-type">
+                <label for="band-passB"><img src="./assets/img/bandpassFilter.png"></label>
+                <input id="band-passB" type="radio" name="filterB" value="bandpass"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-passB"><img src="./assets/img/highpassFilter.png"></label>
+                <input id="high-passB" type="radio" name="filterB" value="highpass"></input>
+              </div>
+            </div>
+            <div class="filter-type-row">
+              <div class="filter-type">
+                <label for="low-shelfB"><img src="./assets/img/lowshelfFilter.png"></label>
+                <input id="low-shelfB" type="radio" name="filterB" value="lowshelf"></input>
+              </div>
+              <div class="filter-type">
+                <label for="notchB"><img src="./assets/img/notchFilter.png"></label>
+                <input id="notchB" type="radio" name="filterB" value="notch"></input>
+              </div>
+              <div class="filter-type">
+                <label for="high-shelfB"><img src="./assets/img/highshelfFilter.png"></label>
+                <input id="high-shelfB" type="radio" name="filterB" value="highshelf"></input>
+              </div>
+            </div>
+            <div class="filter-slider">
+              <label for="frequencyB">Frequency</label>
+              <input type="range" name="frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="env-frequencyB">Env Frequency</label>
+              <input type="range" name="env-frequencyB" min="5" max="14.5" step="0.1" value="9"></input>
+            </div>
+            <div class="filter-slider">
+              <label for="resonanceB">Resonance</label>
+              <input type="range" name="resonanceB" min="0" max="20" step="1" value="1"></input>
+            </div>
+          </div>
+        </div>
+        <div class="control-panel envelope-controls">
+          <h3>Filter Env</h3>
+          <div class="controls-container">
+            <div class="vertical-slider-container">
+              <label for="filter-attack-input">A</label>
+              <input type="range" name="filter-attack-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-decay-input">D</label>
+              <input type="range" name="filter-decay-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-sustain-input">S</label>
+              <input type="range" name="filter-sustain-input" value="0"></input>
+            </div>
+            <div class="vertical-slider-container">
+              <label for="filter-release-input">R</label>
+              <input type="range" name="filter-release-input" value="0"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        
+        
+      </div>
+    </section>
+    <header class="section-header">
+      <hr>
+      <div class="header-container visualization">
+        <h2>Visualization</h2>
+        <img class="arrow-icon" src="./assets/img/chevron-down-solid.svg">
+      </div>
+      <hr>
+    </header>
+    <section id="visualization">
+      <div class="row">
+        <div class="control-panel oscilloscope">
+          <label>Oscilloscope</label>
+          <canvas id="oscilloscope" width="376" height="200">
+          </canvas>
+        </div>
+        <div class="control-panel spectrograph">
+          <label>Spectrograph</label>
+          <canvas id="spectrograph" width="376" height="200">
+          </canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="./js/index.js" type="module" charset="UTF-8"></script>
+</body>
+</html>

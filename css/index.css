@@ -1,0 +1,532 @@
+body {
+  margin: 0;
+  font-family: "Trebuchet MS";
+}
+
+header {
+  text-align: center;
+  padding: 40px 0;
+}
+header h1 {
+  font-size: 48px;
+}
+
+main {
+  margin: 0 auto 100px auto;
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+}
+
+aside {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+aside.opened {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-size: 28px;
+  margin: 0;
+}
+
+label, h3 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  margin-bottom: 30px;
+}
+input[type=range]::-webkit-slider-thumb {
+  transform: rotateZ(45deg);
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  border-top-left-radius: 0;
+  height: 24px;
+  width: 24px;
+  background: #efefef;
+  cursor: pointer;
+  margin-top: 5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  filter: brightness(90%);
+}
+input[type=range]::-moz-range-thumb {
+  transform: rotateZ(45deg);
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  border-top-left-radius: 0;
+  height: 24px;
+  width: 24px;
+  background: #efefef;
+  cursor: pointer;
+  margin-top: 5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+input[type=range]::-moz-range-thumb:hover {
+  filter: brightness(90%);
+}
+input[type=range]::-webkit-slider-runnable-track {
+  height: 1px;
+  border: 1px solid black;
+}
+input[type=range]::-moz-range-track {
+  height: 1px;
+  border: 1px solid black;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  border: 1px solid #414141;
+  border-radius: 10px;
+  font-family: "Trebuchet MS";
+  font-size: 20px;
+  padding: 5px;
+  cursor: pointer;
+}
+button:not([disabled]):hover, button:not([disabled]):focus {
+  filter: brightness(90%);
+}
+button:not([disabled]):active {
+  filter: brightness(70%);
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+.remap-dialog {
+  width: 85%;
+  display: flex;
+}
+.remap-dialog p {
+  margin: 5px 0;
+}
+.remap-dialog button {
+  font-size: 14px;
+  width: 130px;
+  height: min-content;
+  margin-top: auto;
+}
+.remap-dialog button[disabled]:hover {
+  cursor: default;
+}
+
+.error-container {
+  width: 85%;
+}
+.error-container p {
+  color: #f00000;
+}
+
+.keyboard-container {
+  width: 800px;
+  font-size: 16px;
+}
+
+.key-row {
+  height: 40px;
+  max-height: 40px;
+  min-height: 40px;
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+}
+.key-row > * {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.key {
+  display: inline-block;
+  text-align: center;
+  color: #ffffff;
+  border: 1px solid #414141;
+  border-radius: 4px;
+  background-color: #404040;
+  height: 40px;
+  max-height: 40px;
+  min-height: 40px;
+}
+.key em {
+  filter: opacity(0.3);
+}
+.key input {
+  width: 30px;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  color: inherit;
+}
+.key input:focus, .key input:active {
+  outline: none;
+  border-bottom: 1px solid black;
+}
+.key input.invalid {
+  border-bottom-color: #f00000;
+}
+
+.unused {
+  background-color: #d0d0d0;
+  color: #808080;
+}
+.unused em {
+  filter: none;
+}
+
+.blocked {
+  background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.2) 5px, rgba(0, 0, 0, 0.2) 10px);
+  background-color: #d0d0d0;
+  opacity: 1;
+}
+
+.note-natural {
+  background-color: #ffffff;
+  color: #000;
+}
+
+.note-accidental {
+  background-color: #555555;
+  color: #fff;
+}
+
+.key-1u {
+  width: 40px;
+  max-width: 40px;
+  min-width: 40px;
+}
+
+.key-125u {
+  width: 50px;
+  max-width: 50px;
+  min-width: 50px;
+}
+
+.key-15u {
+  width: 60px;
+  max-width: 60px;
+  min-width: 60px;
+}
+
+.key-175u {
+  width: 70px;
+  max-width: 70px;
+  min-width: 70px;
+}
+
+.key-2u {
+  width: 80px;
+  max-width: 80px;
+  min-width: 80px;
+}
+
+.key-2125u {
+  width: 85px;
+  max-width: 85px;
+  min-width: 85px;
+}
+
+.key-2375u {
+  width: 95px;
+  max-width: 95px;
+  min-width: 95px;
+}
+
+.key-675u {
+  width: 270px;
+  max-width: 270px;
+  min-width: 270px;
+}
+
+.instructions-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 0 5px;
+  z-index: 2;
+}
+.instructions-button:hover, .instructions-button:focus {
+  filter: none;
+}
+.instructions-button:active {
+  filter: none;
+}
+.instructions-button img {
+  width: 40px;
+}
+
+.instructions-container {
+  width: 800px;
+  background-color: #ffffff;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.instructions-container p {
+  width: 600px;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+hr {
+  width: 100%;
+  height: 0px;
+  border: none;
+  border-bottom: 1px solid #000;
+  margin: auto 20px;
+}
+
+.section-header {
+  display: flex;
+  width: 700px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.closed {
+  display: none;
+}
+.closed img.arrow-icon {
+  transform: rotateZ(180deg);
+}
+
+.header-container {
+  display: flex;
+  width: min-content;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.header-container > img {
+  margin: 0px 10px;
+}
+.header-container img {
+  width: 20px;
+}
+
+.control-panel {
+  border: 1px solid #414141;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: center;
+  padding: 20px 30px;
+  margin: 5px;
+}
+.control-panel > * {
+  margin: 5px 0;
+}
+.control-panel .voices-slider {
+  display: flex;
+  flex-direction: column;
+}
+.control-panel .voices-slider label {
+  margin-bottom: 10px;
+}
+.control-panel.oscilloscope, .control-panel.spectrograph {
+  flex-grow: 0;
+}
+.control-panel.master-volume {
+  justify-content: space-evenly;
+}
+.control-panel.simple-wave-controls {
+  max-width: min-content;
+  display: flex;
+  flex-direction: row;
+}
+.control-panel.envelope-controls {
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 220px;
+}
+.control-panel.envelope-controls label {
+  font-size: 16px;
+  position: relative;
+  top: 10px;
+}
+.control-panel.octave-offset {
+  max-width: min-content;
+}
+.control-panel.octave-offset label {
+  white-space: nowrap;
+}
+.control-panel.presets {
+  text-align: left;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.divider {
+  max-width: 0;
+  border-left: 1px solid #414141;
+  margin: 0 20px;
+}
+
+.wave-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 22px;
+  right: 20px;
+}
+.wave-icons li {
+  margin: 8px 0;
+}
+
+.oscillator-container > div {
+  margin: 5px 0;
+}
+.oscillator-container .wave-source {
+  display: flex;
+  justify-content: space-evenly;
+}
+.oscillator-container .wave-source .wave-type {
+  display: flex;
+  flex-direction: column;
+}
+.oscillator-container .wave-source img {
+  margin-left: 4px;
+}
+.oscillator-container .osc-slider {
+  display: flex;
+  flex-direction: column;
+}
+.oscillator-container .osc-slider label {
+  font-size: 16px;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.input-container .input-source {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+.input-container .input-type {
+  text-align: left;
+}
+
+.vertical-slider-container {
+  position: relative;
+}
+.vertical-slider-container input {
+  transform: rotateZ(-90deg);
+  position: absolute;
+  top: 100px;
+  left: -60px;
+}
+.vertical-slider-container input[name=wave-input] {
+  left: -69px;
+  top: 150px;
+  width: 200px;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+}
+.filter-container .filter-type-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+.filter-container .filter-type {
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+}
+.filter-container .filter-slider {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+.filter-container label {
+  font-size: 16px;
+}
+
+.octave-offset-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.octave-offset-container button {
+  background: none;
+  border: none;
+  padding: 10px;
+}
+.octave-offset-container button:hover {
+  cursor: pointer;
+}
+.octave-offset-container span {
+  font-size: 16px;
+}
+
+.preset-container {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  white-space: nowrap;
+}
+.preset-container > * {
+  margin: 5px;
+}
+.preset-container.load select, .preset-container.delete select {
+  margin-top: 14px;
+}
+.preset-container.delete {
+  flex-direction: row;
+}
+.preset-container.delete .left {
+  display: flex;
+  flex-direction: column;
+}
+.preset-container.delete button {
+  margin-left: 10px;
+  padding: 10px;
+  align-self: center;
+}
+
+input[name=save-preset-name]:invalid {
+  background-color: #ffe0e0;
+}

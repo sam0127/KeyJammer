@@ -1,0 +1,47 @@
+{
+    "name": "Default",
+    "version": 1.1,
+    "signalCapacity": 6,
+    "oscA":
+    {
+        "waveType": "sawtooth",
+        "coarseDetune": 0,
+        "fineDetune": 0,
+        "amplitude": 1
+    },
+    "oscB":
+    {
+        "waveType": "sawtooth",
+        "coarseDetune": 12,
+        "fineDetune": 14,
+        "amplitude": 1
+    },
+    "filterA":
+    {
+        "filterType": "lowpass",
+        "frequency": 6.9,
+        "envFrequency": 11.9,
+        "resonance": 0
+    },
+    "filterB":
+    {
+        "filterType": "lowpass",
+        "frequency": 9,
+        "envFrequency": 9,
+        "resonance": 1
+    },
+    "amplitudeEnv":
+    {
+        "attack": 1,
+        "decay": 1,
+        "sustain": 100,
+        "release": 25
+    },
+    "filterEnv":
+    {
+        "attack": 30,
+        "decay": 30,
+        "sustain": 50,
+        "release": 10
+    }
+}
